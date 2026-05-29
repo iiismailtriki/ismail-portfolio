@@ -3,7 +3,7 @@ import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
   integrations: [tailwind()],
-  site: 'https://ismailtriki.github.io',
-  base: '/',
+  site: 'https://iiismailtriki.github.io',
+  base: '/ismail-portfolio',
   output: 'static',
 });
