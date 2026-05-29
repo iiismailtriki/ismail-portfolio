@@ -1,0 +1,411 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import '../styles/global.css';
+---
+
+<Base
+  title="Espr'Eats — Case Study | Ismail Triki"
+  description="Deep-dive into the design and deployment of Espr'Eats, a cloud-native meal ordering platform built with Angular, Spring Boot, Docker, Kubernetes, OpenStack, Terraform, and Ansible."
+>
+  <Nav />
+  <main class="pt-32 pb-24 max-w-4xl mx-auto px-6">
+
+    <!-- Back -->
+    <a href="/" class="inline-flex items-center gap-2 font-mono text-xs text-text-muted hover:text-accent-cyan transition-colors mb-12 group">
+      <svg class="group-hover:-translate-x-1 transition-transform" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"/>
+        <polyline points="12 19 5 12 12 5"/>
+      </svg>
+      Back to portfolio
+    </a>
+
+    <!-- Header -->
+    <div class="mb-16">
+      <p class="section-label mb-3">Case Study</p>
+      <h1 class="font-display text-4xl md:text-5xl text-text-primary leading-tight mb-4">
+        Espr'Eats
+      </h1>
+      <p class="text-xl text-text-muted mb-6">
+        Cloud-Native Meal Ordering Platform
+      </p>
+      <p class="text-text-muted leading-relaxed mb-8 max-w-2xl">
+        A full-stack meal ordering system for university campuses, built with Angular and Spring Boot,
+        containerized with Docker, orchestrated with Kubernetes, and deployed on a private OpenStack
+        cloud using Terraform and Ansible.
+      </p>
+      <div class="flex flex-wrap gap-2">
+        {['Angular', 'Spring Boot', 'Docker', 'Kubernetes', 'OpenStack', 'Terraform', 'Ansible', 'REST APIs'].map((t) => (
+          <span class="tag">{t}</span>
+        ))}
+      </div>
+    </div>
+
+    <!-- Content sections -->
+    <div class="space-y-16">
+
+      <!-- Project Context -->
+      <section>
+        <p class="section-label">Project Context</p>
+        <h2 class="font-display text-2xl text-text-primary mb-4">What this project was about</h2>
+        <div class="text-text-muted space-y-4 leading-relaxed">
+          <p>
+            Espr'Eats was built as a cloud application project in a university setting, with the goal of
+            applying modern cloud-native principles to a realistic, full-stack use case. The project focused
+            on two equally important dimensions: building a functional meal ordering application, and deploying
+            it correctly on a private cloud infrastructure from scratch.
+          </p>
+          <p>
+            The campus environment shaped the feature set — distinct user roles (students, cafeteria staff,
+            administrators), menu management, and order tracking — while the infrastructure side demanded
+            hands-on work with OpenStack, Kubernetes, Terraform, and Ansible in a unified deployment pipeline.
+          </p>
+        </div>
+      </section>
+
+      <div class="border-t border-bg-700"></div>
+
+      <!-- Problem -->
+      <section>
+        <p class="section-label">Problem</p>
+        <h2 class="font-display text-2xl text-text-primary mb-4">What needed to be solved</h2>
+        <div class="space-y-4">
+          {[
+            {
+              title: 'Fragmented campus meal ordering',
+              detail: 'Campus meal ordering is often manual or disconnected — no unified interface for browsing menus, placing orders, or tracking status.',
+            },
+            {
+              title: 'Multiple stakeholder roles',
+              detail: 'Students, cafeteria staff, and admins all need different views and capabilities within the same system.',
+            },
+            {
+              title: 'Menu and order management',
+              detail: 'Cafeteria staff needed a way to manage menus and handle incoming orders without relying on manual coordination.',
+            },
+            {
+              title: 'Multi-tenant campus structure',
+              detail: 'Different campus user groups need to be isolated and managed — requiring a tenant-aware access model from the start.',
+            },
+            {
+              title: 'Cloud-native deployment',
+              detail: 'The application needed to be containerized, scalable, and deployable on a private cloud — not just running locally.',
+            },
+          ].map((item) => (
+            <div class="card-base border border-bg-600">
+              <p class="text-text-primary font-medium text-sm mb-1">{item.title}</p>
+              <p class="text-text-muted text-sm">{item.detail}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div class="border-t border-bg-700"></div>
+
+      <!-- Solution -->
+      <section>
+        <p class="section-label">Solution</p>
+        <h2 class="font-display text-2xl text-text-primary mb-4">How it was built</h2>
+        <div class="text-text-muted space-y-4 leading-relaxed mb-8">
+          <p>
+            The system was designed as a full-stack cloud-native application with clear separation between the
+            frontend, backend, and infrastructure layers. Each layer was handled with its own toolchain,
+            allowing the deployment pipeline to be both reproducible and scalable.
+          </p>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border-collapse">
+            <thead>
+              <tr class="border-b border-bg-700">
+                <th class="text-left font-mono text-xs text-text-dim uppercase tracking-widest py-3 pr-8">Layer</th>
+                <th class="text-left font-mono text-xs text-text-dim uppercase tracking-widest py-3 pr-8">Responsibility</th>
+                <th class="text-left font-mono text-xs text-text-dim uppercase tracking-widest py-3">Technology</th>
+              </tr>
+            </thead>
+            <tbody class="text-text-muted">
+              {[
+                ['Frontend', 'User interface for students, staff, and admins', 'Angular'],
+                ['Backend API', 'REST API for meals, orders, users, and tenant management', 'Spring Boot'],
+                ['Containers', 'Packaging frontend and backend as portable units', 'Docker'],
+                ['Orchestration', 'Deployment, scaling, and service exposure', 'Kubernetes'],
+                ['Private Cloud', 'Compute, networking, and storage infrastructure', 'OpenStack'],
+                ['Provisioning', 'Infrastructure-as-code for repeatable deployments', 'Terraform'],
+                ['Configuration', 'Automated server and application configuration', 'Ansible'],
+              ].map(([layer, desc, tech]) => (
+                <tr class="border-b border-bg-800 hover:bg-bg-700/30 transition-colors">
+                  <td class="py-3 pr-8 text-text-primary font-medium">{layer}</td>
+                  <td class="py-3 pr-8">{desc}</td>
+                  <td class="py-3 font-mono text-xs text-accent-cyan">{tech}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="border-t border-bg-700"></div>
+
+      <!-- Architecture -->
+      <section>
+        <p class="section-label">Architecture</p>
+        <h2 class="font-display text-2xl text-text-primary mb-4">System overview</h2>
+        <div class="text-text-muted space-y-4 leading-relaxed mb-8">
+          <p>
+            The architecture is organized around a clear separation of concerns: an Angular frontend
+            communicates with a Spring Boot REST API backend, both containerized and deployed on a
+            Kubernetes cluster running on top of an OpenStack private cloud. The entire infrastructure
+            stack is provisioned via Terraform and configured via Ansible.
+          </p>
+        </div>
+
+        <!-- Architecture diagram -->
+        <figure class="mb-10">
+          <a
+            href="/images/espreats-architecture.jpg"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block group"
+            aria-label="Open full-size Espr'Eats architecture diagram in new tab"
+          >
+            <img
+              src="/images/espreats-architecture.jpg"
+              alt="High-level architecture of the Espr'Eats cloud-native meal ordering platform showing Angular frontend, Spring Boot backend, Docker containers, Kubernetes orchestration, and OpenStack infrastructure."
+              loading="lazy"
+              class="w-full rounded-xl border border-bg-600 shadow-xl shadow-black/50
+                     transition-all duration-300
+                     group-hover:border-accent-cyan/30 group-hover:shadow-accent-cyan/5"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+            />
+            <div
+              style="display:none;"
+              class="w-full rounded-xl border border-bg-600 bg-bg-700 flex items-center justify-center py-16"
+            >
+              <p class="font-mono text-sm text-text-dim">Architecture diagram coming soon.</p>
+            </div>
+          </a>
+          <figcaption class="mt-3 text-sm text-text-dim text-center leading-relaxed">
+            High-level architecture of the Espr'Eats cloud-native meal ordering platform.
+            <a
+              href="/images/espreats-architecture.jpg"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="ml-1 font-mono text-xs text-accent-cyan/60 hover:text-accent-cyan transition-colors whitespace-nowrap"
+            >
+              Open full size →
+            </a>
+          </figcaption>
+        </figure>
+      </section>
+
+      <div class="border-t border-bg-700"></div>
+
+      <!-- Technical Stack -->
+      <section>
+        <p class="section-label">Technical Stack</p>
+        <h2 class="font-display text-2xl text-text-primary mb-6">Technologies used</h2>
+        <div class="grid sm:grid-cols-2 gap-4">
+          {[
+            { category: 'Frontend', items: ['Angular'] },
+            { category: 'Backend', items: ['Spring Boot', 'REST APIs'] },
+            { category: 'Cloud & Infrastructure', items: ['OpenStack', 'Linux VMs', 'Networking', 'Storage'] },
+            { category: 'Containers & Orchestration', items: ['Docker', 'Kubernetes'] },
+            { category: 'Automation', items: ['Terraform', 'Ansible'] },
+            { category: 'Architecture', items: ['Multi-tenant campus model'] },
+          ].map((group) => (
+            <div class="card-base border border-bg-600">
+              <p class="font-mono text-xs text-accent-cyan uppercase tracking-widest mb-3">{group.category}</p>
+              <div class="flex flex-wrap gap-2">
+                {group.items.map((item) => (
+                  <span class="tag">{item}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div class="border-t border-bg-700"></div>
+
+      <!-- Implementation Highlights -->
+      <section>
+        <p class="section-label">Implementation Highlights</p>
+        <h2 class="font-display text-2xl text-text-primary mb-6">What was built, end to end</h2>
+        <div class="space-y-3">
+          {[
+            'Built a full-stack meal ordering application with Angular and Spring Boot.',
+            'Designed REST API flows for meals, orders, users, and administration.',
+            'Containerized frontend and backend services using Docker.',
+            'Deployed application components on Kubernetes for scalable orchestration.',
+            'Provisioned private cloud infrastructure on OpenStack using Terraform.',
+            'Used Ansible for configuration and deployment automation.',
+            'Designed the system to support distinct campus user groups.',
+          ].map((item) => (
+            <div class="flex items-start gap-3 card-base border border-bg-600">
+              <span class="text-accent-cyan mt-0.5 shrink-0">▸</span>
+              <p class="text-text-muted text-sm">{item}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div class="border-t border-bg-700"></div>
+
+      <!-- Deployment Flow -->
+      <section>
+        <p class="section-label">Cloud-Native Deployment Flow</p>
+        <h2 class="font-display text-2xl text-text-primary mb-4">From code to running containers</h2>
+        <div class="text-text-muted leading-relaxed mb-8">
+          <p>
+            The deployment pipeline flows from infrastructure provisioning to application runtime in a
+            structured sequence, with each layer depending on the one below it.
+          </p>
+        </div>
+        <div class="flex flex-col sm:flex-row items-start sm:items-center gap-2 flex-wrap">
+          {[
+            'Git / IaC',
+            'Terraform',
+            'OpenStack Infrastructure',
+            'Kubernetes Cluster',
+            'Docker Containers',
+            'Angular + Spring Boot',
+          ].map((step, i, arr) => (
+            <>
+              <div class="card-base border border-bg-600 py-3 px-4 text-center min-w-[9rem]">
+                <span class="font-mono text-xs text-text-dim block mb-1">Step {i + 1}</span>
+                <span class="text-sm text-text-primary font-medium">{step}</span>
+              </div>
+              {i < arr.length - 1 && (
+                <svg class="text-accent-cyan/40 shrink-0 rotate-0 sm:rotate-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              )}
+            </>
+          ))}
+        </div>
+      </section>
+
+      <div class="border-t border-bg-700"></div>
+
+      <!-- Multi-Tenant Model -->
+      <section>
+        <p class="section-label">Multi-Tenant Model</p>
+        <h2 class="font-display text-2xl text-text-primary mb-4">Campus user groups</h2>
+        <div class="text-text-muted space-y-4 leading-relaxed mb-8">
+          <p>
+            The system was designed to support distinct campus user groups with different roles and access
+            scopes. The architecture accounts for tenant-aware access, where each campus group operates
+            within its own boundaries.
+          </p>
+        </div>
+        <div class="grid sm:grid-cols-3 gap-4">
+          {[
+            {
+              role: 'Students',
+              description: 'Browse menus, place orders, and track order status.',
+            },
+            {
+              role: 'Cafeteria Staff',
+              description: 'Manage menus, view and process incoming orders.',
+            },
+            {
+              role: 'Administrators',
+              description: 'Manage users, configure campus groups, and oversee the platform.',
+            },
+          ].map((u) => (
+            <div class="card-base border border-bg-600">
+              <p class="font-mono text-xs text-accent-cyan uppercase tracking-widest mb-2">{u.role}</p>
+              <p class="text-text-muted text-sm">{u.description}</p>
+            </div>
+          ))}
+        </div>
+        <p class="mt-5 text-text-dim text-xs font-mono">
+          Note: the multi-tenant model was designed and implemented as part of the project scope.
+          It was not validated at production scale.
+        </p>
+      </section>
+
+      <div class="border-t border-bg-700"></div>
+
+      <!-- Challenges -->
+      <section>
+        <p class="section-label">Challenges</p>
+        <h2 class="font-display text-2xl text-text-primary mb-4">What was difficult</h2>
+        <div class="space-y-5">
+          {[
+            {
+              problem: 'Connecting application architecture with cloud deployment',
+              solution: 'Carefully mapped each service to a Kubernetes workload and ensured environment config was externalised correctly via ConfigMaps.',
+            },
+            {
+              problem: 'Containerizing frontend and backend correctly',
+              solution: 'Resolved build-time vs. runtime config differences in Angular and Spring Boot Docker images, ensuring environment variables were injected at the right stage.',
+            },
+            {
+              problem: 'Kubernetes service exposure',
+              solution: 'Configured correct Service types and understood ingress vs. NodePort trade-offs to make the application reachable from within the OpenStack network.',
+            },
+            {
+              problem: 'Infrastructure provisioning on OpenStack',
+              solution: 'Learned OpenStack\'s networking model (floating IPs, security groups, routers) to wire together compute instances and expose services correctly using Terraform.',
+            },
+            {
+              problem: 'Keeping configuration reproducible',
+              solution: 'Used Ansible playbooks to ensure that the same configuration could be applied consistently across environments, reducing manual steps.',
+            },
+            {
+              problem: 'Designing clean REST API boundaries',
+              solution: 'Iterated on the API design to keep resource boundaries clear between meals, orders, users, and tenant management — avoiding cross-cutting concerns in individual endpoints.',
+            },
+          ].map((item) => (
+            <div class="card-base border border-bg-600">
+              <div class="flex items-start gap-3">
+                <span class="text-red-400/60 mt-1 shrink-0">✕</span>
+                <div>
+                  <p class="text-text-muted text-sm mb-2"><span class="text-text-primary font-medium">Challenge:</span> {item.problem}</p>
+                  <p class="text-text-muted text-sm"><span class="text-accent-green font-medium">Approach:</span> {item.solution}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div class="border-t border-bg-700"></div>
+
+      <!-- What I Learned -->
+      <section>
+        <p class="section-label">What I Learned</p>
+        <h2 class="font-display text-2xl text-text-primary mb-6">Key takeaways</h2>
+        <div class="grid sm:grid-cols-2 gap-4">
+          {[
+            'Full-stack cloud-native architecture from frontend to infrastructure',
+            'Kubernetes deployment patterns for containerized applications',
+            'Infrastructure-as-code with Terraform and configuration management with Ansible',
+            'OpenStack basics: compute, networking, floating IPs, and security groups',
+            'Application containerization with Docker for both frontend and backend services',
+            'Connecting frontend, backend, infrastructure, and automation into a unified pipeline',
+          ].map((point) => (
+            <div class="flex items-start gap-3 card-base border border-bg-600">
+              <span class="text-accent-cyan mt-0.5 shrink-0">▸</span>
+              <p class="text-text-muted text-sm">{point}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Back link -->
+    <div class="mt-16 pt-8 border-t border-bg-700">
+      <a href="/" class="btn-ghost">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Back to portfolio
+      </a>
+    </div>
+
+  </main>
+</Base>

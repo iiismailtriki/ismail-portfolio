@@ -1,0 +1,256 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import '../styles/global.css';
+---
+
+<Base
+  title="SOC Platform — Case Study | Ismail Triki"
+  description="Deep-dive into the design and implementation of a cloud-native, open-source SOC platform built on Kubernetes, Wazuh, OpenSearch, Suricata, TheHive, and Cortex."
+>
+  <Nav />
+  <main class="pt-32 pb-24 max-w-4xl mx-auto px-6">
+
+    <!-- Back -->
+    <a href="/" class="inline-flex items-center gap-2 font-mono text-xs text-text-muted hover:text-accent-cyan transition-colors mb-12 group">
+      <svg class="group-hover:-translate-x-1 transition-transform" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="19" y1="12" x2="5" y2="12"/>
+        <polyline points="12 19 5 12 12 5"/>
+      </svg>
+      Back to portfolio
+    </a>
+
+    <!-- Header -->
+    <div class="mb-16">
+      <p class="section-label mb-3">Case Study</p>
+      <h1 class="font-display text-4xl md:text-5xl text-text-primary leading-tight mb-4">
+        Cloud-Native SOC Platform
+      </h1>
+      <p class="text-xl text-text-muted mb-6">
+        Multi-Tenant SIEM / EDR / IDS Infrastructure on Kubernetes
+      </p>
+      <div class="flex flex-wrap gap-2">
+        {['k3s', 'Wazuh', 'OpenSearch', 'Suricata', 'Zeek', 'TheHive', 'Cortex', 'Proxmox VE', 'Terraform', 'Ansible'].map((t) => (
+          <span class="tag">{t}</span>
+        ))}
+      </div>
+    </div>
+
+    <!-- Content sections -->
+    <div class="space-y-16 prose-custom">
+
+      <!-- Overview -->
+      <section>
+        <p class="section-label">Overview</p>
+        <h2 class="font-display text-2xl text-text-primary mb-4">What was built and why</h2>
+        <div class="text-text-muted space-y-4 leading-relaxed">
+          <p>
+            This project was the final-year engineering thesis (PFE) completed during an internship at Flexos Tunisie.
+            The goal was to design and deploy a production-grade, open-source security operations platform capable of
+            supporting multi-tenant threat detection, log aggregation, network analysis, and incident case management —
+            without relying on commercial SaaS solutions.
+          </p>
+          <p>
+            The platform was intended to demonstrate that a fully functional SOC stack could be built using mature
+            open-source tools, orchestrated on Kubernetes, and deployed on commodity hardware — making it replicable
+            for organizations of varying sizes.
+          </p>
+        </div>
+      </section>
+
+      <div class="border-t border-bg-700"></div>
+
+      <!-- Architecture -->
+      <section>
+        <p class="section-label">Architecture</p>
+        <h2 class="font-display text-2xl text-text-primary mb-4">System design and component roles</h2>
+
+        <div class="text-text-muted space-y-4 leading-relaxed mb-8">
+          <p>
+            The platform runs on a three-node k3s Kubernetes cluster deployed on Proxmox VE bare-metal hypervisors.
+            Network stability was enforced via Netplan static IP configuration to avoid DHCP-induced failures.
+            Persistent storage is managed via local-path provisioner, with key configuration stored in Kubernetes
+            ConfigMaps and Secrets.
+          </p>
+        </div>
+
+        <!-- Architecture diagram -->
+        <figure class="mb-10">
+          <a
+            href="/images/soc-architecture.png"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="block group"
+            aria-label="Open full-size architecture diagram in new tab"
+          >
+            <img
+              src="/images/soc-architecture.png"
+              alt="Architecture diagram of a cloud-native open-source SOC platform with Kubernetes, Wazuh, OpenSearch, Suricata, Zeek, TheHive, Cortex, Terraform, Ansible, and Proxmox."
+              loading="lazy"
+              width="1672"
+              height="941"
+              class="w-full rounded-xl border border-bg-600 shadow-xl shadow-black/50
+                     transition-all duration-300
+                     group-hover:border-accent-cyan/30 group-hover:shadow-accent-cyan/5"
+            />
+          </a>
+          <figcaption class="mt-3 text-sm text-text-dim text-center leading-relaxed">
+            End-to-end architecture of the cloud-native SOC platform, including data sources,
+            detection stack, SIEM, incident response, automation, and infrastructure layers.
+            <a
+              href="/images/soc-architecture.png"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="ml-1 font-mono text-xs text-accent-cyan/60 hover:text-accent-cyan transition-colors whitespace-nowrap"
+            >
+              Open full size →
+            </a>
+          </figcaption>
+        </figure>
+
+        <!-- Component table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm border-collapse">
+            <thead>
+              <tr class="border-b border-bg-700">
+                <th class="text-left font-mono text-xs text-text-dim uppercase tracking-widest py-3 pr-8">Component</th>
+                <th class="text-left font-mono text-xs text-text-dim uppercase tracking-widest py-3 pr-8">Role</th>
+                <th class="text-left font-mono text-xs text-text-dim uppercase tracking-widest py-3">Technology</th>
+              </tr>
+            </thead>
+            <tbody class="text-text-muted">
+              {[
+                ['EDR / HIDS', 'Host-based threat detection, file integrity monitoring, log collection', 'Wazuh'],
+                ['SIEM', 'Log aggregation, search, security analytics dashboards', 'OpenSearch + Security Analytics'],
+                ['Network IDS', 'Packet inspection and network protocol analysis', 'Suricata + Zeek'],
+                ['SOAR / Case Mgmt', 'Alert triage, case creation, workflow automation', 'TheHive + Cortex'],
+                ['Infrastructure', 'Multi-node Kubernetes orchestration', 'k3s on Proxmox VE'],
+                ['IaC & Config', 'Reproducible provisioning and configuration management', 'Terraform + Ansible'],
+              ].map(([role, desc, tech]) => (
+                <tr class="border-b border-bg-800 hover:bg-bg-700/30 transition-colors">
+                  <td class="py-3 pr-8 text-text-primary font-medium">{role}</td>
+                  <td class="py-3 pr-8">{desc}</td>
+                  <td class="py-3 font-mono text-xs text-accent-cyan">{tech}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="border-t border-bg-700"></div>
+
+      <!-- Detection Rules -->
+      <section>
+        <p class="section-label">Detection Engineering</p>
+        <h2 class="font-display text-2xl text-text-primary mb-4">Custom MITRE ATT&CK–mapped rules</h2>
+        <div class="text-text-muted space-y-4 leading-relaxed mb-8">
+          <p>
+            Four custom detection rules were written and validated against real attack simulations.
+            Rules are persisted via a dedicated <code class="font-mono text-xs text-accent-cyan bg-bg-700 px-1.5 py-0.5 rounded">wazuh-custom-rules</code> ConfigMap
+            to survive pod restarts, avoiding the common pitfall of rules stored only in ephemeral PVC paths.
+          </p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          {[
+            { id: '100100', technique: 'T1110.001', name: 'SSH Brute Force Detection', level: '10', status: 'Validated' },
+            { id: '100101', technique: 'T1548.003', name: 'Privilege Escalation via sudo', level: '14', status: 'Validated' },
+            { id: '100102', technique: 'T1046', name: 'Suricata Network Recon Detection', level: '10', status: 'Validated' },
+            { id: '100103', technique: 'T1087.001', name: 'Windows Account Discovery', level: '10', status: 'Validated' },
+          ].map((rule) => (
+            <div class="card-base border border-bg-600">
+              <div class="flex items-start justify-between mb-2">
+                <span class="font-mono text-xs text-accent-cyan">Rule {rule.id}</span>
+                <span class="font-mono text-[10px] text-accent-green border border-accent-green/30 px-2 py-0.5 rounded">{rule.status}</span>
+              </div>
+              <p class="text-text-primary text-sm font-medium mb-1">{rule.name}</p>
+              <div class="flex items-center gap-3">
+                <span class="font-mono text-xs text-text-dim">MITRE: {rule.technique}</span>
+                <span class="font-mono text-xs text-text-dim">Level: {rule.level}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div class="border-t border-bg-700"></div>
+
+      <!-- Challenges -->
+      <section>
+        <p class="section-label">Challenges & Solutions</p>
+        <h2 class="font-display text-2xl text-text-primary mb-4">What went wrong, and how it was fixed</h2>
+        <div class="space-y-5">
+          {[
+            {
+              problem: 'DHCP-induced IP change on worker node',
+              solution: 'Migrated all nodes to static IPs via Netplan configuration. Added this as a prerequisite step in the deployment runbook.',
+            },
+            {
+              problem: 'Wazuh master ConfigMap wiped after network incident',
+              solution: 'Restored ConfigMap from version-controlled YAML. Established GitOps discipline for all ConfigMap state.',
+            },
+            {
+              problem: 'Port 1514 (agent ingress) drops after pod restarts',
+              solution: 'Identified root cause as stale svclb-wazuh-workers pods in kube-system. Fix: delete and allow them to respawn after each Wazuh restart.',
+            },
+            {
+              problem: 'Custom detection rules lost on pod restart',
+              solution: 'Moved rules from PVC to a dedicated wazuh-custom-rules ConfigMap, mounted read-only. Rules now persist and are version-controlled.',
+            },
+            {
+              problem: 'TheHive case flood (843 cases from noise)',
+              solution: 'Raised Wazuh–TheHive integration threshold from level 10 to level 12, eliminating low-signal alerts while preserving high-severity escalations.',
+            },
+          ].map((item) => (
+            <div class="card-base border border-bg-600">
+              <div class="flex items-start gap-3">
+                <span class="text-red-400/60 mt-1 shrink-0">✕</span>
+                <div>
+                  <p class="text-text-muted text-sm mb-2"><span class="text-text-primary font-medium">Problem:</span> {item.problem}</p>
+                  <p class="text-text-muted text-sm"><span class="text-accent-green font-medium">Solution:</span> {item.solution}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <div class="border-t border-bg-700"></div>
+
+      <!-- Key takeaways -->
+      <section>
+        <p class="section-label">Takeaways</p>
+        <h2 class="font-display text-2xl text-text-primary mb-6">What this project demonstrated</h2>
+        <div class="grid sm:grid-cols-2 gap-4">
+          {[
+            'End-to-end ownership of a cloud-native security infrastructure from design to deployment',
+            'Practical Kubernetes operations: debugging, networking, persistence, and config management',
+            'Detection engineering grounded in real threat frameworks (MITRE ATT&CK)',
+            'Infrastructure-as-code discipline using Terraform and Ansible for reproducible deployments',
+            'Incident management pipeline design from raw alert to enriched case in TheHive',
+            'Resilience engineering: identifying failure modes and building durable operational fixes',
+          ].map((point) => (
+            <div class="flex items-start gap-3 card-base border border-bg-600">
+              <span class="text-accent-cyan mt-0.5 shrink-0">▸</span>
+              <p class="text-text-muted text-sm">{point}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Back link -->
+    <div class="mt-16 pt-8 border-t border-bg-700">
+      <a href="/" class="btn-ghost">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Back to portfolio
+      </a>
+    </div>
+
+  </main>
+</Base>

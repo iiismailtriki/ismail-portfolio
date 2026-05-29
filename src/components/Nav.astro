@@ -1,0 +1,100 @@
+---
+const navLinks = [
+  { href: '#about', label: 'About' },
+  { href: '#skills', label: 'Skills' },
+  { href: '#projects', label: 'Projects' },
+  { href: '#experience', label: 'Experience' },
+  { href: '#contact', label: 'Contact' },
+];
+---
+
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <!-- Logo / Name -->
+    <a href="/" class="font-mono text-sm text-accent-cyan tracking-wider hover:text-white transition-colors">
+      IT<span class="text-text-dim">.</span>dev
+    </a>
+
+    <!-- Desktop nav -->
+    <ul class="hidden md:flex items-center gap-8">
+      {navLinks.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class="font-mono text-xs tracking-widest text-text-muted hover:text-text-primary transition-colors uppercase"
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- CTA -->
+    <a
+      href="/cv.pdf"
+      download
+      class="hidden md:inline-flex items-center gap-2 font-mono text-xs text-accent-cyan border border-accent-cyan/30 px-4 py-2 rounded hover:bg-accent-cyan/10 transition-all"
+    >
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Resume
+    </a>
+
+    <!-- Mobile menu toggle -->
+    <button id="menu-toggle" class="md:hidden text-text-muted hover:text-text-primary" aria-label="Toggle menu">
+      <svg id="menu-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-bg-800 border-t border-bg-700 px-6 py-4">
+    <ul class="flex flex-col gap-4">
+      {navLinks.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class="mobile-link font-mono text-sm text-text-muted hover:text-text-primary transition-colors uppercase tracking-widest"
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+      <li>
+        <a href="/cv.pdf" download class="font-mono text-sm text-accent-cyan">
+          ↓ Download Resume
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  const toggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 40) {
+      navbar?.classList.add('bg-bg-900/95', 'backdrop-blur-md', 'border-b', 'border-bg-700/60', 'shadow-xl');
+    } else {
+      navbar?.classList.remove('bg-bg-900/95', 'backdrop-blur-md', 'border-b', 'border-bg-700/60', 'shadow-xl');
+    }
+  });
+
+  toggle?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+  });
+
+  document.querySelectorAll('.mobile-link').forEach((link) => {
+    link.addEventListener('click', () => {
+      mobileMenu?.classList.add('hidden');
+    });
+  });
+</script>

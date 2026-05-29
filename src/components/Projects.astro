@@ -1,0 +1,138 @@
+---
+const projects = [
+  {
+    id: 'soc-platform',
+    label: 'PFE — Final Year Project',
+    title: 'Cloud-Native SOC Platform',
+    subtitle: 'Multi-Tenant SIEM / EDR / IDS Infrastructure',
+    description:
+      'Final-year thesis: a full-stack SOC platform combining EDR, SIEM, network IDS, and incident management in a unified Kubernetes-orchestrated stack — deployed on bare-metal Proxmox infrastructure.',
+    impact: [
+      'Multi-node k3s cluster on Proxmox VE — static networking, persistent storage, production-grade configuration',
+      'Integrated Wazuh (EDR/HIDS), Suricata and Zeek (network IDS), and OpenSearch Security Analytics for SIEM capabilities',
+      'Implemented TheHive + Cortex for automated alert triage, case management, and threat intelligence enrichment',
+      'Authored custom MITRE ATT&CK–mapped detection rules (T1110.001, T1548.003, T1046, T1087.001)',
+      'Provisioned full infrastructure as code using Terraform and Ansible',
+    ],
+    stack: ['k3s / Kubernetes', 'Wazuh', 'OpenSearch', 'Suricata', 'Zeek', 'TheHive', 'Cortex', 'Proxmox VE', 'Terraform', 'Ansible', 'Docker'],
+    caseStudy: '/soc-case-study',
+    github: 'https://github.com/iiismailtriki',
+    featured: true,
+  },
+  {
+    id: 'esprEats',
+    label: 'Cloud Application Project',
+    title: 'Espr\'Eats',
+    subtitle: 'Cloud-Native Meal Ordering Platform',
+    description:
+      'Full-stack meal ordering platform for university campuses, deployed on a private OpenStack cloud. Microservices architecture with Kubernetes orchestration, provisioned end-to-end with Terraform and Ansible.',
+    impact: [
+      'Spring Boot REST API backend with Angular frontend — full-stack from scratch',
+      'Containerized with Docker and orchestrated with Kubernetes for horizontal scalability',
+      'Infrastructure provisioned on OpenStack via Terraform, configured with Ansible',
+      'Multi-tenant architecture supporting distinct campus user groups',
+    ],
+    stack: ['Spring Boot', 'Angular', 'OpenStack', 'Kubernetes', 'Terraform', 'Ansible', 'Docker', 'REST APIs'],
+    caseStudy: '/espreats-case-study',
+    github: null,
+    featured: true,
+  },
+];
+---
+
+<section id="projects" class="py-24 max-w-6xl mx-auto px-6">
+  <div class="max-w-xl mb-14 animate-on-scroll">
+    <p class="section-label">Projects</p>
+    <h2 class="section-title">
+      Things I've built<br />
+      <span class="text-accent-cyan italic">end to end.</span>
+    </h2>
+  </div>
+
+  <div class="space-y-8">
+    {projects.map((project, i) => (
+      <article
+        class={`card-base card-hover group animate-on-scroll ${project.featured ? 'border-bg-600' : ''}`}
+        style={`animation-delay: ${i * 0.1}s`}
+        id={project.id}
+      >
+        <div class="flex flex-col lg:flex-row gap-8">
+          <!-- Left: content -->
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="font-mono text-[10px] text-accent-cyan border border-accent-cyan/30 px-2.5 py-1 rounded uppercase tracking-widest">
+                {project.label}
+              </span>
+            </div>
+
+            <h3 class="font-display text-2xl text-text-primary mb-1 group-hover:text-accent-cyan transition-colors">
+              {project.title}
+            </h3>
+            <p class="font-mono text-sm text-text-muted mb-4">{project.subtitle}</p>
+
+            <p class="text-text-muted text-sm leading-relaxed mb-6">{project.description}</p>
+
+            <!-- Impact bullets -->
+            <ul class="space-y-2 mb-6">
+              {project.impact.map((item) => (
+                <li class="flex items-start gap-3 text-sm">
+                  <span class="text-accent-cyan mt-1.5 shrink-0">▸</span>
+                  <span class="text-text-muted">{item}</span>
+                </li>
+              ))}
+            </ul>
+
+            <!-- Stack tags -->
+            <div class="flex flex-wrap gap-2">
+              {project.stack.map((tech) => (
+                <span class="tag">{tech}</span>
+              ))}
+            </div>
+
+            {project.caseStudy && (
+              <p class="mt-5 font-mono text-xs text-text-dim">
+                Architecture and detection workflow available in the case study.
+              </p>
+            )}
+          </div>
+
+          <!-- Right: links -->
+          <div class="lg:w-48 flex lg:flex-col gap-3 lg:justify-start shrink-0">
+            {project.caseStudy && (
+              <a
+                href={project.caseStudy}
+                class="btn-primary text-xs w-full justify-center"
+              >
+                Case Study
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"/>
+                  <polyline points="12 5 19 12 12 19"/>
+                </svg>
+              </a>
+            )}
+            {project.github ? (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-ghost text-xs w-full justify-center"
+              >
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.21.09 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.138 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+                GitHub
+              </a>
+            ) : (
+              <span class="btn-ghost text-xs w-full justify-center opacity-50 cursor-default select-none">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.21.09 1.84 1.24 1.84 1.24 1.07 1.84 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.138 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58C20.56 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+                Private
+              </span>
+            )}
+          </div>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>

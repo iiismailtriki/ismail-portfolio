@@ -1,0 +1,89 @@
+---
+const links = [
+  {
+    label: 'Email',
+    value: 'ismail.triki.2020@gmail.com',
+    href: 'mailto:ismail.triki.2020@gmail.com',
+    icon: 'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z M22 6l-10 7L2 6',
+  },
+  {
+    label: 'LinkedIn',
+    value: 'in/ismail-triki-3571a21a7',
+    href: 'https://www.linkedin.com/in/ismail-triki-3571a21a7/',
+    external: true,
+    icon: 'M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z M2 9h4v12H2z M4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',
+  },
+  {
+    label: 'GitHub',
+    value: 'iiismailtriki',
+    href: 'https://github.com/iiismailtriki',
+    external: true,
+    icon: 'M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22',
+  },
+];
+---
+
+<section id="contact" class="py-24 max-w-6xl mx-auto px-6">
+  <div class="max-w-2xl mx-auto text-center animate-on-scroll">
+    <p class="section-label justify-center flex">Contact</p>
+    <h2 class="section-title mb-4">
+      Open to opportunities<br />
+      <span class="text-accent-cyan italic">in Germany.</span>
+    </h2>
+    <p class="text-text-muted mb-12 leading-relaxed">
+      Available for Werkstudent positions, internships, and junior roles in Cloud Engineering,
+      DevOps, DevSecOps, and Security Engineering — based in Marburg, Germany.
+    </p>
+
+    <!-- Contact cards -->
+    <div class="grid sm:grid-cols-3 gap-4 mb-12">
+      {links.map((link) => (
+        <a
+          href={link.href}
+          target={link.external ? '_blank' : undefined}
+          rel={link.external ? 'noopener noreferrer' : undefined}
+          class="card-base card-hover group text-left"
+        >
+          <div class="flex items-center gap-3 mb-3">
+            <svg class="text-accent-cyan shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d={link.icon} />
+            </svg>
+            <span class="font-mono text-xs text-text-dim uppercase tracking-widest">{link.label}</span>
+          </div>
+          <p class="text-xs text-text-primary group-hover:text-accent-cyan transition-colors break-words leading-snug">{link.value}</p>
+        </a>
+      ))}
+    </div>
+
+    <!-- Big CTA -->
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="mailto:ismail.triki.2020@gmail.com" class="btn-primary text-base px-8 py-3">
+        Send an Email
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="5" y1="12" x2="19" y2="12"/>
+          <polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+      <a href="/cv.pdf" download class="btn-ghost text-base px-8 py-3">
+        Download Resume
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="border-t border-bg-700 py-8">
+  <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <p class="font-mono text-xs text-text-dim">
+      © {new Date().getFullYear()} Ismail Triki — Built with Astro + Tailwind CSS
+    </p>
+    <p class="font-mono text-xs text-text-dim">
+      Marburg, Germany
+    </p>
+  </div>
+</footer>

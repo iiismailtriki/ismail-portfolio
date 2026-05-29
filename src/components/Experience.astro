@@ -1,0 +1,154 @@
+---
+const experiences = [
+  {
+    title: 'Cloud & Security Engineering Intern',
+    company: 'Flexos Tunisie',
+    location: 'Tunisia (Remote/On-site)',
+    period: '2024 – 2025',
+    type: 'Internship / PFE',
+    description:
+      'Thesis internship at a cloud services company in Tunisia. Owned the full project lifecycle — from architecture planning and tooling decisions to deployment, testing, and documentation.',
+    highlights: [
+      'Defined system architecture and selected the security toolchain based on threat coverage and integration requirements',
+      'Deployed a multi-node Kubernetes cluster on bare-metal hardware; debugged and resolved networking and storage issues',
+      'Validated detection logic through simulated attack scenarios; refined rules against MITRE ATT&CK coverage',
+      'Managed infrastructure-as-code with Terraform and Ansible; maintained deployment and configuration documentation',
+    ],
+    stack: ['Kubernetes', 'Wazuh', 'OpenSearch', 'Suricata', 'TheHive', 'Terraform', 'Ansible', 'Proxmox'],
+    accent: 'cyan',
+  },
+  {
+    title: 'Innovation Intern — International Program',
+    company: 'PVG University',
+    location: 'Pune, India',
+    period: '06/2025 – 08/2025',
+    type: 'International Internship',
+    description:
+      'Short-term international internship at an engineering university in Pune, India. Supported DevOps workflows, pipeline monitoring, and technical documentation.',
+    highlights: [
+      'Assisted with DevOps workflow processes and data pipeline monitoring in a live IT environment',
+      'Prepared technical documentation for infrastructure and operational system components',
+      'Gained practical exposure to CI/CD tooling and enterprise IT operations',
+    ],
+    stack: ['DevOps', 'CI/CD', 'Data Pipelines', 'Monitoring', 'Documentation', 'Operational IT'],
+    accent: 'green',
+  },
+  {
+    title: 'Data / Consulting Intern',
+    company: 'Devoteam',
+    location: 'Ariana, Tunisia',
+    period: '06/2024 – 08/2024',
+    type: 'Internship',
+    description:
+      'Internship at a cloud technology consulting firm. Supported DevOps and data workflows for client projects.',
+    highlights: [
+      'Supported DevOps and data workflow processes for client-facing reporting systems',
+      'Performed pipeline health checks and contributed to infrastructure documentation',
+      'Gained exposure to enterprise cloud operations and IT consulting delivery',
+    ],
+    stack: ['DevOps', 'Data Workflows', 'Consulting', 'Documentation', 'Cloud', 'Monitoring'],
+    accent: 'amber',
+  },
+];
+
+const accentMap: Record<string, { dot: string; line: string; badge: string }> = {
+  cyan: { dot: 'bg-accent-cyan', line: 'border-accent-cyan/30', badge: 'bg-accent-cyan/10 text-accent-cyan border-accent-cyan/20' },
+  green: { dot: 'bg-accent-green', line: 'border-accent-green/30', badge: 'bg-accent-green/10 text-accent-green border-accent-green/20' },
+  amber: { dot: 'bg-accent-amber', line: 'border-accent-amber/30', badge: 'bg-accent-amber/10 text-accent-amber border-accent-amber/20' },
+};
+---
+
+<section id="experience" class="py-24 bg-bg-800/40">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="max-w-xl mb-14 animate-on-scroll">
+      <p class="section-label">Experience</p>
+      <h2 class="section-title">
+        Where I've worked<br />
+        <span class="text-accent-cyan italic">and what I built.</span>
+      </h2>
+    </div>
+
+    <!-- Timeline -->
+    <div class="relative">
+      <!-- Vertical line -->
+      <div class="absolute left-4 md:left-6 top-0 bottom-0 w-px bg-bg-600"></div>
+
+      <div class="space-y-12">
+        {experiences.map((exp, i) => {
+          const a = accentMap[exp.accent];
+          return (
+            <div class="relative pl-12 md:pl-16 animate-on-scroll" style={`animation-delay: ${i * 0.1}s`}>
+              <!-- Dot -->
+              <div class={`absolute left-3 md:left-[19px] top-1.5 w-2.5 h-2.5 rounded-full ${a.dot} ring-4 ring-bg-900`}></div>
+
+              <!-- Card -->
+              <div class="card-base card-hover">
+                <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
+                  <div>
+                    <h3 class="font-semibold text-text-primary text-lg">{exp.title}</h3>
+                    <p class="text-text-muted text-sm mt-0.5">
+                      {exp.company} &mdash; <span class="text-text-dim">{exp.location}</span>
+                    </p>
+                  </div>
+                  <div class="flex flex-col items-end gap-2 shrink-0">
+                    <span class="font-mono text-xs text-text-dim">{exp.period}</span>
+                    <span class={`font-mono text-[10px] px-2 py-0.5 rounded border uppercase tracking-wider ${a.badge}`}>
+                      {exp.type}
+                    </span>
+                  </div>
+                </div>
+
+                <p class="text-text-muted text-sm leading-relaxed mb-4">{exp.description}</p>
+
+                <ul class="space-y-1.5 mb-5">
+                  {exp.highlights.map((h) => (
+                    <li class="flex items-start gap-2.5 text-sm text-text-muted">
+                      <span class="text-text-dim mt-1.5 shrink-0">—</span>
+                      <span>{h}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div class="flex flex-wrap gap-1.5">
+                  {exp.stack.map((t) => (
+                    <span class="tag">{t}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
+    <!-- Education -->
+    <div class="mt-16 animate-on-scroll">
+      <p class="section-label mb-6">Education</p>
+      <div class="grid md:grid-cols-2 gap-5">
+        {[
+          {
+            degree: 'Engineering Degree — Cloud & Computer Science',
+            school: 'ESPRIT — École Supérieure Privée d\'Ingénierie et de Technologie',
+            location: 'Tunis, Tunisia',
+            period: '2020 – 2025',
+            note: 'Final-year thesis: Cloud-Native Open-Source SOC Platform',
+          },
+          {
+            degree: 'Academic Exchange — Computer Science',
+            school: 'Philipps-Universität Marburg',
+            location: 'Marburg, Germany',
+            period: '2024 – 2025',
+            note: 'Exchange semester in the Computer Science department',
+          },
+        ].map((edu) => (
+          <div class="card-base card-hover">
+            <p class="text-sm font-semibold text-text-primary mb-1">{edu.degree}</p>
+            <p class="text-sm text-text-muted mb-1">{edu.school}</p>
+            <p class="font-mono text-xs text-text-dim mb-3">{edu.location} · {edu.period}</p>
+            <p class="font-mono text-xs text-accent-cyan/70 italic">{edu.note}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
