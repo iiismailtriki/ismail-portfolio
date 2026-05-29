@@ -1,4 +1,6 @@
 ---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 const projects = [
   {
     id: 'soc-platform',
@@ -15,7 +17,7 @@ const projects = [
       'Provisioned full infrastructure as code using Terraform and Ansible',
     ],
     stack: ['k3s / Kubernetes', 'Wazuh', 'OpenSearch', 'Suricata', 'Zeek', 'TheHive', 'Cortex', 'Proxmox VE', 'Terraform', 'Ansible', 'Docker'],
-    caseStudy: '/soc-case-study',
+    caseStudy: `${base}/soc-case-study/`,
     github: 'https://github.com/iiismailtriki',
     featured: true,
   },
@@ -33,7 +35,7 @@ const projects = [
       'Multi-tenant architecture supporting distinct campus user groups',
     ],
     stack: ['Spring Boot', 'Angular', 'OpenStack', 'Kubernetes', 'Terraform', 'Ansible', 'Docker', 'REST APIs'],
-    caseStudy: '/espreats-case-study',
+    caseStudy: `${base}/espreats-case-study/`,
     github: null,
     featured: true,
   },
