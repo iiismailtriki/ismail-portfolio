@@ -26,9 +26,21 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <title>{title}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script defer data-domain="iiismailtriki.github.io" src="https://plausible.io/js/script.js"></script>
   </head>
   <body>
     <slot />
+    <script>
+      import { trackEvent } from '../utils/plausible';
+
+      document.addEventListener('click', (e) => {
+        const el = (e.target as Element).closest('[data-track]');
+        if (!el) return;
+        const name = el.getAttribute('data-track');
+        if (name) trackEvent(name);
+      });
+    </script>
+
     <script>
       // Scroll animation observer
       const observer = new IntersectionObserver(

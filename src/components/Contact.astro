@@ -6,6 +6,7 @@ const links = [
     label: 'Email',
     value: 'ismail.triki.2020@gmail.com',
     href: 'mailto:ismail.triki.2020@gmail.com',
+    track: 'Email Contact Click',
     icon: 'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z M22 6l-10 7L2 6',
   },
   {
@@ -13,6 +14,7 @@ const links = [
     value: 'in/ismail-triki-3571a21a7',
     href: 'https://www.linkedin.com/in/ismail-triki-3571a21a7/',
     external: true,
+    track: 'LinkedIn Click',
     icon: 'M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z M2 9h4v12H2z M4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z',
   },
   {
@@ -20,6 +22,7 @@ const links = [
     value: 'iiismailtriki',
     href: 'https://github.com/iiismailtriki',
     external: true,
+    track: 'GitHub Click',
     icon: 'M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22',
   },
 ];
@@ -45,6 +48,7 @@ const links = [
           target={link.external ? '_blank' : undefined}
           rel={link.external ? 'noopener noreferrer' : undefined}
           class="card-base card-hover group text-left"
+          data-track={link.track}
         >
           <div class="flex items-center gap-3 mb-3">
             <svg class="text-accent-cyan shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -59,14 +63,14 @@ const links = [
 
     <!-- Big CTA -->
     <div class="flex flex-wrap justify-center gap-4">
-      <a href="mailto:ismail.triki.2020@gmail.com" class="btn-primary text-base px-8 py-3">
+      <a href="mailto:ismail.triki.2020@gmail.com" class="btn-primary text-base px-8 py-3" data-track="Email Contact Click">
         Send an Email
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="5" y1="12" x2="19" y2="12"/>
           <polyline points="12 5 19 12 12 19"/>
         </svg>
       </a>
-      <a href={`${base}/cv.pdf`} download class="btn-ghost text-base px-8 py-3">
+      <a href={`${base}/cv.pdf`} download class="btn-ghost text-base px-8 py-3" data-track="CV Download">
         Download Resume
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
