@@ -81,4 +81,24 @@
     opacity: 1;
     transform: translateY(0);
   }
+
+  .skip-link {
+    @apply fixed left-4 top-4 z-[100] -translate-y-24 bg-accent-cyan text-bg-900 font-sans font-semibold text-sm px-4 py-2.5 rounded-lg transition-transform duration-150;
+  }
+
+  .skip-link:focus {
+    @apply translate-y-0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }

@@ -11,7 +11,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   description="Deep-dive into the design and implementation of a cloud-native, open-source SOC platform built on Kubernetes, Wazuh, OpenSearch, Suricata, TheHive, and Cortex."
 >
   <Nav />
-  <main class="pt-32 pb-24 max-w-4xl mx-auto px-6">
+  <main id="main-content" class="pt-32 pb-24 max-w-4xl mx-auto px-6">
 
     <!-- Back -->
     <a href={base} class="inline-flex items-center gap-2 font-mono text-xs text-text-muted hover:text-accent-cyan transition-colors mb-12 group">
@@ -174,6 +174,25 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             </div>
           ))}
         </div>
+      </section>
+
+      <div class="border-t border-bg-700"></div>
+
+      <!-- Results -->
+      <section>
+        <p class="section-label">Results</p>
+        <h2 class="font-display text-2xl text-text-primary mb-4">Validated in the lab scenario</h2>
+        <div class="card-base border border-accent-green/20 bg-accent-green/5 flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-4">
+          <div class="font-display text-4xl text-accent-green shrink-0">&lt;4s</div>
+          <p class="text-text-muted text-sm leading-relaxed">
+            End-to-end SSH brute-force detection and automated containment — from Suricata/Wazuh alert
+            to response action — completed in under 4 seconds in the project's controlled lab scenario.
+          </p>
+        </div>
+        <p class="font-mono text-xs text-text-dim">
+          This result reflects the validated lab scenario only; it has not been measured at production
+          scale or under production network conditions.
+        </p>
       </section>
 
       <div class="border-t border-bg-700"></div>

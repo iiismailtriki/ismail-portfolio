@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://iiismailtriki.github.io/ismail-portfolio/sitemap.xml

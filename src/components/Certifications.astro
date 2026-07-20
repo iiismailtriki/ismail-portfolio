@@ -1,0 +1,59 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const certifications = [
+  {
+    name: 'AWS Certified Cloud Practitioner',
+    issuer: 'Amazon Web Services',
+    dot: 'bg-accent-amber',
+    href: 'https://www.credly.com/badges/58168a8e-4f53-4ed0-a898-b92fbb761c50/linked_in?t=t4qoma',
+    image: `${base}/certifications/aws-cloud-practitioner.png`,
+  },
+  {
+    name: 'Nutanix Certified Professional — Multicloud Infrastructure 6',
+    issuer: 'Nutanix',
+    dot: 'bg-accent-green',
+    href: 'https://www.credly.com/badges/efe60dc4-cab6-4cdc-a6d7-b256674a40b7/linked_in?t=t3x6lz',
+    image: `${base}/certifications/nutanix-ncp-mci6.png`,
+  },
+];
+---
+
+<section id="certifications" class="py-24 max-w-6xl mx-auto px-6">
+  <div class="max-w-xl mb-14 animate-on-scroll">
+    <p class="section-label">Certifications</p>
+    <h2 class="section-title">
+      Verified<br />
+      <span class="text-accent-cyan italic">credentials.</span>
+    </h2>
+  </div>
+
+  <div class="grid sm:grid-cols-2 gap-5">
+    {certifications.map((cert, i) => (
+      <a
+        href={cert.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="card-base card-hover group flex items-start gap-4 animate-on-scroll"
+        style={`animation-delay: ${i * 0.1}s`}
+      >
+        <img
+          src={cert.image}
+          alt=""
+          class="w-14 h-14 object-contain shrink-0 opacity-90 rounded"
+          onerror="this.style.display='none'"
+        />
+        <div class="flex-1">
+          <div class="flex items-center gap-2 mb-1.5">
+            <span class={`w-1.5 h-1.5 rounded-full ${cert.dot} shrink-0`}></span>
+            <span class="font-mono text-[10px] text-text-dim uppercase tracking-widest">{cert.issuer}</span>
+          </div>
+          <p class="text-sm font-semibold text-text-primary group-hover:text-accent-cyan transition-colors leading-snug">
+            {cert.name}
+          </p>
+          <p class="font-mono text-[10px] text-accent-cyan/60 mt-2">View credential →</p>
+        </div>
+      </a>
+    ))}
+  </div>
+</section>
