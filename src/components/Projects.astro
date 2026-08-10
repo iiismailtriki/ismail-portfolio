@@ -26,6 +26,28 @@ const projects = [
     featured: true,
   },
   {
+    id: 'devsecops-deployment-tracker',
+    label: 'Personal Project — Ongoing',
+    status: 'In Progress',
+    title: 'DevSecOps Deployment Tracker',
+    subtitle: 'Containerized Flask API with Automated Quality & Security Checks',
+    description:
+      'Goal: build a practical deployment workflow where code quality, security, and deployment checks become automated gates instead of manual steps. A Flask REST API, containerized and scanned, with the CI/CD and Kubernetes/GitOps layer still ahead — a current, actively evolving project rather than a finished pipeline.',
+    impact: [
+      'Implemented: Flask REST API with health, version, and deployment-info endpoints, covered by an automated pytest suite',
+      'Implemented: Ruff (lint) and Bandit (static security analysis) passing clean, pip-audit reporting no known dependency vulnerabilities',
+      'Implemented: containerized with Docker — non-root runtime user, container healthcheck, OCI image metadata — scanned with Trivy (image and config) and Hadolint',
+      'Current stage: all checks above are run and passing locally; not yet wired into an automated CI pipeline',
+      'Next (planned, not yet built): GitHub Actions CI pipeline to gate merges on these checks, followed by Kubernetes deployment manifests and GitOps delivery via Argo CD',
+    ],
+    stack: ['Python', 'Flask', 'Pytest', 'Ruff', 'Bandit', 'pip-audit', 'Docker', 'Gunicorn', 'Trivy'],
+    caseStudy: null,
+    trackCaseStudy: null,
+    github: 'https://github.com/iiismailtriki/devsecops-deployment-tracker',
+    trackGitHub: 'DevSecOps Tracker GitHub Click',
+    featured: false,
+  },
+  {
     id: 'esprEats',
     label: 'Academic — Cloud Application Project',
     status: 'Completed',
