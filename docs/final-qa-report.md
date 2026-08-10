@@ -109,3 +109,51 @@ See commit/push/merge section of the final summary for live-URL verification res
 - `og:image` reuses the existing profile photo rather than a purpose-built social card.
 - `profile.png` is unoptimized (no image tooling available here).
 - Vocallia has no public link yet (placeholder documented).
+
+## Follow-up QA — current role + DevSecOps project (2026-08-10)
+
+Branch: `feature/portfolio-current-role-devsecops`.
+
+**Build**: `npm run build` — success, 4 pages generated (`/`, `/soc-case-study/`,
+`/espreats-case-study/`, `/404`), no errors.
+
+**CV**: `dist/cv.pdf` confirmed regenerated from the new `public/cv.pdf` (CreationDate
+2026-07-31, matching the canonical `master-cv/output/` build) — no stale copy remained; `dist/`
+is git-ignored and rebuilds cleanly from `public/`.
+
+**Content checks** (via `grep` over the built HTML):
+- ars vivendi entry present with correct bullets; DevSecOps Deployment Tracker card present.
+- No leftover "Mention Tr[ès Bien]" string anywhere in the build output.
+- No stale "Dec 2026" or "Aug 2024" date strings remaining.
+- "Flexos Tunisie" appears 3× (2 experience entries + 1 SOC-project description mention) — no
+  accidental duplicate experience entry.
+- JSON-LD block unchanged and still factually accurate (doesn't reference specific dates/employers
+  that could conflict with the corrections above).
+
+**Routes/links**: local preview server (`astro preview`) + `curl` — `/`, `/soc-case-study/`,
+`/espreats-case-study/`, `/cv.pdf`, `/robots.txt`, `/sitemap.xml` all 200; unknown route
+correctly 404s. External links checked: GitHub profile, the new
+`github.com/iiismailtriki/devsecops-deployment-tracker` link, and both Credly badges all
+200. LinkedIn returned 999 (LinkedIn's standard bot-blocking response to automated requests,
+not a broken link — pre-existing behavior, unrelated to this change).
+
+**Accessibility**: all `<img>` tags carry `alt` (profile photo has descriptive alt text;
+certification badges keep the pre-existing empty `alt=""` since adjacent text already
+describes them). Heading order remains sequential (`h1` → `h2` → `h3`, no skipped levels) with
+the new project card's `h3` following the same pattern as its siblings.
+
+**Responsive/visual**: verified visually via `claude-in-chrome` at the default desktop
+viewport (~1568×784) — Hero, About, Skills, Projects (including the new DevSecOps card), and
+Experience (including the new ars vivendi entry and corrected entries) all render correctly
+with no visual regressions. **Tablet and mobile visual verification could not be completed**:
+the `resize_window` tool did not change the actual rendered viewport in this environment —
+screenshots stayed at desktop resolution regardless of the requested window size (tried
+768×1024 and 390×844, both ineffective). Fell back to static analysis: the new markup
+(ars vivendi experience card, DevSecOps project card) reuses the exact same Tailwind
+responsive classes (`flex-wrap`, `md:`/`lg:` grid breakpoints) as the pre-existing cards that
+were already visually verified in the 2026-07-20 pass, so no new overflow risk is expected, but
+this is reasoning by structural similarity, not a direct visual confirmation — a manual pass at
+mobile/tablet widths is recommended before treating this as fully verified.
+
+**Lighthouse**: not run (no Lighthouse/Chrome DevTools CLI available in this environment, same
+limitation as the prior pass) — no scores are claimed or fabricated here.
