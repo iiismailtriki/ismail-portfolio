@@ -105,3 +105,50 @@ still needs a follow-up (the Vocallia event/project link).
 - The Marburg exchange end date (Dec 2026, per CV) wasn't corrected against the July 2026
   graduation date — Ismail didn't provide a correction for it, so the CV's stated date
   was kept rather than guessed at.
+
+## Follow-up pass — current role + DevSecOps project (2026-08-10)
+
+Branch: `feature/portfolio-current-role-devsecops` (from `main`, backed up at
+`backup/pre-current-role-devsecops-update`).
+
+This was a focused content update, not a redesign. Source of truth was re-established against
+`application-os/config/approved-facts.md`, `candidate-profile.md`, `current-candidate-status.md`,
+and the canonical `master-cv/` (Run 10, 2026-07-31) — all more current than the 2026-07-20
+pass above, which several facts had already drifted from.
+
+**Changes:**
+- Added the current role: Working Student — IT & Cloud Support, ars vivendi Seniorenresidenz
+  Marburg GmbH, Jun 2026 – Present, positioned above the Flexos entries. Bullets are verbatim
+  from `approved-facts.md`; explicitly did not add IAM, encryption, GDPR, backup-lifecycle,
+  network-administration, user-support, or healthcare-IT claims, and ars vivendi is described
+  as a senior-care provider, not a technology employer.
+- Corrected drift found during the re-audit: Flexos PFE end date (Jul 2026 → Jun 2026),
+  Devoteam end date (Aug 2024 → Jul 2024) and title/bullets, PVG/AIESEC title/bullets (removed
+  unapproved CI/CD and containerization claims), exchange semester end date (Dec 2026 → Jun
+  2026, now correctly marked complete), "Mention Très Bien" → "Graduated with Highest Honors"
+  everywhere it appeared, and added AWX/GitHub Actions (Flexos PFE) and Prometheus/Grafana
+  (Skills) — all now explicitly confirmed by canonical sources that didn't exist or weren't
+  checked during the 2026-07-20 pass.
+- One genuine conflict (not a simple drift) was found and not resolved by guessing: the site's
+  separate Flexos summer internship entry (Aug–Oct 2025) doesn't appear in any current
+  canonical source. Raised directly with Ismail; his explicit instruction was to keep it as-is.
+  See `docs/content-source-of-truth.md` for the full note.
+- Replaced `public/cv.pdf` with the canonical, already-QA'd build from `master-cv/output/` —
+  see `docs/content-source-of-truth.md`'s "CV replacement" section for the verification detail.
+- Audited the DevSecOps Deployment Tracker repo directly (not from memory — its own README was
+  stale) and added it to `Projects.astro` as an **In Progress** card, positioned after the SOC
+  platform. Decided **not** to add it to the master CV yet (`PORTFOLIO_ONLY_FOR_NOW`) — see
+  `docs/content-source-of-truth.md` for the full COMPLETED/PARTIAL/NOT_PRESENT breakdown and
+  the milestone that should trigger CV inclusion later.
+
+**Removed / left alone:** No components were deleted or restructured. Hero and Contact were
+left unchanged (already accurate, and adding ars vivendi detail there risked implying it's a
+cloud-engineering employer, which `approved-facts.md` explicitly rules out); the current-role
+positioning was added to About instead.
+
+**Limitations:** Same environment constraints as the 2026-07-20 pass — no Lighthouse/axe tooling.
+Browser-based responsive verification was attempted via `claude-in-chrome` but the
+`resize_window` tool did not change the rendered viewport in this environment (screenshots
+stayed at desktop resolution at every requested size); verified instead via desktop screenshots
+plus static Tailwind-class review, since the new markup reuses the exact same responsive
+classes as the pre-existing, already-verified cards.

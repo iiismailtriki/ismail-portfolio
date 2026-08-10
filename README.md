@@ -96,11 +96,17 @@ build and deploy via `actions/deploy-pages`.
   must match `docs/content-source-of-truth.md` and the CV in `public/cv.pdf`.
 - **Projects**: `src/components/Projects.astro`. The Vocallia entry has a `note` field
   instead of a link — see `docs/content-source-of-truth.md` for what to fill in once a
-  public link exists.
+  public link exists. The DevSecOps Deployment Tracker card must be re-audited against its
+  own repo (`github.com/iiismailtriki/devsecops-deployment-tracker`) before its status or
+  "Implemented" list is changed — do not edit it from memory.
 - **Certifications**: `src/components/Certifications.astro`. Badge images live in
   `public/certifications/`.
-- **CV**: replace `public/cv.pdf` directly (keep the filename so links keep working, or
-  update every `cv.pdf` reference across components if you rename it).
+- **CV**: the canonical source is `~/Desktop/career-workspace/master-cv/` (built via
+  `./build.sh`, output at `master-cv/output/Ismail_Triki_CV.pdf`) — **do not** hand-edit
+  `public/cv.pdf` directly or treat `application-os/master/cv/` as canonical (it's a reference
+  copy only). Rebuild the master CV first, then copy its output over `public/cv.pdf` (keep the
+  filename so links keep working) and re-verify page count, dates, and hyperlinks before
+  committing.
 
 ## Accessibility Notes
 
