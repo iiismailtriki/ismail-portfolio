@@ -1,10 +1,26 @@
 ---
 const experiences = [
   {
+    title: 'Working Student — IT & Cloud Support',
+    company: 'ars vivendi Seniorenresidenz Marburg GmbH',
+    location: 'Marburg, Germany',
+    period: 'Jun 2026 – Present',
+    type: 'Working Student',
+    description:
+      'Current part-time role at a senior-care residence in Marburg. ars vivendi is a senior-care provider, not a technology or cloud company — this role is practical IT and cloud support work alongside continued personal cloud/DevOps project work.',
+    highlights: [
+      'Support the migration of internal file storage and backup workflows from on-premises servers to AWS S3',
+      'Maintain and update the company website, supporting day-to-day digital operations',
+      'Assist with network and connectivity troubleshooting across the Marburg location',
+    ],
+    stack: ['AWS S3', 'IT Support', 'Website Maintenance', 'Network Troubleshooting'],
+    accent: 'green',
+  },
+  {
     title: 'Cloud Engineering Intern — DevSecOps & Security Automation',
     company: 'Flexos Tunisie',
     location: 'Tunisia (Remote/On-site)',
-    period: 'Dec 2025 – Jul 2026',
+    period: 'Dec 2025 – Jun 2026',
     type: 'Internship / PFE (Thesis)',
     description:
       'Final-year thesis (PFE) internship. Designed and deployed a cloud-native, open-source SOC platform end to end — from architecture planning and tooling decisions to deployment, detection engineering, and documentation.',
@@ -12,9 +28,9 @@ const experiences = [
       'Defined system architecture and selected the security toolchain based on threat coverage and integration requirements',
       'Deployed a three-node k3s Kubernetes cluster on Proxmox VE bare-metal hardware; debugged and resolved networking and storage issues',
       'Authored and validated MITRE ATT&CK–mapped detection rules through simulated attack scenarios, including SSH brute-force, privilege escalation, network reconnaissance, and account-discovery techniques',
-      'Managed infrastructure-as-code with Terraform and Ansible; maintained deployment and configuration documentation',
+      'Automated infrastructure and application deployment using Terraform, Ansible, AWX, and GitHub Actions; maintained deployment and configuration documentation',
     ],
-    stack: ['Kubernetes', 'Wazuh', 'OpenSearch', 'Suricata', 'TheHive', 'Cortex', 'Terraform', 'Ansible', 'Proxmox'],
+    stack: ['Kubernetes', 'Wazuh', 'OpenSearch', 'Suricata', 'TheHive', 'Cortex', 'Terraform', 'Ansible', 'AWX', 'GitHub Actions', 'Proxmox'],
     accent: 'cyan',
   },
   {
@@ -35,36 +51,35 @@ const experiences = [
     accent: 'cyan',
   },
   {
-    title: 'Innovation Intern — International Program',
+    title: 'Cloud & DevOps Intern — International Innovation Program',
     company: 'PVG University / AIESEC',
     location: 'Pune, India',
     period: 'Jun 2025 – Aug 2025',
     type: 'International Internship',
     description:
-      'International innovation program at an engineering university in Pune, India, in an intercultural team. Supported DevOps workflows, pipeline monitoring, and technical documentation.',
+      'International innovation program at an engineering university in Pune, India, working in an intercultural team on Vocallia, a cloud-based AI voice automation prototype.',
     highlights: [
-      'Supported DevOps-oriented workflows for enterprise data and reporting systems, including pipeline monitoring and validation',
-      'Contributed to technical documentation for infrastructure and operational system components',
-      'Co-developed Vocallia, a cloud-oriented AI voice automation platform, with an international team — selected Top 10 at OSTX Tunisia 2025',
-      'Gained practical exposure to CI/CD tooling and enterprise IT operations',
+      'Contributed to the technical design and validation of Vocallia, a cloud-based application prototype (APIs, backend services, speech-processing components)',
+      'Collaborated on application architecture and technical documentation using Git-based workflows within an international, multicultural team',
+      'Vocallia was selected Top 10 at OSTX Tunisia 2025',
     ],
-    stack: ['DevOps', 'CI/CD', 'Data Pipelines', 'Documentation', 'AI Voice Automation'],
+    stack: ['APIs', 'Backend Services', 'Speech Processing', 'Cloud Architecture', 'Git'],
     accent: 'green',
   },
   {
-    title: 'Data / Consulting Intern',
+    title: 'Cloud, Data & DevOps Intern',
     company: 'Devoteam',
     location: 'Ariana, Tunisia',
-    period: 'Jun 2024 – Aug 2024',
+    period: 'Jun 2024 – Jul 2024',
     type: 'Internship',
     description:
-      'Internship at a cloud technology consulting firm. Supported DevOps and data workflows for client-facing reporting systems.',
+      'Internship at a cloud technology consulting firm. Contributed to infrastructure and operational-risk documentation for a banking client.',
     highlights: [
-      'Supported DevOps-oriented workflows for enterprise data and reporting systems',
-      'Assisted in monitoring and validating data processing pipelines and system processes',
-      'Contributed to technical documentation of infrastructure and system workflows',
+      'Contributed to infrastructure and operational-risk documentation for a banking client',
+      'Covered service dependencies, availability, and security considerations',
+      'Supported business-continuity analysis and environment analysis',
     ],
-    stack: ['DevOps', 'Data Workflows', 'Consulting', 'Documentation', 'Monitoring'],
+    stack: ['Documentation', 'Operational Risk', 'Business Continuity', 'Consulting'],
     accent: 'amber',
   },
 ];
@@ -149,13 +164,13 @@ const accentMap: Record<string, { dot: string; line: string; badge: string }> = 
             school: 'ESPRIT — École Supérieure Privée d\'Ingénierie et de Technologie',
             location: 'Ariana, Tunisia',
             period: 'Sep 2021 – Jul 2026',
-            note: 'Graduated — Mention Très Bien · Thesis: Cloud-Native Open-Source SOC Platform',
+            note: 'Graduated with Highest Honors · Thesis: Cloud-Native Open-Source SOC Platform',
           },
           {
             degree: 'Academic Exchange — Computer Science',
             school: 'Philipps-Universität Marburg',
             location: 'Marburg, Germany',
-            period: 'Oct 2025 – Dec 2026',
+            period: 'Oct 2025 – Jun 2026',
             note: 'Exchange semester in the Computer Science department',
           },
         ].map((edu) => (
