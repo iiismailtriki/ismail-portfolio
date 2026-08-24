@@ -7,8 +7,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <Base
-  title="Espr'Eats — Case Study | Ismail Triki"
-  description="Deep-dive into the design and deployment of Espr'Eats, a cloud-native meal ordering platform built with Angular, Spring Boot, Docker, Kubernetes, OpenStack, Terraform, and Ansible."
+  title="Espr'Eats — OpenStack Cloud Infrastructure — Case Study | Ismail Triki"
+  description="Academic team project: private OpenStack cloud infrastructure for a full-stack application, with Kubernetes, Terraform, Ansible, and Prometheus/Grafana observability."
 >
   <Nav />
   <main id="main-content" class="pt-32 pb-24 max-w-4xl mx-auto px-6">
@@ -24,20 +24,22 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     <!-- Header -->
     <div class="mb-16">
-      <p class="section-label mb-3">Case Study</p>
+      <p class="section-label mb-3">Case Study — Academic Team Project</p>
       <h1 class="font-display text-4xl md:text-5xl text-text-primary leading-tight mb-4">
-        Espr'Eats
+        Espr'Eats — OpenStack Cloud Infrastructure
       </h1>
       <p class="text-xl text-text-muted mb-6">
-        Cloud-Native Meal Ordering Platform
+        Private Cloud Deployment for a Campus Meal-Ordering App
       </p>
       <p class="text-text-muted leading-relaxed mb-8 max-w-2xl">
-        A full-stack meal ordering system for university campuses, built with Angular and Spring Boot,
-        containerized with Docker, orchestrated with Kubernetes, and deployed on a private OpenStack
-        cloud using Terraform and Ansible.
+        A university team project centered on deploying a full-stack application on private OpenStack
+        cloud infrastructure — compute and networking provisioned with Terraform, configuration automated
+        with Ansible, containers orchestrated with Kubernetes, and the running infrastructure monitored
+        with Prometheus and Grafana. The Angular/Spring Boot meal-ordering app was the workload this
+        infrastructure was built to run.
       </p>
       <div class="flex flex-wrap gap-2">
-        {['Angular', 'Spring Boot', 'Docker', 'Kubernetes', 'OpenStack', 'Terraform', 'Ansible', 'REST APIs'].map((t) => (
+        {['OpenStack', 'Kubernetes', 'Terraform', 'Ansible', 'Docker', 'Prometheus', 'Grafana', 'Spring Boot', 'Angular'].map((t) => (
           <span class="tag">{t}</span>
         ))}
       </div>
@@ -52,15 +54,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <h2 class="font-display text-2xl text-text-primary mb-4">What this project was about</h2>
         <div class="text-text-muted space-y-4 leading-relaxed">
           <p>
-            Espr'Eats was built as a cloud application project in a university setting, with the goal of
-            applying modern cloud-native principles to a realistic, full-stack use case. The project focused
-            on two equally important dimensions: building a functional meal ordering application, and deploying
-            it correctly on a private cloud infrastructure from scratch.
+            Espr'Eats was a team project built in a university setting, with the goal of applying modern
+            cloud-native infrastructure principles to a realistic, full-stack use case. The team split the work
+            across two equally important dimensions: building a functional meal ordering application, and
+            deploying it correctly on private cloud infrastructure provisioned from scratch.
           </p>
           <p>
-            The campus environment shaped the feature set — distinct user roles (students, cafeteria staff,
-            administrators), menu management, and order tracking — while the infrastructure side demanded
-            hands-on work with OpenStack, Kubernetes, Terraform, and Ansible in a unified deployment pipeline.
+            The campus environment shaped the application's feature set — distinct user roles (students,
+            cafeteria staff, administrators), menu management, and order tracking — while the infrastructure
+            side required hands-on work with OpenStack, Kubernetes, Terraform, Ansible, and Prometheus/Grafana
+            in a unified deployment pipeline.
           </p>
         </div>
       </section>
@@ -110,9 +113,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <h2 class="font-display text-2xl text-text-primary mb-4">How it was built</h2>
         <div class="text-text-muted space-y-4 leading-relaxed mb-8">
           <p>
-            The system was designed as a full-stack cloud-native application with clear separation between the
-            frontend, backend, and infrastructure layers. Each layer was handled with its own toolchain,
-            allowing the deployment pipeline to be both reproducible and scalable.
+            The team designed the system as a full-stack cloud-native application with clear separation between
+            the frontend, backend, and infrastructure layers. Each layer had its own toolchain, allowing the
+            deployment pipeline to be both reproducible and observable.
           </p>
         </div>
         <div class="overflow-x-auto">
@@ -133,6 +136,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 ['Private Cloud', 'Compute, networking, and storage infrastructure', 'OpenStack'],
                 ['Provisioning', 'Infrastructure-as-code for repeatable deployments', 'Terraform'],
                 ['Configuration', 'Automated server and application configuration', 'Ansible'],
+                ['Observability', 'Metrics collection and dashboards for the deployed infrastructure', 'Prometheus + Grafana'],
               ].map(([layer, desc, tech]) => (
                 <tr class="border-b border-bg-800 hover:bg-bg-700/30 transition-colors">
                   <td class="py-3 pr-8 text-text-primary font-medium">{layer}</td>
@@ -207,11 +211,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
         <h2 class="font-display text-2xl text-text-primary mb-6">Technologies used</h2>
         <div class="grid sm:grid-cols-2 gap-4">
           {[
-            { category: 'Frontend', items: ['Angular'] },
-            { category: 'Backend', items: ['Spring Boot', 'REST APIs'] },
             { category: 'Cloud & Infrastructure', items: ['OpenStack', 'Linux VMs', 'Networking', 'Storage'] },
             { category: 'Containers & Orchestration', items: ['Docker', 'Kubernetes'] },
             { category: 'Automation', items: ['Terraform', 'Ansible'] },
+            { category: 'Observability', items: ['Prometheus', 'Grafana'] },
+            { category: 'Frontend', items: ['Angular'] },
+            { category: 'Backend', items: ['Spring Boot', 'REST APIs'] },
             { category: 'Architecture', items: ['Multi-tenant campus model'] },
           ].map((group) => (
             <div class="card-base border border-bg-600">
@@ -231,16 +236,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <!-- Implementation Highlights -->
       <section>
         <p class="section-label">Implementation Highlights</p>
-        <h2 class="font-display text-2xl text-text-primary mb-6">What was built, end to end</h2>
+        <h2 class="font-display text-2xl text-text-primary mb-6">What the team built, end to end</h2>
         <div class="space-y-3">
           {[
-            'Built a full-stack meal ordering application with Angular and Spring Boot.',
-            'Designed REST API flows for meals, orders, users, and administration.',
-            'Containerized frontend and backend services using Docker.',
-            'Deployed application components on Kubernetes for scalable orchestration.',
-            'Provisioned private cloud infrastructure on OpenStack using Terraform.',
-            'Used Ansible for configuration and deployment automation.',
-            'Designed the system to support distinct campus user groups.',
+            'A full-stack meal ordering application built with Angular and Spring Boot.',
+            'REST API flows designed for meals, orders, users, and administration.',
+            'Frontend and backend services containerized with Docker.',
+            'Application components deployed on Kubernetes for scalable orchestration.',
+            'Private cloud infrastructure provisioned on OpenStack with Terraform.',
+            'Ansible used for configuration and deployment automation.',
+            'Prometheus and Grafana used to monitor the deployed infrastructure.',
+            'The system designed to support distinct campus user groups.',
           ].map((item) => (
             <div class="flex items-start gap-3 card-base border border-bg-600">
               <span class="text-accent-cyan mt-0.5 shrink-0">▸</span>
@@ -375,10 +381,10 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       <div class="border-t border-bg-700"></div>
 
-      <!-- What I Learned -->
+      <!-- Key Takeaways -->
       <section>
-        <p class="section-label">What I Learned</p>
-        <h2 class="font-display text-2xl text-text-primary mb-6">Key takeaways</h2>
+        <p class="section-label">Key Takeaways</p>
+        <h2 class="font-display text-2xl text-text-primary mb-6">What this project demonstrated</h2>
         <div class="grid sm:grid-cols-2 gap-4">
           {[
             'Full-stack cloud-native architecture from frontend to infrastructure',

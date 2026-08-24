@@ -3,6 +3,29 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const projects = [
   {
+    id: 'devsecops-deployment-tracker',
+    label: 'Personal Project — DevSecOps / Supply Chain',
+    status: 'Active',
+    title: 'DevSecOps Deployment Tracker',
+    subtitle: 'Signed, Attested Container Pipeline for a Flask API on Kubernetes',
+    description:
+      'A software-supply-chain-security pipeline built around a small Flask API. A 12-stage Jenkins pipeline gates every commit through secret scanning, linting, SAST, dependency and container vulnerability scanning, and SBOM generation — then publishes a signed, attested image to a private registry and deploys it to Kubernetes with hardened runtime security. What started as a Flask/CI demo has grown into a full supply-chain-security exercise.',
+    impact: [
+      'Jenkins pipeline (12 stages) gates every commit: Gitleaks secret scan, pytest, Ruff, Bandit, pip-audit, Hadolint, then a blocking Trivy scan that fails the build on fixable HIGH/CRITICAL vulnerabilities',
+      'Generates a CycloneDX SBOM with Syft, publishes the image to a private GHCR registry by immutable digest, then signs it with Cosign and verifies the signature in the same pipeline run',
+      'Attaches the SBOM and SLSA provenance as verified in-toto attestations via Cosign — attached to and verifiable against the image itself, not just uploaded as separate files',
+      'Kubernetes Deployment (2 replicas) references the image by digest, not tag, and runs as non-root (UID 10001) with all Linux capabilities dropped, no privilege escalation, and readiness/liveness probes on /health',
+      'ClusterIP Service plus a NetworkPolicy scoping ingress to the app — written and committed, not yet validated against a live cluster',
+      'Next: package the Kubernetes manifests as a Helm chart (an early version exists locally, not yet committed) and validate the NetworkPolicy end to end',
+    ],
+    stack: ['Python', 'Flask', 'Jenkins', 'Docker', 'Trivy', 'Syft / SBOM', 'Cosign', 'GHCR', 'Kubernetes', 'Gitleaks', 'Bandit'],
+    caseStudy: `${base}/devsecops-case-study/`,
+    trackCaseStudy: 'DevSecOps Case Study Click',
+    github: 'https://github.com/iiismailtriki/devsecops-deployment-tracker',
+    trackGitHub: 'DevSecOps Tracker GitHub Click',
+    featured: true,
+  },
+  {
     id: 'soc-platform',
     label: 'Internship / PFE — Final Year Project',
     status: 'Completed',
@@ -26,47 +49,24 @@ const projects = [
     featured: true,
   },
   {
-    id: 'devsecops-deployment-tracker',
-    label: 'Personal Project — Ongoing',
-    status: 'In Progress',
-    title: 'DevSecOps Deployment Tracker',
-    subtitle: 'Containerized Flask API with Automated Quality & Security Checks',
-    description:
-      'Goal: build a practical deployment workflow where code quality, security, and deployment checks become automated gates instead of manual steps. A Flask REST API, containerized and scanned, with the CI/CD and Kubernetes/GitOps layer still ahead — a current, actively evolving project rather than a finished pipeline.',
-    impact: [
-      'Implemented: Flask REST API with health, version, and deployment-info endpoints, covered by an automated pytest suite',
-      'Implemented: Ruff (lint) and Bandit (static security analysis) passing clean, pip-audit reporting no known dependency vulnerabilities',
-      'Implemented: containerized with Docker — non-root runtime user, container healthcheck, OCI image metadata — scanned with Trivy (image and config) and Hadolint',
-      'Current stage: all checks above are run and passing locally; not yet wired into an automated CI pipeline',
-      'Next (planned, not yet built): GitHub Actions CI pipeline to gate merges on these checks, followed by Kubernetes deployment manifests and GitOps delivery via Argo CD',
-    ],
-    stack: ['Python', 'Flask', 'Pytest', 'Ruff', 'Bandit', 'pip-audit', 'Docker', 'Gunicorn', 'Trivy'],
-    caseStudy: null,
-    trackCaseStudy: null,
-    github: 'https://github.com/iiismailtriki/devsecops-deployment-tracker',
-    trackGitHub: 'DevSecOps Tracker GitHub Click',
-    featured: false,
-  },
-  {
     id: 'esprEats',
-    label: 'Academic — Cloud Application Project',
+    label: 'Academic — Team Project',
     status: 'Completed',
-    title: 'Espr\'Eats',
-    subtitle: 'Cloud-Native Meal Ordering Platform',
+    title: 'Espr\'Eats — OpenStack Cloud Infrastructure',
+    subtitle: 'Private Cloud Deployment for a Campus Meal-Ordering App',
     description:
-      'Full-stack meal ordering platform for university campuses, deployed on a private OpenStack cloud. Microservices architecture with Kubernetes orchestration, provisioned end-to-end with Terraform and Ansible.',
+      'University team project centered on deploying a full-stack application on private OpenStack cloud infrastructure — compute and networking provisioned with Terraform, configuration automated with Ansible, containers orchestrated with Kubernetes, and the running infrastructure monitored with Prometheus and Grafana.',
     impact: [
-      'Spring Boot REST API backend with Angular frontend — full-stack from scratch',
-      'Containerized with Docker and orchestrated with Kubernetes for horizontal scalability',
-      'Infrastructure provisioned on OpenStack via Terraform, configured with Ansible',
-      'Multi-tenant architecture supporting distinct campus user groups',
+      'Full-stack meal-ordering application (Angular + Spring Boot) deployed on a private OpenStack cloud',
+      'Infrastructure provisioned with Terraform, configured with Ansible, and orchestrated with Kubernetes',
+      'Deployed infrastructure monitored with Prometheus and Grafana',
     ],
-    stack: ['Spring Boot', 'Angular', 'OpenStack', 'Kubernetes', 'Terraform', 'Ansible', 'Docker', 'REST APIs'],
+    stack: ['OpenStack', 'Kubernetes', 'Terraform', 'Ansible', 'Docker', 'Prometheus', 'Grafana', 'Spring Boot', 'Angular'],
     caseStudy: `${base}/espreats-case-study/`,
     trackCaseStudy: "Espr'Eats Case Study Click",
     github: null,
     trackGitHub: null,
-    featured: true,
+    featured: false,
   },
   {
     id: 'vocallia',
@@ -148,7 +148,7 @@ const projects = [
 
             {project.caseStudy && (
               <p class="mt-5 font-mono text-xs text-text-dim">
-                Architecture and detection workflow available in the case study.
+                Full write-up available in the case study.
               </p>
             )}
             {project.note && (

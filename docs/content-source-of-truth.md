@@ -11,6 +11,10 @@ the canonical `master-cv/sections/experience.tex` (Run 10, 2026-07-31), and dire
 from Ismail on the one item those sources didn't resolve (see "Flexos summer internship" below).
 The previous reconciliation (2026-07-20) is superseded wherever it conflicts with this one.
 
+A follow-up content pass on 2026-08-24 (German level, DevSecOps Tracker re-audit, Espr'Eats
+team-framing correction, project hierarchy) is logged in the dedicated sections below it added —
+see "German language level (2026-08-24)" onward.
+
 ## Approved identity / positioning
 
 - Name: Ismail Triki
@@ -195,6 +199,126 @@ DPI). Re-verified independently during this update:
 - **Do not use** `application-os/master/cv/` as a source for future CV syncs — it is
   documented as a reference copy only; the real canonical source is `master-cv/` at the
   `career-workspace` repo root.
+
+## German language level (2026-08-24)
+
+Changed from "A2 (in progress)" to "B1 (currently preparing for B2)" in `About.astro`'s
+languages panel (pct bar adjusted from 20 to 40, interpolated on the same non-linear scale
+already used for the other languages — Native=100, C1=85, A2=20 — rather than a strict CEFR-linear
+mapping). Change made on Ismail's explicit instruction.
+
+**Known gap, not fixed in this pass**: `public/cv.pdf` (built 2026-07-31, Run 10) still shows
+"German -- A2" — it wasn't regenerated. The canonical `~/Desktop/career-workspace/master-cv/sections/languages.tex`
+already reads "German -- B1" (apparently updated by a separate, more recent process in that repo),
+but rebuilding and redeploying `public/cv.pdf` from it is a `career-workspace` CV-pipeline
+operation (LaTeX build + its own Run-numbered QA process) that is out of scope for a
+portfolio-only content update — flagged to Ismail rather than performed silently. Until the PDF
+is rebuilt, the live site's About section (B1) and the downloadable CV (A2) will disagree.
+
+## DevSecOps architecture diagram (2026-08-24, same-day follow-up)
+
+A user-generated (ChatGPT image) architecture diagram was added to the case study's Architecture
+section, replacing the simple generated step-flow diagram there (which became redundant once the
+real diagram was in place — removed rather than kept alongside it). File:
+`public/images/projects/devsecops/devsecops-pipeline-architecture.png`.
+
+**The diagram is illustrative, not audited, and disagrees with the audited repo in at least three
+places** — noted here so a future pass doesn't assume the image is ground truth:
+- Shows Gitleaks as pipeline stage 7; the actual `Jenkinsfile` runs it first (stage 1), before
+  anything else.
+- Shows `readOnlyRootFilesystem: true` under securityContext; the actual `k8s/base/deployment.yaml`
+  does not set this field at all (see the 2026-08-24 DevSecOps re-audit above — this was already
+  called out as an "honest gap" in the case study text).
+- Shows the health-check path as `/healthz`; the actual Flask route and the k8s probes both use
+  `/health`.
+
+None of these were changed in the case study's text to match the image (per Ismail's explicit
+instruction: the audited repository remains the source of truth, not the generated image). The
+numbered CI/CD Pipeline table and the Kubernetes Deployment table both keep their audited values.
+The Architecture section adds an explicit line telling the reader the diagram is a system-level
+illustration and that the stage list/gate behavior below it is the audited source of truth, so the
+page doesn't present two silently-conflicting sources as equally authoritative.
+
+## DevSecOps Deployment Tracker — re-audit (2026-08-24)
+
+The 2026-08-10 audit below is **superseded**. Re-audited directly against the repository
+(`git log`, full file tree, `Jenkinsfile`, `k8s/`, `helm/`) rather than trusting the prior
+audit's conclusions, since the repo had evolved substantially in the interim.
+
+**COMPLETED** (evidenced in committed files):
+- Flask API + pytest suite (unchanged from prior audit)
+- **CI/CD is Jenkins, not GitHub Actions** — no `.github/workflows/` exists. A 12-stage
+  `Jenkinsfile`: Gitleaks → pytest → Ruff → Bandit → pip-audit → Hadolint (advisory) → Docker
+  build → Trivy (blocking on fixable HIGH/CRITICAL) → Syft SBOM (CycloneDX) → GHCR publish by
+  digest → Cosign sign+verify → Cosign SBOM + SLSA provenance attest+verify
+- Kubernetes manifests (`k8s/base/`): Deployment (2 replicas, digest-pinned image, non-root
+  UID 10001, seccomp RuntimeDefault, capabilities dropped, no privilege escalation,
+  readiness/liveness probes on `/health`), ClusterIP Service, NetworkPolicy (ingress scoped to
+  the app's pod selector)
+- Private GHCR image referenced by SHA256 digest in the Kubernetes manifest
+
+**PARTIAL**:
+- NetworkPolicy is written and committed but has no test/apply evidence against a live cluster
+- `readOnlyRootFilesystem` is not set on the container (don't claim this specific hardening)
+
+**NOT PRESENT as committed/repo evidence**:
+- A Helm chart (`helm/deployment-tracker/Chart.yaml` + `values.yaml`, no `templates/`) exists
+  **only locally, untracked** (`git status` shows `?? helm/`) — it is not in the pushed GitHub
+  repo. Do not describe Helm as part of the shipped project; at most "an early, uncommitted
+  scaffold."
+- All scan/SBOM/attestation reports (`reports/*`) are gitignored — they exist as Jenkins build
+  artifacts on each run, not as files committed to the repo. Only `reports/.gitkeep` is tracked.
+
+**Portfolio decision**: `Projects.astro` rewritten to reflect the above — promoted to the
+flagship/first project slot (`featured: true`, moved to array position 1), status changed from
+"In Progress" to "Active", description and impact bullets rewritten around the real Jenkins
+pipeline and supply-chain-security chain, Helm mentioned only under "next steps," never under
+completed work. New case study created (`src/pages/devsecops-case-study.astro`,
+`/devsecops-case-study/`) with a full COMPLETED/PARTIAL breakdown mirroring this audit.
+
+**CV decision**: not revisited in this pass — the 2026-08-10 threshold ("once a GitHub Actions
+workflow wires these checks into a blocking CI gate") is technically met in spirit (Jenkins now
+gates blocking checks), but the CV decision explicitly named *GitHub Actions*, and the pipeline
+is Jenkins-based instead — re-run this threshold check explicitly with Ismail rather than
+assuming the Jenkins pipeline satisfies a GitHub-Actions-specific bar.
+
+## Espr'Eats — team-project reconciliation (2026-08-24)
+
+The existing Espr'Eats project card and case study (added before the 2026-08-10 reconciliation
+pass, and never itself reconciled against this file) described the project entirely in
+first-person, solo-implementation language ("Built a full-stack meal ordering application...",
+"full-stack from scratch") with no team framing anywhere, and led with the application
+("Cloud-Native Meal Ordering Platform") rather than the infrastructure. Corrected on Ismail's
+explicit instruction:
+
+- Retitled to "Espr'Eats — OpenStack Cloud Infrastructure"; project card `label` changed to
+  "Academic — Team Project" (was "Academic — Cloud Application Project", no "Team" wording)
+- Card and case study description/impact language rewritten to collective/passive voice ("the
+  team built...", "deployed on...") — no bullet claims individual ownership of any specific
+  technology, since no source of truth (this file, `approved-facts.md`, or direct confirmation)
+  specifies Ismail's individual responsibilities on this project, unlike Vocallia which has an
+  explicit confirmed role list above
+- Added Prometheus and Grafana to the stack (card tags, case-study tag list, and the case
+  study's Technical Stack table) — per Ismail's explicit statement that these are verified
+  project technologies from the project presentation. I could not independently locate that
+  presentation file on this machine to cross-check; both tools are separately confirmed as
+  Ismail's general skills in `approved-facts.md`/`master-cv/sections/skills.tex` (see
+  "Technologies confirmed by CV/repo evidence" above), so there's no conflict, but if the
+  presentation file surfaces later it's worth a quick cross-check
+- De-emphasized: `featured` changed from `true` to `false`, impact bullets trimmed from 4 to 3,
+  moved to array position 3 (after DevSecOps Tracker and the SOC platform) per Ismail's explicit
+  prominence ordering instruction
+- `github: null` left unchanged — team member repos under other GitHub accounts
+  (`Rayen123dev/Espr-eats_BackEnd`/`_FrontEnd`) exist but visibility/appropriateness of linking
+  them wasn't confirmed; do not add a link without Ismail's explicit go-ahead
+
+## Project hierarchy (2026-08-24)
+
+Per Ismail's explicit instruction, `Projects.astro`'s array order (which drives display order)
+is now: 1) DevSecOps Deployment Tracker (flagship personal project), 2) Cloud-Native SOC Platform
+(graduation/PFE project), 3) Espr'Eats (academic team project), 4) Vocallia (unchanged, last).
+Both DevSecOps Tracker and SOC Platform carry `featured: true`; Espr'Eats and Vocallia carry
+`featured: false`.
 
 ## DevSecOps Deployment Tracker (2026-08-10)
 
