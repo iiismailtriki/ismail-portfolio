@@ -7,6 +7,12 @@ updates:
     groups:
       astro-and-tailwind:
         patterns: ['astro', '@astrojs/*', 'tailwindcss', '@tailwindcss/*']
+    ignore:
+      # TypeScript 7 (native port) drops the JS compiler API that `astro check` /
+      # @astrojs/check rely on; its peer range is ^5 || ^6. Remove this once
+      # @astrojs/check supports TypeScript 7. 5.x and 6.x updates still come through.
+      - dependency-name: typescript
+        versions: ['>=7.0.0']
   - package-ecosystem: github-actions
     directory: /
     schedule:
