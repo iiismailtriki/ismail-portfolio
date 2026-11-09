@@ -15,6 +15,59 @@ A follow-up content pass on 2026-08-24 (German level, DevSecOps Tracker re-audit
 team-framing correction, project hierarchy) is logged in the dedicated sections below it added —
 see "German language level (2026-08-24)" onward.
 
+## Modernization pass (2026-11-09) — read this first
+
+Branch `feature/portfolio-modernization-2026`. Design/code overhaul plus a fresh re-audit of the
+DevSecOps Tracker repo (HEAD `b09d42c`, 2026-10-03). No dates, titles, employers, metrics or
+experience bullets were changed. Content changes:
+
+**DevSecOps Deployment Tracker — supersedes the 2026-08-24 re-audit below where they conflict**
+- **Helm chart is now committed and merged** (PR #2 `feat/helm-chart` → `b09d42c`): `Chart.yaml`,
+  `values.yaml` (digest-pinned image, `imagePullSecrets`, ClusterIP, CPU/memory requests and
+  limits, `networkPolicy.enabled`) and `templates/` (Deployment, Service, NetworkPolicy,
+  `_helpers.tpl`). The site now lists Helm under implemented work. Still **not** evidenced:
+  Helm in the Jenkinsfile, `helm install` against a live cluster, Argo CD/GitOps.
+- **CVE remediation PR #1** (`1ffd0c4`, CVE-2026-103111): pinned `libpcre2-8-0` in the Dockerfile.
+- **14 stages, not 12.** The Jenkinsfile has 14 `stage(...)` blocks: Gitleaks, Environment,
+  Unit Tests, Ruff, Bandit, Dependency Audit, Hadolint, Docker Build, Trivy, Syft, Publish GHCR,
+  Cosign sign+verify, Cosign SBOM attest+verify, Cosign provenance attest+verify.
+- **Hadolint is not advisory in the current Jenkinsfile.** It runs
+  `docker run --rm -i hadolint/hadolint:latest < Dockerfile` with no `|| true`, no
+  `catchError`, and no `--failure-threshold`, so any finding fails the stage. The site
+  previously said "advisory, non-blocking" (and had a "Trivy blocks, Hadolint doesn't" decision
+  card). Corrected to match the code. **Ismail: confirm** — if Hadolint is meant to be advisory,
+  the Jenkinsfile should say so (e.g. `--failure-threshold error` or `|| true`).
+- **NetworkPolicy wording made precise**: ingress on TCP 8000 only from pods labelled
+  `access: deployment-tracker` (previously "scoped to the app's own pod selector").
+- **Pipeline does not deploy.** It ends at a signed, attested image in GHCR. Old card copy said
+  the pipeline "deploys it to Kubernetes"; now says the manifests/Helm chart reference the image
+  by digest. Listed as a known gap.
+- The repo's own `README.md` is stale (still says Dockerfile/Kubernetes are "planned"). Not
+  fixed here (different repo) — recommended follow-up.
+
+**Wording changes (no new claims)**
+- ars vivendi card description: removed the self-disclaimer sentence ("…not a technology or
+  cloud company…"); now "Part-time IT and cloud support role at a senior-care provider in
+  Marburg, alongside my own cloud and DevOps project work." The three approved bullets are
+  unchanged and verbatim.
+- Vocallia: described as "An AI phone-assistant startup initiative: a prototype…" (framing
+  given by Ismail in the 2026-11-09 request). The public card no longer shows the internal note
+  pointing to this file; it now says "No public repository or demo." The OSTX link is still
+  outstanding.
+- SOC card: the "GitHub" button pointed to the profile root (not a repo) and was removed; the
+  case study is the evidence link. Espr'Eats: the disabled "Private" button was removed (repo
+  visibility was never confirmed).
+- Language proficiency bars removed (percentages implied false precision); CEFR levels shown as
+  text, unchanged values.
+- Skills grouped with "Used in" pointers to the project/role that evidences each group. Skill
+  lists themselves unchanged (Helm is now repo-evidenced; ArgoCD still is not — see below).
+
+**Not changed, flagged for Ismail**
+- SOC card bullet "…production-grade configuration" sits next to a lab-scoped result; consider
+  softening to avoid an interviewer probing it.
+- `public/cv.pdf` still says German A2 (site says B1) — open since 2026-08-24.
+- ArgoCD remains in Skills without project evidence (pre-existing).
+
 ## Approved identity / positioning
 
 - Name: Ismail Triki
