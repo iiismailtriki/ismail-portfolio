@@ -1,0 +1,145 @@
+---
+import Base from './Base.astro';
+import Icon from '../components/Icon.astro';
+import { caseStudies } from '../data/site';
+import { withBase } from '../utils/paths';
+
+interface Props {
+  title: string;
+  subtitle: string;
+  description: string;
+  eyebrow?: string;
+  /** Optional longer summary paragraph under the subtitle. */
+  intro?: string;
+  tags: string[];
+  /** Quick facts shown under the header, e.g. role, type, status. */
+  meta?: { label: string; value: string }[];
+  repo?: string;
+}
+
+const { title, subtitle, description, eyebrow = 'Case study', intro, tags, meta = [], repo } = Astro.props;
+
+const current = caseStudies.findIndex((c) => Astro.url.pathname.replace(/\/?$/, '/') === c.href);
+const others = caseStudies.filter((_, i) => i !== current);
+---
+
+<Base title={`${title} — Case Study | Ismail Triki`} description={description} ogType="article">
+  <main id="main-content">
+    <header class="relative overflow-hidden border-b border-bg-600/60">
+      <div class="bg-grid pointer-events-none absolute inset-0" aria-hidden="true"></div>
+      <div class="container-page relative max-w-5xl pt-28 pb-12 md:pt-36">
+        <a href={withBase('/#projects')} class="no-print group mb-10 inline-flex items-center gap-2 font-mono text-xs text-text-muted hover:text-accent-cyan">
+          <Icon name="arrow-left" size={14} class="transition-transform group-hover:-translate-x-0.5" />
+          All projects
+        </a>
+        <p class="section-label">{eyebrow}</p>
+        <h1 class="font-display text-4xl leading-tight text-text-primary md:text-6xl">{title}</h1>
+        <p class="mt-4 max-w-3xl text-lg text-text-muted md:text-xl">{subtitle}</p>
+        {intro && <p class="mt-5 max-w-3xl leading-relaxed text-text-muted">{intro}</p>}
+
+        {
+          meta.length > 0 && (
+            <dl class="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-bg-600 bg-bg-600 md:grid-cols-4">
+              {meta.map((m) => (
+                <div class="bg-bg-800 p-4">
+                  <dt class="font-mono text-[11px] tracking-widest text-text-dim uppercase">{m.label}</dt>
+                  <dd class="mt-1 text-sm text-text-primary">{m.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )
+        }
+
+        <ul class="mt-6 flex flex-wrap gap-1.5">
+          {tags.map((t) => <li class="tag">{t}</li>)}
+        </ul>
+
+        {
+          repo && (
+            <a href={repo} target="_blank" rel="noopener noreferrer" class="btn-ghost mt-8" data-track="Case Study Repository Click">
+              <Icon name="github" size={15} /> View repository
+            </a>
+          )
+        }
+      </div>
+    </header>
+
+    <div class="container-page max-w-5xl py-16 xl:grid xl:max-w-6xl xl:grid-cols-[200px_1fr] xl:gap-14">
+      <nav class="no-print hidden xl:block" aria-label="On this page">
+        <div class="sticky top-24">
+          <p class="mb-3 font-mono text-[11px] tracking-widest text-text-dim uppercase">On this page</p>
+          <ol id="toc" class="space-y-1.5 border-l border-bg-600 text-sm"></ol>
+        </div>
+      </nav>
+
+      <article id="case-body" class="case-body min-w-0 space-y-16">
+        <slot />
+      </article>
+    </div>
+
+    <nav class="no-print border-t border-bg-600/60 bg-bg-800/40" aria-label="More case studies">
+      <div class="container-page grid max-w-5xl gap-4 py-12 sm:grid-cols-2">
+        {
+          others.map((c) => (
+            <a href={c.href} class="card-base card-hover group">
+              <p class="font-mono text-[11px] tracking-widest text-text-dim uppercase">Case study</p>
+              <p class="mt-2 flex items-center justify-between gap-3 font-display text-xl text-text-primary group-hover:text-accent-cyan">
+                {c.title}
+                <Icon name="arrow-right" size={16} class="shrink-0" />
+              </p>
+            </a>
+          ))
+        }
+      </div>
+    </nav>
+  </main>
+</Base>
+
+<style>
+  /* Case-study prose tables: scroll horizontally on small screens instead of squashing. */
+  .case-body :global(table) {
+    min-width: 32rem;
+  }
+  .case-body :global(td),
+  .case-body :global(th) {
+    vertical-align: top;
+  }
+  :global(#toc a[aria-current='true']) {
+    color: var(--color-accent-cyan);
+    border-color: var(--color-accent-cyan);
+  }
+</style>
+
+<script>
+  // Build the table of contents from each section's label (progressive enhancement; desktop only).
+  const toc = document.getElementById('toc');
+  const sections = [...document.querySelectorAll<HTMLElement>('#case-body > section')];
+  const links = new Map<Element, HTMLAnchorElement>();
+
+  sections.forEach((section) => {
+    const label = section.querySelector('.section-label')?.textContent?.trim();
+    if (!label || !toc) return;
+    section.id ||= label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = `#${section.id}`;
+    a.textContent = label;
+    a.className = '-ml-px block border-l border-transparent pl-3 text-text-muted hover:text-text-primary';
+    li.append(a);
+    toc.append(li);
+    links.set(section, a);
+  });
+
+  if ('IntersectionObserver' in window) {
+    const spy = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          links.forEach((a, s) => a.setAttribute('aria-current', String(s === entry.target)));
+        }
+      },
+      { rootMargin: '-20% 0px -70% 0px' },
+    );
+    sections.forEach((s) => spy.observe(s));
+  }
+</script>
