@@ -1,4 +1,5 @@
 ---
+// Titles, dates and bullets are approved wording — see docs/content-source-of-truth.md before editing.
 const experiences = [
   {
     title: 'Working Student — IT & Cloud Support',
@@ -7,14 +8,13 @@ const experiences = [
     period: 'Jun 2026 – Present',
     type: 'Working Student',
     description:
-      'Current part-time role at a senior-care residence in Marburg. ars vivendi is a senior-care provider, not a technology or cloud company — this role is practical IT and cloud support work alongside continued personal cloud/DevOps project work.',
+      'Part-time IT and cloud support role at a senior-care provider in Marburg, alongside my own cloud and DevOps project work.',
     highlights: [
       'Support the migration of internal file storage and backup workflows from on-premises servers to AWS S3',
       'Maintain and update the company website, supporting day-to-day digital operations',
       'Assist with network and connectivity troubleshooting across the Marburg location',
     ],
     stack: ['AWS S3', 'IT Support', 'Website Maintenance', 'Network Troubleshooting'],
-    accent: 'green',
   },
   {
     title: 'Cloud Engineering Intern — DevSecOps & Security Automation',
@@ -31,7 +31,6 @@ const experiences = [
       'Automated infrastructure and application deployment using Terraform, Ansible, AWX, and GitHub Actions; maintained deployment and configuration documentation',
     ],
     stack: ['Kubernetes', 'Wazuh', 'OpenSearch', 'Suricata', 'TheHive', 'Cortex', 'Terraform', 'Ansible', 'AWX', 'GitHub Actions', 'Proxmox'],
-    accent: 'cyan',
   },
   {
     title: 'Cloud & Security Engineering Intern',
@@ -48,7 +47,6 @@ const experiences = [
       'Participated in infrastructure troubleshooting and environment validation',
     ],
     stack: ['Linux', 'Docker', 'Monitoring', 'Log Management'],
-    accent: 'cyan',
   },
   {
     title: 'Cloud & DevOps Intern — International Innovation Program',
@@ -64,7 +62,6 @@ const experiences = [
       'Vocallia was selected Top 10 at OSTX Tunisia 2025',
     ],
     stack: ['APIs', 'Backend Services', 'Speech Processing', 'Cloud Architecture', 'Git'],
-    accent: 'green',
   },
   {
     title: 'Cloud, Data & DevOps Intern',
@@ -80,107 +77,89 @@ const experiences = [
       'Supported business-continuity analysis and environment analysis',
     ],
     stack: ['Documentation', 'Operational Risk', 'Business Continuity', 'Consulting'],
-    accent: 'amber',
   },
 ];
 
-const accentMap: Record<string, { dot: string; line: string; badge: string }> = {
-  cyan: { dot: 'bg-accent-cyan', line: 'border-accent-cyan/30', badge: 'bg-accent-cyan/10 text-accent-cyan border-accent-cyan/20' },
-  green: { dot: 'bg-accent-green', line: 'border-accent-green/30', badge: 'bg-accent-green/10 text-accent-green border-accent-green/20' },
-  amber: { dot: 'bg-accent-amber', line: 'border-accent-amber/30', badge: 'bg-accent-amber/10 text-accent-amber border-accent-amber/20' },
-};
+
+const education = [
+  {
+    degree: 'Engineering Degree — Cloud & Computer Science',
+    school: "ESPRIT — École Supérieure Privée d'Ingénierie et de Technologie",
+    location: 'Ariana, Tunisia',
+    period: 'Sep 2021 – Jul 2026',
+    note: 'Graduated with Highest Honors · Thesis: Cloud-Native Open-Source SOC Platform',
+  },
+  {
+    degree: 'Academic Exchange — Computer Science',
+    school: 'Philipps-Universität Marburg',
+    location: 'Marburg, Germany',
+    period: 'Oct 2025 – Jun 2026',
+    note: 'Exchange semester in the Computer Science department',
+  },
+];
 ---
 
-<section id="experience" class="py-24 bg-bg-800/40">
-  <div class="max-w-6xl mx-auto px-6">
-    <div class="max-w-xl mb-14 animate-on-scroll">
+<section id="experience" class="section border-y border-bg-600/60 bg-bg-800/40" aria-labelledby="experience-title">
+  <div class="container-page">
+    <div class="reveal mb-12 max-w-2xl">
       <p class="section-label">Experience</p>
-      <h2 class="section-title">
+      <h2 id="experience-title" class="section-title">
         Where I've worked<br />
-        <span class="text-accent-cyan italic">and what I built.</span>
+        <span class="text-accent-cyan italic">and what I did there.</span>
       </h2>
     </div>
 
-    <!-- Timeline -->
-    <div class="relative">
-      <!-- Vertical line -->
-      <div class="absolute left-4 md:left-6 top-0 bottom-0 w-px bg-bg-600"></div>
-
-      <div class="space-y-12">
-        {experiences.map((exp, i) => {
-          const a = accentMap[exp.accent];
-          return (
-            <div class="relative pl-12 md:pl-16 animate-on-scroll" style={`animation-delay: ${i * 0.1}s`}>
-              <!-- Dot -->
-              <div class={`absolute left-3 md:left-[19px] top-1.5 w-2.5 h-2.5 rounded-full ${a.dot} ring-4 ring-bg-900`}></div>
-
-              <!-- Card -->
-              <div class="card-base card-hover">
-                <div class="flex flex-wrap items-start justify-between gap-4 mb-4">
-                  <div>
-                    <h3 class="font-semibold text-text-primary text-lg">{exp.title}</h3>
-                    <p class="text-text-muted text-sm mt-0.5">
-                      {exp.company} &mdash; <span class="text-text-dim">{exp.location}</span>
-                    </p>
-                  </div>
-                  <div class="flex flex-col items-end gap-2 shrink-0">
-                    <span class="font-mono text-xs text-text-dim">{exp.period}</span>
-                    <span class={`font-mono text-[10px] px-2 py-0.5 rounded border uppercase tracking-wider ${a.badge}`}>
-                      {exp.type}
-                    </span>
-                  </div>
-                </div>
-
-                <p class="text-text-muted text-sm leading-relaxed mb-4">{exp.description}</p>
-
-                <ul class="space-y-1.5 mb-5">
-                  {exp.highlights.map((h) => (
-                    <li class="flex items-start gap-2.5 text-sm text-text-muted">
-                      <span class="text-text-dim mt-1.5 shrink-0">—</span>
-                      <span>{h}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div class="flex flex-wrap gap-1.5">
-                  {exp.stack.map((t) => (
-                    <span class="tag">{t}</span>
-                  ))}
-                </div>
-              </div>
+    <ol class="relative space-y-6 before:absolute before:top-2 before:bottom-2 before:left-[7px] before:w-px before:bg-bg-600 md:before:left-[183px]">
+      {
+        experiences.map((exp, i) => (
+          <li class="reveal relative grid gap-3 pl-8 md:grid-cols-[160px_1fr] md:gap-12 md:pl-0" style={`--reveal-delay: ${i * 40}ms`}>
+            <span
+              class:list={[
+                'absolute top-2 left-0 h-[15px] w-[15px] rounded-full border-2 border-bg-800 md:left-[176px]',
+                i === 0 ? 'bg-accent-green ring-4 ring-accent-green/15' : 'bg-bg-600',
+              ]}
+              aria-hidden="true"
+            />
+            <div class="md:pt-0.5 md:text-right">
+              <p class="font-mono text-xs text-text-primary">{exp.period}</p>
+              <p class="mt-1 font-mono text-[11px] tracking-wider text-text-dim uppercase">{exp.type}</p>
             </div>
-          );
-        })}
-      </div>
-    </div>
+            <article class="card-base card-hover">
+              <h3 class="text-lg leading-snug font-semibold text-text-primary">{exp.title}</h3>
+              <p class="mt-1 text-sm text-text-muted">
+                {exp.company} <span class="text-text-dim">· {exp.location}</span>
+              </p>
+              <p class="mt-4 text-sm leading-relaxed text-text-muted">{exp.description}</p>
+              <ul class="mt-4 space-y-2">
+                {exp.highlights.map((h) => (
+                  <li class="flex gap-3 text-sm leading-relaxed text-text-muted">
+                    <span class="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-accent-cyan" aria-hidden="true" />
+                    <span>{h}</span>
+                  </li>
+                ))}
+              </ul>
+              <ul class="mt-5 flex flex-wrap gap-1.5">
+                {exp.stack.map((t) => <li class="tag">{t}</li>)}
+              </ul>
+            </article>
+          </li>
+        ))
+      }
+    </ol>
 
-    <!-- Education -->
-    <div class="mt-16 animate-on-scroll">
-      <p class="section-label mb-6">Education</p>
-      <div class="grid md:grid-cols-2 gap-5">
-        {[
-          {
-            degree: 'Engineering Degree — Cloud & Computer Science',
-            school: 'ESPRIT — École Supérieure Privée d\'Ingénierie et de Technologie',
-            location: 'Ariana, Tunisia',
-            period: 'Sep 2021 – Jul 2026',
-            note: 'Graduated with Highest Honors · Thesis: Cloud-Native Open-Source SOC Platform',
-          },
-          {
-            degree: 'Academic Exchange — Computer Science',
-            school: 'Philipps-Universität Marburg',
-            location: 'Marburg, Germany',
-            period: 'Oct 2025 – Jun 2026',
-            note: 'Exchange semester in the Computer Science department',
-          },
-        ].map((edu) => (
-          <div class="card-base card-hover">
-            <p class="text-sm font-semibold text-text-primary mb-1">{edu.degree}</p>
-            <p class="text-sm text-text-muted mb-1">{edu.school}</p>
-            <p class="font-mono text-xs text-text-dim mb-3">{edu.location} · {edu.period}</p>
-            <p class="font-mono text-xs text-accent-cyan/70 italic">{edu.note}</p>
-          </div>
-        ))}
+    <div class="reveal mt-16">
+      <h3 class="mb-5 font-mono text-xs tracking-[0.2em] text-text-dim uppercase">Education</h3>
+      <div class="grid gap-5 md:grid-cols-2">
+        {
+          education.map((edu) => (
+            <article class="card-base">
+              <p class="font-mono text-xs text-text-dim">{edu.period} · {edu.location}</p>
+              <h4 class="mt-2 font-semibold text-text-primary">{edu.degree}</h4>
+              <p class="mt-1 text-sm text-text-muted">{edu.school}</p>
+              <p class="mt-3 text-sm text-accent-cyan">{edu.note}</p>
+            </article>
+          ))
+        }
       </div>
     </div>
   </div>

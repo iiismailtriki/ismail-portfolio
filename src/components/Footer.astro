@@ -1,0 +1,33 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+---
+
+<footer class="border-t border-bg-600 py-10">
+  <div class="container-page flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <p class="font-mono text-xs text-text-muted">© {new Date().getFullYear()} Ismail Triki · Marburg, Germany</p>
+      <p class="mt-1 font-mono text-xs text-text-dim">
+        Static site built with Astro &amp; Tailwind CSS, deployed to GitHub Pages via GitHub Actions.{' '}
+        <a href="https://github.com/iiismailtriki/ismail-portfolio" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 hover:text-accent-cyan">Source</a>
+      </p>
+    </div>
+    <ul class="no-print flex items-center gap-2">
+      <li>
+        <a href={`mailto:${site.email}`} class="grid h-10 w-10 place-items-center rounded-lg border border-bg-600 text-text-muted hover:border-accent-cyan/50 hover:text-text-primary" aria-label="Email" data-track="Email Contact Click">
+          <Icon name="mail" />
+        </a>
+      </li>
+      <li>
+        <a href={site.github} target="_blank" rel="noopener noreferrer" class="grid h-10 w-10 place-items-center rounded-lg border border-bg-600 text-text-muted hover:border-accent-cyan/50 hover:text-text-primary" aria-label="GitHub" data-track="GitHub Click">
+          <Icon name="github" />
+        </a>
+      </li>
+      <li>
+        <a href={site.linkedin} target="_blank" rel="noopener noreferrer" class="grid h-10 w-10 place-items-center rounded-lg border border-bg-600 text-text-muted hover:border-accent-cyan/50 hover:text-text-primary" aria-label="LinkedIn" data-track="LinkedIn Click">
+          <Icon name="linkedin" />
+        </a>
+      </li>
+    </ul>
+  </div>
+</footer>

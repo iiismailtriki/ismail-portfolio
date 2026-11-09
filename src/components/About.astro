@@ -1,90 +1,85 @@
 ---
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+import { withBase } from '../utils/paths';
+
+const facts = [
+  { label: 'Location', value: 'Marburg, Germany' },
+  { label: 'Degree', value: 'Engineering — Cloud & CS (ESPRIT), 2026' },
+  { label: 'Exchange', value: 'Philipps-Universität Marburg' },
+  { label: 'Focus', value: 'Cloud · DevOps · DevSecOps' },
+  { label: 'Looking for', value: 'Junior Cloud / DevOps / Platform / DevSecOps roles' },
+];
+
+// CEFR levels as stated; no percentage bars (they imply a precision that CEFR doesn't have).
+const languages = [
+  { lang: 'Arabic', level: 'Native' },
+  { lang: 'French', level: 'C1' },
+  { lang: 'English', level: 'C1 — IELTS 7.0' },
+  { lang: 'German', level: 'B1 — preparing for B2' },
+];
 ---
 
-<section id="about" class="py-24 max-w-6xl mx-auto px-6">
-  <div class="grid md:grid-cols-2 gap-16 items-start">
-    <!-- Left: text -->
-    <div class="animate-on-scroll">
+<section id="about" class="section border-t border-bg-600/60 bg-bg-800/40" aria-labelledby="about-title">
+  <div class="container-page grid items-start gap-12 md:grid-cols-[1.2fr_1fr] md:gap-16">
+    <div class="reveal">
       <p class="section-label">About</p>
-      <h2 class="section-title mb-6">
+      <h2 id="about-title" class="section-title mb-6">
         Engineering from<br />
         <span class="text-accent-cyan italic">first principles.</span>
       </h2>
 
-      <div class="space-y-4 text-text-muted leading-relaxed">
+      <div class="prose-body">
         <p>
-          Recent Cloud Engineering graduate (ESPRIT, Tunisia — Graduated with Highest Honors),
-          with an academic exchange completed at Philipps-Universität Marburg. Based in
-          Marburg, Germany.
+          Recent Cloud Engineering graduate (ESPRIT, Tunisia — Graduated with Highest Honors), with an academic
+          exchange completed at Philipps-Universität Marburg. Based in Marburg, Germany.
         </p>
         <p>
-          I enjoy building infrastructure from scratch — designing cloud environments,
-          automating deployments, and making systems observable and secure. I lean toward
-          open-source tooling and infrastructure-as-code, with hands-on project experience
-          across Kubernetes, IaC, and security automation. Currently gaining practical IT
-          &amp; Cloud Support experience in Germany as a Working Student, while targeting
-          junior Cloud Engineering, DevOps, Platform Engineering, and DevSecOps roles in
-          Germany and remote-friendly European teams.
+          I enjoy building infrastructure from scratch — designing cloud environments, automating deployments, and
+          making systems observable and secure. I lean toward open-source tooling and infrastructure-as-code, with
+          hands-on project experience across Kubernetes, IaC, and security automation.
+        </p>
+        <p>
+          Currently gaining practical IT &amp; Cloud Support experience in Germany as a Working Student, while
+          targeting junior Cloud Engineering, DevOps, Platform Engineering, and DevSecOps roles in Germany and
+          remote-friendly European teams.
         </p>
       </div>
 
       <div class="mt-8 flex flex-wrap gap-3">
-        <a href={`${base}/#contact`} class="btn-primary text-sm">Get in touch</a>
-        <a href="mailto:ismail.triki.2020@gmail.com" class="btn-ghost text-sm">
-          ismail.triki.2020@gmail.com
-        </a>
+        <a href={withBase('/#contact')} class="btn-primary">Get in touch <Icon name="arrow-right" size={15} /></a>
+        <a href={site.cv} download class="btn-ghost" data-track="CV Download"><Icon name="download" size={15} /> Download CV</a>
       </div>
     </div>
 
-    <!-- Right: facts panel -->
-    <div class="animate-on-scroll space-y-4" style="animation-delay: 0.15s;">
-      <!-- Quick facts -->
-      <div class="card-base space-y-4">
-        <p class="font-mono text-xs text-text-dim tracking-widest uppercase">Quick facts</p>
-
-        <div class="space-y-3">
-          {[
-            { label: 'Location', value: 'Marburg, Germany' },
-            { label: 'Degree', value: 'Engineering — Cloud & CS (ESPRIT), 2026' },
-            { label: 'Exchange', value: 'Philipps-Universität Marburg' },
-            { label: 'Focus', value: 'Cloud · DevOps · DevSecOps' },
-            { label: 'Available for', value: 'Junior Cloud / DevOps / DevSecOps roles' },
-          ].map((item) => (
-            <div class="flex items-start gap-3">
-              <span class="font-mono text-xs text-text-dim w-24 shrink-0 pt-0.5">{item.label}</span>
-              <span class="text-sm text-text-primary">{item.value}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <!-- Languages -->
+    <div class="reveal space-y-5" style="--reveal-delay: 80ms">
       <div class="card-base">
-        <p class="font-mono text-xs text-text-dim tracking-widest uppercase mb-4">Languages</p>
-        <div class="space-y-3">
-          {[
-            { lang: 'Arabic', level: 'Native', pct: 100 },
-            { lang: 'French', level: 'C1', pct: 85 },
-            { lang: 'English', level: 'C1 — IELTS 7.0', pct: 85 },
-            { lang: 'German', level: 'B1 (currently preparing for B2)', pct: 40 },
-          ].map((item) => (
-            <div>
-              <div class="flex justify-between text-xs mb-1">
-                <span class="text-text-primary">{item.lang}</span>
-                <span class="font-mono text-text-dim">{item.level}</span>
+        <h3 class="mb-4 font-mono text-[11px] tracking-widest text-text-dim uppercase">Quick facts</h3>
+        <dl class="space-y-3">
+          {
+            facts.map((item) => (
+              <div class="grid grid-cols-[96px_1fr] gap-3">
+                <dt class="pt-0.5 font-mono text-xs text-text-dim">{item.label}</dt>
+                <dd class="text-sm text-text-primary">{item.value}</dd>
               </div>
-              <div class="h-1 bg-bg-600 rounded-full overflow-hidden">
-                <div
-                  class="h-full bg-accent-cyan rounded-full transition-all duration-700"
-                  style={`width: ${item.pct}%`}
-                ></div>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))
+          }
+        </dl>
       </div>
 
+      <div class="card-base">
+        <h3 class="mb-4 font-mono text-[11px] tracking-widest text-text-dim uppercase">Languages</h3>
+        <dl class="grid grid-cols-2 gap-3">
+          {
+            languages.map((item) => (
+              <div class="rounded-xl border border-bg-600 bg-bg-800 p-3">
+                <dt class="text-sm text-text-primary">{item.lang}</dt>
+                <dd class="mt-0.5 font-mono text-xs text-text-muted">{item.level}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
     </div>
   </div>
 </section>

@@ -1,25 +1,23 @@
 ---
 import Base from '../layouts/Base.astro';
-import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
-import About from '../components/About.astro';
-import Skills from '../components/Skills.astro';
 import Projects from '../components/Projects.astro';
 import Experience from '../components/Experience.astro';
+import Skills from '../components/Skills.astro';
 import Certifications from '../components/Certifications.astro';
+import About from '../components/About.astro';
 import Contact from '../components/Contact.astro';
-import '../styles/global.css';
 ---
 
+<!-- Order is recruiter-first: who/what (hero) → evidence (projects, experience) → skills → credentials → about → contact. -->
 <Base>
-  <Nav />
   <main id="main-content">
     <Hero />
-    <About />
-    <Skills />
     <Projects />
     <Experience />
+    <Skills />
     <Certifications />
+    <About />
     <Contact />
   </main>
 </Base>

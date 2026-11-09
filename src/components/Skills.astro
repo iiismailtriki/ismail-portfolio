@@ -1,85 +1,101 @@
 ---
+import { withBase } from '../utils/paths';
+
+// Skill lists match docs/content-source-of-truth.md ("Technologies confirmed by CV/repo evidence").
+// `usedIn` points at where on this site each group is evidenced.
 const skillGroups = [
   {
-    category: 'Cloud & Infrastructure',
-    icon: '☁',
-    color: 'cyan',
-    skills: ['AWS', 'OpenStack', 'Proxmox VE', 'VMware ESXi', 'Terraform', 'Ansible'],
+    category: 'CI/CD & Automation',
+    glyph: '>_',
+    skills: ['Jenkins', 'GitHub Actions', 'Bash / Shell scripting', 'Python (automation)'],
+    usedIn: [
+      { label: 'DevSecOps Tracker', href: '/#devsecops-deployment-tracker' },
+      { label: 'Flexos thesis', href: '/#experience' },
+    ],
   },
   {
     category: 'Containers & Orchestration',
-    icon: '⎈',
-    color: 'cyan',
+    glyph: '⎈',
     skills: ['Kubernetes (k3s)', 'Docker', 'Helm', 'ArgoCD'],
+    usedIn: [
+      { label: 'DevSecOps Tracker', href: '/#devsecops-deployment-tracker' },
+      { label: 'SOC Platform', href: '/#soc-platform' },
+    ],
   },
   {
-    category: 'Security & SOC',
-    icon: '🛡',
-    color: 'green',
+    category: 'Cloud & Infrastructure as Code',
+    glyph: '{ }',
+    skills: ['AWS', 'OpenStack', 'Proxmox VE', 'VMware ESXi', 'Terraform', 'Ansible'],
+    usedIn: [
+      { label: 'SOC Platform', href: '/#soc-platform' },
+      { label: "Espr'Eats", href: '/#esprEats' },
+    ],
+  },
+  {
+    category: 'Security & Observability',
+    glyph: '◇',
     skills: ['Wazuh', 'OpenSearch Security Analytics', 'Suricata', 'Zeek', 'TheHive', 'Cortex', 'Prometheus', 'Grafana', 'MITRE ATT&CK'],
-  },
-  {
-    category: 'CI/CD & Automation',
-    icon: '⚡',
-    color: 'amber',
-    skills: ['Jenkins', 'GitHub Actions', 'Bash / Shell scripting', 'Python (automation)'],
-  },
-  {
-    category: 'Development',
-    icon: '{}',
-    color: 'cyan',
-    skills: ['Java', 'Spring Boot', 'JavaScript', 'Angular', 'REST APIs', 'OpenAI API'],
+    usedIn: [
+      { label: 'SOC Platform', href: '/#soc-platform' },
+      { label: "Espr'Eats", href: '/#esprEats' },
+    ],
   },
   {
     category: 'Systems & Networking',
-    icon: '⊟',
-    color: 'green',
+    glyph: '⌁',
     skills: ['Linux (Debian/Ubuntu/RHEL)', 'Netplan / iptables', 'DNS / DHCP', 'VLANs', 'OPNsense'],
+    usedIn: [{ label: 'SOC Platform', href: '/#soc-platform' }],
+  },
+  {
+    category: 'Development',
+    glyph: '</>',
+    skills: ['Java', 'Spring Boot', 'JavaScript', 'Angular', 'REST APIs', 'OpenAI API'],
+    usedIn: [
+      { label: "Espr'Eats", href: '/#esprEats' },
+      { label: 'Vocallia', href: '/#vocallia' },
+    ],
   },
 ];
-
-const colorMap: Record<string, string> = {
-  cyan: 'border-accent-cyan/20 bg-accent-cyan/5',
-  green: 'border-accent-green/20 bg-accent-green/5',
-  amber: 'border-accent-amber/20 bg-accent-amber/5',
-};
-
-const iconColorMap: Record<string, string> = {
-  cyan: 'text-accent-cyan',
-  green: 'text-accent-green',
-  amber: 'text-accent-amber',
-};
 ---
 
-<section id="skills" class="py-24 bg-bg-800/40">
-  <div class="max-w-6xl mx-auto px-6">
-    <div class="max-w-xl mb-14 animate-on-scroll">
+<section id="skills" class="section" aria-labelledby="skills-title">
+  <div class="container-page">
+    <div class="reveal mb-12 max-w-2xl">
       <p class="section-label">Skills</p>
-      <h2 class="section-title">
-        Tools I build<br />
-        <span class="text-accent-cyan italic">real systems with.</span>
+      <h2 id="skills-title" class="section-title">
+        Tools I've used<br />
+        <span class="text-accent-cyan italic">on real systems.</span>
       </h2>
+      <p class="section-intro">Grouped by discipline, with a pointer to where each group shows up in my work.</p>
     </div>
 
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-      {skillGroups.map((group, i) => (
-        <div
-          class={`card-base card-hover border ${colorMap[group.color]} animate-on-scroll`}
-          style={`animation-delay: ${i * 0.07}s`}
-        >
-          <div class="flex items-center gap-3 mb-4">
-            <span class={`text-xl ${iconColorMap[group.color]}`}>{group.icon}</span>
-            <p class="text-sm font-semibold text-text-primary">{group.category}</p>
-          </div>
-          <div class="flex flex-wrap gap-2">
-            {group.skills.map((skill) => (
-              <span class="tag hover:text-text-primary hover:border-bg-600/80 transition-colors cursor-default">
-                {skill}
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        skillGroups.map((group, i) => (
+          <article class="reveal card-base card-hover flex flex-col" style={`--reveal-delay: ${(i % 3) * 60}ms`}>
+            <div class="mb-4 flex items-center gap-3">
+              <span class="grid h-9 min-w-9 place-items-center rounded-lg border border-accent-cyan/25 bg-accent-cyan/10 px-1.5 font-mono text-xs text-accent-cyan" aria-hidden="true">
+                {group.glyph}
               </span>
-            ))}
-          </div>
-        </div>
-      ))}
+              <h3 class="text-sm font-semibold text-text-primary">{group.category}</h3>
+            </div>
+            <ul class="flex flex-wrap gap-1.5">
+              {group.skills.map((skill) => <li class="tag">{skill}</li>)}
+            </ul>
+            <p class="mt-auto pt-5 font-mono text-[11px] text-text-dim">
+              Used in{' '}
+              {group.usedIn.map((u, j) => (
+                <>
+                  {j > 0 && ' · '}
+                  <a href={withBase(u.href)} class="text-text-muted underline-offset-4 hover:text-accent-cyan hover:underline">
+                    {u.label}
+                  </a>
+                </>
+              ))}
+            </p>
+          </article>
+        ))
+      }
     </div>
   </div>
 </section>
