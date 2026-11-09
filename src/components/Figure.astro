@@ -1,0 +1,33 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Picture, getImage } from 'astro:assets';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  caption: string;
+}
+
+const { src, alt, caption } = Astro.props;
+// Full-resolution WebP for the "open full size" link (the original PNGs are ~1.5 MB).
+const full = await getImage({ src, format: 'webp', width: src.width, quality: 85 });
+const widths = [640, 960, 1280, src.width].filter((w, i, all) => w <= src.width && all.indexOf(w) === i);
+---
+
+<figure>
+  <a href={full.src} target="_blank" rel="noopener noreferrer" class="group block" aria-label={`Open full-size image: ${caption} (new tab)`}>
+    <Picture
+      src={src}
+      alt={alt}
+      formats={['avif']}
+      fallbackFormat="webp"
+      widths={widths}
+      sizes="(min-width: 1280px) 860px, (min-width: 768px) 90vw, 100vw"
+      class="h-auto w-full rounded-xl border border-bg-600 shadow-2xl shadow-black/40 transition-colors group-hover:border-accent-cyan/40"
+    />
+  </a>
+  <figcaption class="mt-3 text-center text-sm leading-relaxed text-text-dim">
+    {caption}
+    <a href={full.src} target="_blank" rel="noopener noreferrer" class="ml-1 font-mono text-xs whitespace-nowrap text-accent-cyan hover:underline">Open full size ↗</a>
+  </figcaption>
+</figure>

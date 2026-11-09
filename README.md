@@ -8,128 +8,93 @@ on GitHub Pages.
 
 ## Stack
 
-- [Astro](https://astro.build/) — static site generator (`output: 'static'`)
-- [Tailwind CSS](https://tailwindcss.com/) — utility-first CSS
-- [GitHub Pages](https://pages.github.com/) — static hosting via GitHub Actions
-- Google Fonts (DM Serif Display, DM Sans, JetBrains Mono) — loaded via CDN, no npm dependency
-- [Plausible](https://plausible.io/) — privacy-friendly analytics (`src/utils/plausible.ts`)
+- [Astro 7](https://astro.build/) — static site generator (`output: 'static'`), built-in image optimization (`astro:assets`, AVIF/WebP)
+- [Tailwind CSS 4](https://tailwindcss.com/) via `@tailwindcss/vite` — design tokens live in `src/styles/global.css` (`@theme`)
+- Self-hosted fonts via Fontsource (DM Serif Display, DM Sans, JetBrains Mono) — no requests to Google Fonts
+- [GitHub Pages](https://pages.github.com/) via GitHub Actions (SHA-pinned actions, Dependabot)
+- [Plausible](https://plausible.io/) — cookieless analytics (`src/utils/plausible.ts`)
+
+Requires **Node 24** (`.nvmrc`; Astro 7 needs ≥ 22.23.4).
 
 ## Project Structure
 
 ```
 /
-├── public/
-│   ├── certifications/         ← AWS + Nutanix badge images
-│   ├── images/                 ← project architecture diagrams
-│   ├── cv.pdf                  ← downloadable resume
-│   ├── favicon.svg
-│   ├── robots.txt
-│   └── sitemap.xml
+├── public/                     ← served as-is: cv.pdf, og.png, favicon.svg, robots.txt
+├── scripts/
+│   ├── check-dist.mjs          ← post-build link/asset/base-path/a11y checks (no deps)
+│   └── make-og-image.py        ← regenerates public/og.png (Pillow)
 ├── src/
-│   ├── components/
-│   │   ├── Nav.astro
-│   │   ├── Hero.astro
-│   │   ├── About.astro
-│   │   ├── Skills.astro
-│   │   ├── Projects.astro
-│   │   ├── Experience.astro     ← includes Education
-│   │   ├── Certifications.astro
-│   │   └── Contact.astro
+│   ├── assets/                 ← images optimized at build time (profile, diagrams, badges)
+│   ├── components/             ← Nav, Hero, PipelineStrip, Projects, Experience, Skills,
+│   │                             Certifications, About, Contact, Footer, Figure, Icon
+│   ├── data/site.ts            ← contact links, CV path, case-study list
 │   ├── layouts/
-│   │   └── Base.astro           ← SEO meta, JSON-LD, skip link
-│   ├── pages/
-│   │   ├── index.astro
-│   │   ├── soc-case-study.astro
-│   │   ├── espreats-case-study.astro
-│   │   └── 404.astro
-│   └── styles/
-│       └── global.css
+│   │   ├── Base.astro          ← <head>, SEO/OG, JSON-LD, nav + footer, scroll reveal
+│   │   └── CaseStudy.astro     ← shared case-study header, TOC, next-case-study nav
+│   ├── pages/                  ← index, 3 case studies, 404, sitemap.xml (generated)
+│   ├── styles/global.css
+│   └── utils/                  ← paths.ts (withBase), plausible.ts
 ├── .github/workflows/deploy.yml
-├── astro.config.mjs
-├── tailwind.config.mjs
-└── package.json
+└── astro.config.mjs
 ```
 
-## Local Development
+## Commands
 
-```bash
-npm install
-npm run dev
-```
+| Command | What it does |
+|---|---|
+| `npm ci` | Install exactly what the lockfile pins |
+| `npm run dev` | Dev server at http://localhost:4321/ismail-portfolio/ |
+| `npm run build` | Production build into `dist/` |
+| `npm run preview` | Serve the production build locally |
+| `npm run check` | `astro check` — TypeScript + Astro diagnostics |
+| `npm run check:dist` | Verify internal links, assets, anchors, base path, one `<h1>`/page, `alt`, canonical, sitemap |
+| `npm run check:links` | Same, plus request every external link (needs network) |
+| `npm run verify` | `check` + `build` + `check:dist` — run this before opening a PR |
 
-Open http://localhost:4321
-
-## Build
-
-```bash
-npm run build
-npm run preview   # preview the production build locally
-```
-
-There is no lint or type-check script configured in this project (no ESLint/TypeScript
-config present) — `npm run build` (Astro's own compiler) is the primary correctness check.
+CI runs `npm audit --audit-level=high`, `check`, `build` and `check:dist` on every pull
+request; only pushes to `main` deploy.
 
 ## GitHub Pages / Base Path Notes
 
-This site is served from `https://iiismailtriki.github.io/ismail-portfolio/` (a project
-page, not a user/apex page), so `astro.config.mjs` sets:
+The site is served from `https://iiismailtriki.github.io/ismail-portfolio/` (a project page),
+so `astro.config.mjs` sets `site` and `base: '/ismail-portfolio'`.
 
-```js
-export default defineConfig({
-  site: 'https://iiismailtriki.github.io',
-  base: '/ismail-portfolio',
-  output: 'static',
-});
-```
-
-Every internal link/asset reference in components uses
-`const base = import.meta.env.BASE_URL.replace(/\/$/, '')` and prefixes paths with it
-(e.g. `` `${base}/cv.pdf` ``). **Never hardcode a path starting with `/` without the `base`
-prefix** — it will 404 once deployed, even though it works in `astro dev` at the root.
-
-Deployment is handled by `.github/workflows/deploy.yml`: any push to `main` triggers a
-build and deploy via `actions/deploy-pages`.
+Build every internal URL with `withBase()` from `src/utils/paths.ts`
+(e.g. `withBase('/cv.pdf')`, `withBase('/#projects')`). **Never hardcode a path starting with
+`/`** — it works in some local setups but 404s once deployed. `npm run check:dist` fails the
+build if any internal link escapes the base path.
 
 ## Updating Content
 
-- **Experience / Education**: `src/components/Experience.astro` — dates and claims here
-  must match `docs/content-source-of-truth.md` and the CV in `public/cv.pdf`.
-- **Projects**: `src/components/Projects.astro`. The Vocallia entry has a `note` field
-  instead of a link — see `docs/content-source-of-truth.md` for what to fill in once a
-  public link exists. The DevSecOps Deployment Tracker card must be re-audited against its
-  own repo (`github.com/iiismailtriki/devsecops-deployment-tracker`) before its status or
-  "Implemented" list is changed — do not edit it from memory.
-- **Certifications**: `src/components/Certifications.astro`. Badge images live in
-  `public/certifications/`.
-- **CV**: the canonical source is `~/Desktop/career-workspace/master-cv/` (built via
-  `./build.sh`, output at `master-cv/output/Ismail_Triki_CV.pdf`) — **do not** hand-edit
-  `public/cv.pdf` directly or treat `application-os/master/cv/` as canonical (it's a reference
-  copy only). Rebuild the master CV first, then copy its output over `public/cv.pdf` (keep the
-  filename so links keep working) and re-verify page count, dates, and hyperlinks before
-  committing.
+- **Source of truth first**: dates, titles, claims and metrics must match
+  `docs/content-source-of-truth.md`. Don't strengthen approved wording.
+- **Experience / Education**: `src/components/Experience.astro`.
+- **Projects**: `src/components/Projects.astro` — `built` lists only what the repo/sources
+  evidence; planned work goes in `next`. Re-audit the DevSecOps Tracker card against its repo
+  (`github.com/iiismailtriki/devsecops-deployment-tracker`) before changing it; the hero
+  pipeline strip (`PipelineStrip.astro`) mirrors that repo's Jenkinsfile too.
+- **Case studies**: `src/pages/*-case-study.astro` on `layouts/CaseStudy.astro`. Each
+  top-level `<section>` with a `.section-label` gets a table-of-contents entry automatically.
+  New case studies also go in `caseStudies` in `src/data/site.ts`.
+- **Images**: put them in `src/assets/` and render with `<Figure>`/`<Picture>` so they're
+  converted to AVIF/WebP — don't put large images in `public/`.
+- **Social preview**: `python3 scripts/make-og-image.py` after changing name/title.
+- **CV**: the canonical source is `~/Desktop/career-workspace/master-cv/` — rebuild there, then
+  copy its output over `public/cv.pdf` (keep the filename) and re-verify before committing.
 
 ## Accessibility Notes
 
-- Skip-to-content link (`.skip-link` in `global.css`) jumps to `#main-content` on every page.
-- `prefers-reduced-motion` disables the scroll-in animations and the Hero's floating/glow
-  loops (kept: the one-shot entrance animation, since it's brief and non-repeating).
-- Single `<h1>` per page, sequential heading levels.
-
-## Performance Notes
-
-- Fully static output, no client-side framework/hydration.
-- `public/profile.png` (~212 KB) is currently unoptimized — a WebP/AVIF conversion would
-  reduce this further; no image-optimization tooling is wired into the build yet.
-- Below-the-fold case-study images use `loading="lazy"`.
-
-## Deployment
-
-Push to `main` → GitHub Actions (`deploy.yml`) builds with `npm ci && npm run build` and
-publishes `dist/` via `actions/deploy-pages`. Check the Actions tab for build status.
+- Skip link, landmarks, one `<h1>` per page, sequential headings.
+- Text colours meet WCAG AA (≥ 4.5:1) on every surface they're used on.
+- Visible `:focus-visible` outline; mobile menu exposes `aria-expanded`, closes on Escape and
+  returns focus to the toggle.
+- Content is never hidden without JavaScript: scroll-reveal only applies once `html.js` is set.
+- `prefers-reduced-motion` turns off scroll reveals and all animations.
 
 ## Documentation
 
-- `docs/portfolio-audit.md` — audit findings and what changed, and why.
+- `docs/audit-2026-11.md` — latest audit (prioritized findings) and validation results.
 - `docs/content-source-of-truth.md` — approved dates, titles, claims; what must never be
   published without verification.
-- `docs/final-qa-report.md` — build/test/link/accessibility results from the last pass.
+- `docs/portfolio-audit.md`, `docs/final-qa-report.md` — earlier passes (2026-07), kept for history.
