@@ -1,94 +1,174 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+/* Self-hosted fonts (no requests to Google's servers — relevant for GDPR in Germany). */
+@import '@fontsource/dm-serif-display/latin-400.css';
+@import '@fontsource/dm-serif-display/latin-400-italic.css';
+@import '@fontsource-variable/dm-sans/index.css';
+@import '@fontsource-variable/jetbrains-mono/index.css';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-sans: 'DM Sans Variable', 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Surfaces */
+  --color-bg-900: #0a0d12;
+  --color-bg-800: #0e1218;
+  --color-bg-700: #131921;
+  --color-bg-600: #1c2430;
+  --color-line: #222c39;
+
+  /* Text — every step is ≥ 4.5:1 on bg-700 (WCAG AA for body text) */
+  --color-text-primary: #e8edf3;
+  --color-text-muted: #9aa8b8;
+  --color-text-dim: #75879a;
+
+  /* Accents: cyan = primary/interactive, green = verified/passing, amber = in progress */
+  --color-accent-cyan: #38bdf8;
+  --color-accent-green: #34d399;
+  --color-accent-amber: #fbbf24;
+}
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    color-scheme: dark;
   }
 
   body {
-    background-color: #0a0d12;
-    color: #e8edf3;
-    font-family: 'DM Sans', sans-serif;
+    background-color: var(--color-bg-900);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
     font-size: 16px;
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
 
   ::selection {
-    background-color: #38bdf820;
-    color: #38bdf8;
+    background-color: color-mix(in srgb, var(--color-accent-cyan) 25%, transparent);
+    color: var(--color-text-primary);
   }
 
-  ::-webkit-scrollbar {
-    width: 4px;
+  :focus-visible {
+    outline: 2px solid var(--color-accent-cyan);
+    outline-offset: 3px;
+    border-radius: 4px;
   }
-  ::-webkit-scrollbar-track {
-    background: #0a0d12;
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
   }
-  ::-webkit-scrollbar-thumb {
-    background: #1e2d3d;
-    border-radius: 2px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: #38bdf840;
+
+  p {
+    text-wrap: pretty;
   }
 }
 
 @layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-6;
+  }
+
+  .section {
+    @apply py-20 md:py-28;
+  }
+
   .section-label {
-    @apply font-mono text-xs tracking-[0.2em] text-accent-cyan uppercase mb-3;
+    @apply mb-3 flex items-center gap-3 font-mono text-xs tracking-[0.2em] text-accent-cyan uppercase;
+  }
+
+  .section-label::before {
+    content: '';
+    @apply h-px w-6 bg-accent-cyan/60;
   }
 
   .section-title {
-    @apply font-display text-3xl md:text-4xl text-text-primary leading-tight;
+    @apply font-display text-3xl leading-tight text-text-primary md:text-[2.6rem];
+  }
+
+  .section-intro {
+    @apply mt-4 max-w-2xl leading-relaxed text-text-muted;
   }
 
   .card-base {
-    @apply bg-bg-700 border border-bg-600 rounded-xl p-6 transition-all duration-300;
+    @apply rounded-2xl border border-bg-600 bg-bg-700/70 p-6 transition-[border-color,background-color,transform,box-shadow] duration-300;
   }
 
   .card-hover {
-    @apply hover:border-accent-cyan/30 hover:bg-bg-600/60 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-accent-cyan/5;
+    @apply hover:border-accent-cyan/30 hover:bg-bg-700;
   }
 
   .tag {
-    @apply font-mono text-xs bg-bg-600 border border-bg-600 text-text-muted px-2.5 py-1 rounded-md;
+    @apply inline-flex items-center rounded-md border border-bg-600 bg-bg-800 px-2.5 py-1 font-mono text-xs leading-none text-text-muted;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[11px] leading-none tracking-wider uppercase;
+  }
+
+  .btn-primary,
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 font-sans text-sm font-semibold transition-[background-color,border-color,color,transform] duration-200 motion-safe:hover:-translate-y-0.5;
   }
 
   .btn-primary {
-    @apply inline-flex items-center gap-2 bg-accent-cyan text-bg-900 font-sans font-semibold text-sm px-5 py-2.5 rounded-lg transition-all duration-200 hover:bg-white hover:shadow-lg hover:shadow-accent-cyan/20 hover:-translate-y-0.5;
+    @apply bg-accent-cyan text-bg-900 hover:bg-white;
   }
 
   .btn-ghost {
-    @apply inline-flex items-center gap-2 border border-bg-600 text-text-muted font-sans text-sm px-5 py-2.5 rounded-lg transition-all duration-200 hover:border-accent-cyan/40 hover:text-text-primary hover:-translate-y-0.5;
+    @apply border border-bg-600 bg-bg-800/60 font-medium text-text-primary hover:border-accent-cyan/50;
   }
 
-  .divider {
-    @apply border-t border-bg-700 my-16;
+  .link-arrow {
+    @apply inline-flex items-center gap-1.5 font-mono text-xs text-accent-cyan underline-offset-4 hover:underline;
   }
 
-  .animate-on-scroll {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.6s ease, transform 0.6s ease;
+  .prose-body {
+    @apply space-y-4 leading-relaxed text-text-muted;
   }
 
-  .animate-on-scroll.visible {
-    opacity: 1;
-    transform: translateY(0);
+  .prose-body strong {
+    @apply font-semibold text-text-primary;
+  }
+
+  .code-inline {
+    @apply rounded bg-bg-600 px-1.5 py-0.5 font-mono text-[0.8em] text-accent-cyan;
   }
 
   .skip-link {
-    @apply fixed left-4 top-4 z-[100] -translate-y-24 bg-accent-cyan text-bg-900 font-sans font-semibold text-sm px-4 py-2.5 rounded-lg transition-transform duration-150;
+    @apply fixed top-4 left-4 z-[100] -translate-y-24 rounded-lg bg-accent-cyan px-4 py-2.5 font-sans text-sm font-semibold text-bg-900 transition-transform duration-150 focus:translate-y-0;
   }
+}
 
-  .skip-link:focus {
-    @apply translate-y-0;
-  }
+/*
+ * Scroll reveal. Content is only hidden when JS has run (html.js), so it stays
+ * visible for no-JS visitors, crawlers, link previewers and print.
+ */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Subtle engineering-grid backdrop used behind the hero and case-study headers. */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--color-accent-cyan) 7%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--color-accent-cyan) 7%, transparent) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 20%, transparent 75%);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -96,9 +176,28 @@
     scroll-behavior: auto;
   }
 
-  .animate-on-scroll {
+  .js .reveal {
     opacity: 1;
     transform: none;
     transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
   }
 }
