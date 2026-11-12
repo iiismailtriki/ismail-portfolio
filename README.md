@@ -50,9 +50,10 @@ Requires **Node 24** (`.nvmrc`; Astro 7 needs ≥ 22.23.4).
 | `npm run check` | `astro check` — TypeScript + Astro diagnostics |
 | `npm run check:dist` | Verify internal links, assets, anchors, base path, one `<h1>`/page, `alt`, canonical, sitemap |
 | `npm run check:links` | Same, plus request every external link (needs network) |
-| `npm run verify` | `check` + `build` + `check:dist` — run this before opening a PR |
+| `npm run check:claims` | Fail if retired/unsupported claims reappear (honours, unscoped lab metric, production SOC, outdated German/SAA wording) |
+| `npm run verify` | `check` + `build` + `check:dist` + `check:claims` — run this before opening a PR |
 
-CI runs `npm audit --audit-level=high`, `check`, `build` and `check:dist` on every pull
+CI runs `npm audit --audit-level=high`, `check`, `build`, `check:dist` and `check:claims` on every pull
 request; only pushes to `main` deploy.
 
 ## GitHub Pages / Base Path Notes
@@ -94,7 +95,8 @@ build if any internal link escapes the base path.
 
 ## Documentation
 
-- `docs/audit-2026-11.md` — latest audit (prioritized findings) and validation results.
+- `docs/factual-review-2026-11.md` — open factual conflicts and evidence status (2026-11-12).
+- `docs/audit-2026-11.md` — modernization audit (prioritized findings) and validation results.
 - `docs/content-source-of-truth.md` — approved dates, titles, claims; what must never be
   published without verification.
 - `docs/portfolio-audit.md`, `docs/final-qa-report.md` — earlier passes (2026-07), kept for history.
