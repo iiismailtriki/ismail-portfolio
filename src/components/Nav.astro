@@ -15,11 +15,12 @@ const navLinks = [
 
 <header id="navbar" class="no-print fixed inset-x-0 top-0 z-50 border-b border-transparent transition-[background-color,border-color] duration-300">
   <nav class="container-page flex h-16 items-center justify-between" aria-label="Main">
-    <a href={withBase('/')} class="group flex items-center gap-2.5 font-mono text-sm text-text-primary" aria-label="Ismail Triki — home">
+    <a href={withBase('/')} class="group flex items-center gap-2.5 font-mono text-sm text-text-primary">
       <span class="grid h-8 w-8 place-items-center rounded-lg border border-accent-cyan/40 bg-accent-cyan/10 text-xs font-semibold text-accent-cyan transition-colors group-hover:bg-accent-cyan group-hover:text-bg-900">
         IT
       </span>
       <span class="hidden sm:inline">ismail<span class="text-text-dim">.</span>triki</span>
+      <span class="sr-only">Ismail Triki, home</span>
     </a>
 
     <ul class="hidden items-center gap-1 lg:flex">
@@ -68,10 +69,16 @@ const navLinks = [
           </li>
         ))
       }
-      <li class="pt-2 pb-3">
+      <li class="pt-2 pb-2">
         <a href={site.cv} download class="btn-primary w-full" data-track="CV Download">
           <Icon name="download" size={14} />
-          Download CV (PDF)
+          Download CV (English)
+        </a>
+      </li>
+      <li class="pb-3">
+        <a href={site.cvDe} download class="btn-ghost w-full" data-track="CV DE Download" lang="de">
+          <Icon name="download" size={14} />
+          Lebenslauf (Deutsch)
         </a>
       </li>
     </ul>

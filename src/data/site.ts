@@ -12,6 +12,8 @@ export const site = {
   linkedinHandle: 'in/ismail-triki-3571a21a7',
   url: 'https://iiismailtriki.github.io/ismail-portfolio/',
   cv: withBase('/cv.pdf'),
+  // German-language CV (same facts, approved translation).
+  cvDe: withBase('/cv-de.pdf'),
 };
 
 export const caseStudies = [

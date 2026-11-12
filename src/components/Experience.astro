@@ -19,18 +19,20 @@ const experiences = [
   {
     title: 'Cloud Engineering Intern — DevSecOps & Security Automation',
     company: 'Flexos Tunisie',
-    location: 'Tunisia (Remote/On-site)',
+    location: 'Hybrid — mostly remote from Germany',
     period: 'Dec 2025 – Jun 2026',
     type: 'Internship / PFE (Thesis)',
     description:
-      'Final-year thesis (PFE) internship. Designed and deployed a cloud-native, open-source SOC platform end to end — from architecture planning and tooling decisions to deployment, detection engineering, and documentation.',
+      'Final-year thesis (PFE) internship: an open-source security operations platform, from architecture and tool selection through deployment, detection engineering and documentation.',
+    // Bullets 1–4 follow the approved CV (v3.2); bullet 5 is pre-existing approved site wording.
     highlights: [
-      'Defined system architecture and selected the security toolchain based on threat coverage and integration requirements',
-      'Deployed a three-node k3s Kubernetes cluster on Proxmox VE bare-metal hardware; debugged and resolved networking and storage issues',
-      'Authored and validated MITRE ATT&CK–mapped detection rules through simulated attack scenarios, including SSH brute-force, privilege escalation, network reconnaissance, and account-discovery techniques',
-      'Automated infrastructure and application deployment using Terraform, Ansible, AWX, and GitHub Actions; maintained deployment and configuration documentation',
+      'Designed and delivered a self-managed SOC platform on a three-node Kubernetes (k3s) cluster on Proxmox VE',
+      'Automated provisioning and deployment end to end with Terraform, Ansible, AWX and GitHub Actions',
+      'Built a detection and response chain: Wazuh and Suricata feeding automated case handling in TheHive and Shuffle SOAR',
+      'Engineered MITRE ATT&CK–mapped detections (SSH brute force, network reconnaissance, account discovery); SSH attacks were detected and contained in under 4 seconds in controlled testing',
+      'Debugged and resolved cluster networking and storage issues; maintained deployment and configuration documentation',
     ],
-    stack: ['Kubernetes', 'Wazuh', 'OpenSearch', 'Suricata', 'TheHive', 'Cortex', 'Terraform', 'Ansible', 'AWX', 'GitHub Actions', 'Proxmox'],
+    stack: ['k3s', 'Proxmox VE', 'Terraform', 'Ansible', 'AWX', 'GitHub Actions', 'Wazuh', 'Suricata', 'TheHive', 'Shuffle', 'OpenSearch'],
   },
   {
     title: 'Cloud & Security Engineering Intern',
@@ -83,11 +85,18 @@ const experiences = [
 
 const education = [
   {
-    degree: 'Engineering Degree — Cloud & Computer Science',
+    degree: 'Business & Engineering / International Business with Engineering (IBE)',
+    school: 'Technische Hochschule Würzburg-Schweinfurt (THWS)',
+    location: 'Schweinfurt, Germany',
+    period: 'Oct 2026 – Present',
+    note: 'Current enrollment',
+  },
+  {
+    degree: "Engineering Degree in Computer Science (Diplôme d'ingénieur)",
     school: "ESPRIT — École Supérieure Privée d'Ingénierie et de Technologie",
     location: 'Ariana, Tunisia',
     period: 'Sep 2021 – Jul 2026',
-    note: 'Graduated with Highest Honors · Thesis: Cloud-Native Open-Source SOC Platform',
+    note: 'Specialization: Cloud Engineering · Thesis: Cloud-Native SOC Platform Design & Deployment · Thesis grade: 16.88/20',
   },
   {
     degree: 'Academic Exchange — Computer Science',
@@ -149,7 +158,7 @@ const education = [
 
     <div class="reveal mt-16">
       <h3 class="mb-5 font-mono text-xs tracking-[0.2em] text-text-dim uppercase">Education</h3>
-      <div class="grid gap-5 md:grid-cols-2">
+      <div class="grid gap-5 md:grid-cols-3">
         {
           education.map((edu) => (
             <article class="card-base">
