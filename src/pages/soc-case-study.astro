@@ -6,10 +6,10 @@ import architecture from '../assets/images/soc-architecture.png';
 
 <CaseStudy
   title="Cloud-Native SOC Platform"
-  subtitle="Multi-Tenant SIEM / EDR / IDS Infrastructure on Kubernetes"
-  description="Case study: a cloud-native, open-source SOC platform on a three-node k3s cluster — Wazuh, OpenSearch, Suricata, Zeek, TheHive, and Cortex, provisioned with Terraform and Ansible."
+  subtitle="Open-source detection and automated response on a three-node Kubernetes cluster"
+  description="Case study: a cloud-native, open-source SOC platform on a three-node k3s cluster — Wazuh, Suricata, OpenSearch, TheHive, Cortex and Shuffle SOAR, automated with Terraform, Ansible and AWX. Lab-validated detection and containment."
   eyebrow="Case study — Graduation thesis (PFE)"
-  tags={['k3s', 'Wazuh', 'OpenSearch', 'Suricata', 'Zeek', 'TheHive', 'Cortex', 'Proxmox VE', 'Terraform', 'Ansible']}
+  tags={['k3s', 'Wazuh', 'Suricata', 'Zeek', 'OpenSearch', 'TheHive', 'Cortex', 'Shuffle SOAR', 'Proxmox VE', 'Terraform', 'Ansible', 'AWX']}
   meta={[
     { label: 'Type', value: 'Final-year thesis (PFE)' },
     { label: 'Context', value: 'Internship, Flexos Tunisie' },
@@ -23,15 +23,14 @@ import architecture from '../assets/images/soc-architecture.png';
     <h2 class="font-display text-2xl text-text-primary mb-4">What was built and why</h2>
     <div class="text-text-muted space-y-4 leading-relaxed">
       <p>
-        This project was the final-year engineering thesis (PFE) completed during an internship at Flexos Tunisie.
-        The goal was to design and deploy a production-grade, open-source security operations platform capable of
-        supporting multi-tenant threat detection, log aggregation, network analysis, and incident case management —
-        without relying on commercial SaaS solutions.
+        This was my final-year engineering thesis (PFE), completed during an internship at Flexos Tunisie. The
+        problem: detecting an attack is only useful if the response is fast and repeatable. The goal was a working
+        security operations platform — host and network detection, log analytics, and incident case management —
+        built entirely from open-source tools rather than commercial SaaS.
       </p>
       <p>
-        The platform was intended to demonstrate that a fully functional SOC stack could be built using mature
-        open-source tools, orchestrated on Kubernetes, and deployed on commodity hardware — making it replicable
-        for organizations of varying sizes.
+        It runs on Kubernetes on self-managed hardware, with provisioning automated as code, so the whole stack can
+        be rebuilt rather than hand-configured. All results below come from controlled lab testing.
       </p>
     </div>
   </section>
@@ -76,9 +75,9 @@ import architecture from '../assets/images/soc-architecture.png';
             ['EDR / HIDS', 'Host-based threat detection, file integrity monitoring, log collection', 'Wazuh'],
             ['SIEM', 'Log aggregation, search, security analytics dashboards', 'OpenSearch + Security Analytics'],
             ['Network IDS', 'Packet inspection and network protocol analysis', 'Suricata + Zeek'],
-            ['SOAR / Case Mgmt', 'Alert triage, case creation, workflow automation', 'TheHive + Cortex'],
+            ['SOAR / Case Mgmt', 'Alert triage, case creation, workflow automation', 'TheHive + Cortex + Shuffle'],
             ['Infrastructure', 'Multi-node Kubernetes orchestration', 'k3s on Proxmox VE'],
-            ['IaC & Config', 'Reproducible provisioning and configuration management', 'Terraform + Ansible'],
+            ['IaC & Config', 'Reproducible provisioning and configuration management', 'Terraform + Ansible + AWX'],
           ].map(([role, desc, tech]) => (
             <tr class="border-b border-bg-800 hover:bg-bg-700/30 transition-colors">
               <td class="py-3 pr-8 text-text-primary font-medium">{role}</td>
@@ -185,6 +184,47 @@ import architecture from '../assets/images/soc-architecture.png';
           </div>
         </div>
       ))}
+    </div>
+  </section>
+
+  <hr class="border-bg-600" />
+
+  <!-- Verification & limits -->
+  <section>
+    <p class="section-label">Verification &amp; Limits</p>
+    <h2 class="font-display text-2xl text-text-primary mb-6">How it was tested, and what that does not prove</h2>
+    <div class="grid sm:grid-cols-2 gap-6">
+      <div>
+        <p class="font-mono text-xs text-accent-green uppercase tracking-widest mb-3">Tested</p>
+        <ul class="space-y-2">
+          {[
+            'Each custom rule triggered by a simulated attack: SSH brute force, sudo privilege escalation, network reconnaissance, Windows account discovery',
+            'SSH brute force measured end to end: alert to automated containment in under 4 seconds',
+            'Rule persistence re-checked after pod restarts once rules moved to a ConfigMap',
+            'Escalation threshold tuned against real alert volume (843 noisy cases at level 10)',
+          ].map((item) => (
+            <li class="flex items-start gap-3 text-sm">
+              <span class="text-accent-green mt-1.5 shrink-0">✓</span>
+              <span class="text-text-muted">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <p class="font-mono text-xs text-accent-amber uppercase tracking-widest mb-3">Not established</p>
+        <ul class="space-y-2">
+          {[
+            'Performance under production traffic, scale or attack variety — all numbers are from a controlled lab',
+            'Detection coverage beyond the four mapped techniques',
+            'Long-running operation: the platform was built and evaluated within the thesis timeframe',
+          ].map((item) => (
+            <li class="flex items-start gap-3 text-sm">
+              <span class="text-accent-amber mt-1.5 shrink-0">○</span>
+              <span class="text-text-muted">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   </section>
 

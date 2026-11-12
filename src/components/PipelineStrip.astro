@@ -2,14 +2,15 @@
 import Icon from './Icon.astro';
 import { withBase } from '../utils/paths';
 
-// Mirrors the real Jenkinsfile in iiismailtriki/devsecops-deployment-tracker (14 stages, grouped).
-// The last group is deployment configuration in the repo, not a Jenkins stage — drawn dashed.
+// Mirrors the Jenkinsfile in iiismailtriki/devsecops-deployment-tracker (15 stages on main, grouped).
+// Publish/sign/attest run on main only. The last group is deployment config in the repo, not a
+// Jenkins stage (the pipeline does not deploy) — drawn dashed.
 const phases = [
   { name: 'Secrets', tools: 'Gitleaks' },
   { name: 'Code', tools: 'pytest · Ruff · Bandit · pip-audit' },
-  { name: 'Image', tools: 'Hadolint · Buildx · Trivy gate' },
-  { name: 'Supply chain', tools: 'Syft SBOM · GHCR digest · Cosign' },
-  { name: 'Runtime', tools: 'K8s manifests · Helm chart', config: true },
+  { name: 'IaC + image', tools: 'Hadolint · Helm lint · Trivy config · Trivy image' },
+  { name: 'Supply chain', tools: 'Syft SBOM · GHCR digest · Cosign sign + attest' },
+  { name: 'Runtime', tools: 'Helm chart · digest-pinned', config: true },
 ];
 ---
 
@@ -17,7 +18,6 @@ const phases = [
   href={withBase('/devsecops-case-study/')}
   class="pipeline group block rounded-2xl border border-bg-600 bg-bg-800/80 p-4 transition-colors hover:border-accent-cyan/40 sm:p-5"
   data-track="DevSecOps Case Study Click"
-  aria-label="Flagship project: DevSecOps Deployment Tracker pipeline — read the case study"
 >
   <div class="mb-4 flex flex-wrap items-center justify-between gap-2">
     <p class="font-mono text-xs text-text-muted">

@@ -2,21 +2,26 @@
 import Icon from './Icon.astro';
 import { withBase } from '../utils/paths';
 
-// Order and wording follow docs/content-source-of-truth.md ("Project hierarchy").
-// Only describe what the repository / approved sources evidence; planned work goes in `next`.
+// Order and wording follow docs/content-source-of-truth.md ("Project hierarchy") and the approved CV.
+// `built` = implemented and evidenced; `decisions` only where the repo/case study records the change;
+// `limits` = not implemented, not validated, or planned. Re-audit the repo before editing the tracker.
 
 interface Project {
   id: string;
   label: string;
   status: 'Active' | 'Completed' | 'Prototype';
+  period?: string;
   role: string;
   title: string;
   subtitle: string;
   problem: string;
   built: string[];
+  decisions?: string[];
+  verified?: string[];
+  limits: string[];
   metric?: { value: string; text: string; scope: string };
-  next?: string;
   stack: string[];
+  evidence?: { label: string; href: string }[];
   caseStudy?: string;
   trackCaseStudy?: string;
   github?: string;
@@ -24,50 +29,81 @@ interface Project {
   note?: string;
 }
 
+const tracker = 'https://github.com/iiismailtriki/devsecops-deployment-tracker';
+
 const featured: Project[] = [
   {
     id: 'devsecops-deployment-tracker',
     label: 'Personal project',
     status: 'Active',
-    role: 'Solo project — design, pipeline, and manifests',
+    period: '2026',
+    role: 'Solo — pipeline, Helm chart, security controls',
     title: 'DevSecOps Deployment Tracker',
-    subtitle: 'Signed, attested container pipeline for a Flask API, with hardened Kubernetes manifests',
+    subtitle: 'Software supply-chain security for a containerized Flask service',
     problem:
-      'Most pipelines stop at "tests pass". This one goes further: prove what is running — every image scanned, signed, attested, and pinned by digest before Kubernetes ever references it.',
+      'Passing tests say little about what actually runs. The goal: make every container image traceable from commit to registry — scanned, inventoried, signed and attested — and refuse to publish anything that fails a security gate.',
     built: [
-      '14-stage Jenkins pipeline: Gitleaks secret scan, pytest, Ruff, Bandit, pip-audit and Hadolint run before any image is built',
-      'Trivy fails the build on fixable HIGH/CRITICAL CVEs; findings in Debian base packages were fixed by pinning patched versions, not suppressed',
-      'Syft CycloneDX SBOM, private GHCR publish by digest, Cosign signing — SBOM and SLSA provenance attached as verified in-toto attestations',
-      'Kubernetes manifests and a Helm chart: digest-pinned image, non-root UID 10001, all capabilities dropped, seccomp RuntimeDefault, probes, resource limits, NetworkPolicy',
+      '15-stage Jenkins pipeline: Gitleaks, pytest, Ruff, Bandit, pip-audit and Hadolint gate the code before an image is built',
+      'Kubernetes IaC gate: the Helm chart is linted, rendered and scanned with Trivy; HIGH/CRITICAL misconfigurations fail the build',
+      'Trivy image scan blocks fixable HIGH/CRITICAL CVEs; Syft produces a CycloneDX SBOM',
+      'On main only: publish to private GHCR by digest, sign with Cosign, attach SBOM and SLSA provenance as verified attestations',
+      'Helm chart runs the digest-pinned image as non-root with a read-only root filesystem, dropped capabilities, seccomp, probes, resource limits and a NetworkPolicy',
     ],
-    next: 'Next: validate the NetworkPolicy on a live cluster and set readOnlyRootFilesystem.',
-    stack: ['Jenkins', 'Docker', 'Trivy', 'Syft', 'Cosign', 'GHCR', 'Kubernetes', 'Helm', 'Python / Flask'],
+    decisions: [
+      'Gate on fixable findings only (--ignore-unfixed), so every failure points to a concrete remediation',
+      'Reference images by digest everywhere downstream — a tag can move, a digest cannot',
+      'Sign and attest only on main: feature branches are scanned but never produce signed release artifacts',
+    ],
+    verified: [
+      'Signature, SBOM and provenance attestations re-verified with Cosign in the same run',
+      'Real CVE findings fixed by pinning patched Debian packages (e.g. zlib), not suppressed',
+      'Signing key lost in a laptop migration: rotated, legacy public key kept for older signatures, encrypted backup recovery-tested',
+    ],
+    limits: [
+      'The pipeline ends at a signed image — it does not deploy to a cluster',
+      'NetworkPolicy not yet validated on a live cluster; main-branch signing with the rotated key still pending validation',
+    ],
+    stack: ['Jenkins', 'Docker', 'Trivy', 'Syft', 'Cosign', 'GHCR', 'Helm', 'Kubernetes', 'Python / Flask'],
+    evidence: [
+      { label: 'Jenkinsfile', href: `${tracker}/blob/main/Jenkinsfile` },
+      { label: 'Helm chart', href: `${tracker}/tree/main/helm/deployment-tracker` },
+      { label: 'Key rotation record', href: `${tracker}/blob/main/docs/signing/KEY_ROTATION.md` },
+    ],
     caseStudy: withBase('/devsecops-case-study/'),
     trackCaseStudy: 'DevSecOps Case Study Click',
-    github: 'https://github.com/iiismailtriki/devsecops-deployment-tracker',
+    github: tracker,
     trackGitHub: 'DevSecOps Tracker GitHub Click',
   },
   {
     id: 'soc-platform',
     label: 'Graduation thesis (PFE)',
     status: 'Completed',
+    period: 'Dec 2025 – Jun 2026',
     role: 'Thesis internship at Flexos Tunisie',
     title: 'Cloud-Native SOC Platform',
-    subtitle: 'Open-source SIEM / EDR / IDS stack on a three-node k3s cluster',
+    subtitle: 'Open-source detection and response on a three-node k3s cluster',
     problem:
-      'Build a working security-operations platform from open-source tools — detection, log analytics, network IDS and case management — orchestrated on Kubernetes and deployed on bare-metal Proxmox.',
+      'Detection alone is not enough — the response has to be fast and repeatable. Build a working detection-and-response chain from open-source tools (host and network detection, log analytics, case management) on Kubernetes, and measure how quickly it reacts.',
     built: [
-      'Three-node k3s cluster on Proxmox VE — static networking, persistent storage, production-grade configuration',
-      'Integrated Wazuh (EDR/HIDS), Suricata and Zeek (network IDS), and OpenSearch Security Analytics for SIEM capabilities',
-      'TheHive + Cortex for automated alert triage, case management, and threat-intelligence enrichment',
-      'Custom MITRE ATT&CK–mapped detection rules (T1110.001, T1548.003, T1046, T1087.001); infrastructure provisioned with Terraform and Ansible',
+      'Three-node k3s cluster on Proxmox VE with static networking and persistent storage',
+      'Wazuh (EDR/HIDS), Suricata and Zeek (network IDS) and OpenSearch analytics, feeding case handling in TheHive with Cortex and Shuffle SOAR',
+      'Custom MITRE ATT&CK–mapped detection rules (T1110.001, T1548.003, T1046, T1087.001)',
+      'Provisioning and deployment automated with Terraform, Ansible, AWX and GitHub Actions',
+    ],
+    decisions: [
+      'Detection rules moved from a PVC to a read-only ConfigMap after they were lost on pod restarts',
+      'Wazuh → TheHive escalation threshold raised from level 10 to 12 after noise produced 843 cases',
+    ],
+    verified: [
+      'Each rule validated against a simulated attack: SSH brute force, sudo privilege escalation, network reconnaissance, Windows account discovery',
     ],
     metric: {
       value: '<4 s',
-      text: 'SSH brute-force detection and automated containment',
-      scope: 'Validated lab scenario',
+      text: 'SSH brute-force detection to automated containment',
+      scope: 'Controlled lab testing',
     },
-    stack: ['k3s', 'Wazuh', 'OpenSearch', 'Suricata', 'Zeek', 'TheHive', 'Cortex', 'Proxmox VE', 'Terraform', 'Ansible'],
+    limits: ['Measured in a controlled lab scenario only — not under production traffic or at production scale'],
+    stack: ['k3s', 'Wazuh', 'Suricata', 'OpenSearch', 'TheHive', 'Shuffle', 'Proxmox VE', 'Terraform', 'Ansible', 'AWX'],
     caseStudy: withBase('/soc-case-study/'),
     trackCaseStudy: 'SOC Case Study Click',
   },
@@ -78,17 +114,19 @@ const more: Project[] = [
     id: 'esprEats',
     label: 'Academic team project',
     status: 'Completed',
-    role: 'University team project',
+    period: '2024 – 2025',
+    role: 'University team project, ESPRIT',
     title: "Espr'Eats — OpenStack Cloud Infrastructure",
-    subtitle: 'Private cloud deployment for a campus meal-ordering app',
+    subtitle: 'Private cloud provisioning and operations for a full-stack app',
     problem:
-      'University team project centred on deploying a full-stack application on private OpenStack infrastructure, provisioned and operated with infrastructure-as-code.',
+      'Run a full-stack application on private OpenStack infrastructure that the team provisions, configures and monitors as code.',
     built: [
-      'Angular + Spring Boot application deployed on a private OpenStack cloud',
-      'Infrastructure provisioned with Terraform, configured with Ansible, orchestrated with Kubernetes',
+      'OpenStack compute and networking provisioned with Terraform, configured with Ansible',
+      'Spring Boot and Angular services containerized and run on Kubernetes via CI/CD',
       'Deployed infrastructure monitored with Prometheus and Grafana',
     ],
-    stack: ['OpenStack', 'Kubernetes', 'Terraform', 'Ansible', 'Prometheus', 'Grafana'],
+    limits: ['Team project — work is described collectively'],
+    stack: ['OpenStack', 'Terraform', 'Ansible', 'Kubernetes', 'Prometheus', 'Grafana'],
     caseStudy: withBase('/espreats-case-study/'),
     trackCaseStudy: "Espr'Eats Case Study Click",
   },
@@ -96,17 +134,19 @@ const more: Project[] = [
     id: 'vocallia',
     label: 'Team · International innovation program',
     status: 'Prototype',
-    role: 'Multicultural team, PVG University / AIESEC, Pune',
+    period: 'Jun – Aug 2025',
+    role: 'Co-designer in a multicultural team, PVG University / AIESEC, Pune',
     title: 'Vocallia',
-    subtitle: 'Cloud-oriented AI voice automation prototype',
+    subtitle: 'AI voice-automation prototype for a phone-assistant startup idea',
     problem:
-      'An AI phone-assistant startup initiative: a prototype that automates phone interactions and voice workflows, connecting callers to AI-powered voice services through APIs and backend services.',
+      'The longer-term idea was an AI phone-assistant startup that automates phone interactions and voice workflows. What was built during the program is a prototype.',
     built: [
-      'Contributed to technical design and cloud-oriented architecture',
+      'Contributed to the technical design and cloud-oriented architecture',
       'Built backend and API integration components; helped structure application configuration',
       'Validated the end-to-end workflow between components ahead of deployment',
       'Selected Top 10 at OSTX Tunisia 2025',
     ],
+    limits: ['Prototype only — no production deployment, customers or revenue'],
     stack: ['APIs', 'Backend services', 'Speech processing', 'Git'],
     note: 'No public repository or demo.',
   },
@@ -124,12 +164,12 @@ const statusClass: Record<Project['status'], string> = {
     <div class="reveal mb-12 max-w-2xl">
       <p class="section-label">Projects</p>
       <h2 id="projects-title" class="section-title">
-        Things I've built,<br />
-        <span class="text-accent-cyan italic">and how they work.</span>
+        Systems I've built,<br />
+        <span class="text-accent-cyan italic">and how I checked them.</span>
       </h2>
       <p class="section-intro">
-        Each project separates what is implemented from what is planned. Case studies cover architecture,
-        decisions, and the problems I ran into.
+        Each project states the problem, what is implemented, how it was verified, and what is not done yet.
+        Case studies go deeper into architecture and the issues I had to fix.
       </p>
     </div>
 
@@ -142,12 +182,17 @@ const statusClass: Record<Project['status'], string> = {
                 <div class="mb-4 flex flex-wrap items-center gap-2">
                   <span class="chip border-bg-600 text-text-muted">{p.label}</span>
                   <span class={`chip ${statusClass[p.status]}`}>{p.status}</span>
+                  {p.period && <span class="font-mono text-xs text-text-dim">{p.period}</span>}
                 </div>
                 <h3 id={`${p.id}-title`} class="font-display text-2xl text-text-primary sm:text-3xl">
                   {p.title}
                 </h3>
                 <p class="mt-1 text-text-muted">{p.subtitle}</p>
-                <p class="mt-5 border-l-2 border-accent-cyan/40 pl-4 text-sm leading-relaxed text-text-muted">{p.problem}</p>
+
+                <p class="mt-5 border-l-2 border-accent-cyan/40 pl-4 text-sm leading-relaxed text-text-muted">
+                  <span class="mb-1 block font-mono text-[11px] tracking-widest text-accent-cyan uppercase">Problem</span>
+                  {p.problem}
+                </p>
 
                 <h4 class="mt-6 mb-3 font-mono text-[11px] tracking-widest text-text-dim uppercase">What's implemented</h4>
                 <ul class="space-y-2.5">
@@ -158,12 +203,47 @@ const statusClass: Record<Project['status'], string> = {
                     </li>
                   ))}
                 </ul>
-                {p.next && (
-                  <p class="mt-4 flex gap-3 text-sm text-text-muted">
-                    <Icon name="circle" size={14} class="mt-1 shrink-0 text-accent-amber" />
-                    <span>{p.next}</span>
-                  </p>
-                )}
+
+                <div class="mt-6 grid gap-6 md:grid-cols-2">
+                  {p.decisions && (
+                    <div>
+                      <h4 class="mb-3 font-mono text-[11px] tracking-widest text-text-dim uppercase">Decisions</h4>
+                      <ul class="space-y-2">
+                        {p.decisions.map((d) => (
+                          <li class="flex gap-3 text-sm leading-relaxed text-text-muted">
+                            <span class="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-accent-cyan" aria-hidden="true" />
+                            <span>{d}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  {p.verified && (
+                    <div>
+                      <h4 class="mb-3 font-mono text-[11px] tracking-widest text-text-dim uppercase">How it was verified</h4>
+                      <ul class="space-y-2">
+                        {p.verified.map((v) => (
+                          <li class="flex gap-3 text-sm leading-relaxed text-text-muted">
+                            <span class="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-accent-green" aria-hidden="true" />
+                            <span>{v}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+                <div class="mt-6 rounded-xl border border-accent-amber/20 bg-accent-amber/5 p-4">
+                  <h4 class="mb-2 font-mono text-[11px] tracking-widest text-accent-amber uppercase">Limits &amp; next steps</h4>
+                  <ul class="space-y-1.5">
+                    {p.limits.map((l) => (
+                      <li class="flex gap-3 text-sm leading-relaxed text-text-muted">
+                        <Icon name="circle" size={13} class="mt-1 shrink-0 text-accent-amber" />
+                        <span>{l}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
 
               <aside class="flex flex-col gap-6 border-t border-bg-600 bg-bg-800/60 p-6 sm:p-8 lg:border-t-0 lg:border-l" aria-label={`${p.title} summary`}>
@@ -184,6 +264,21 @@ const statusClass: Record<Project['status'], string> = {
                     {p.stack.map((t) => <li class="tag">{t}</li>)}
                   </ul>
                 </div>
+                {p.evidence && (
+                  <div>
+                    <p class="mb-2 font-mono text-[11px] tracking-widest text-text-dim uppercase">Evidence in the repo</p>
+                    <ul class="space-y-1.5">
+                      {p.evidence.map((e) => (
+                        <li>
+                          <a href={e.href} target="_blank" rel="noopener noreferrer" class="link-arrow">
+                            {e.label} <Icon name="arrow-up-right" size={12} />
+                            <span class="sr-only">(opens in a new tab)</span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
                 <div class="mt-auto flex flex-col gap-2">
                   {p.caseStudy && (
                     <a href={p.caseStudy} class="btn-primary w-full" data-track={p.trackCaseStudy}>
@@ -211,6 +306,7 @@ const statusClass: Record<Project['status'], string> = {
             <div class="mb-4 flex flex-wrap items-center gap-2">
               <span class="chip border-bg-600 text-text-muted">{p.label}</span>
               <span class={`chip ${statusClass[p.status]}`}>{p.status}</span>
+              {p.period && <span class="font-mono text-xs text-text-dim">{p.period}</span>}
             </div>
             <h4 id={`${p.id}-title`} class="font-display text-2xl text-text-primary">{p.title}</h4>
             <p class="mt-1 text-sm text-text-muted">{p.subtitle}</p>
@@ -218,11 +314,15 @@ const statusClass: Record<Project['status'], string> = {
             <ul class="mt-4 space-y-2">
               {p.built.map((item) => (
                 <li class="flex gap-3 text-sm leading-relaxed text-text-muted">
-                  <span class="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-accent-cyan" aria-hidden="true" />
+                  <Icon name="check" size={14} class="mt-1 shrink-0 text-accent-green" />
                   <span>{item}</span>
                 </li>
               ))}
             </ul>
+            <p class="mt-4 flex gap-3 text-sm text-text-muted">
+              <Icon name="circle" size={13} class="mt-1 shrink-0 text-accent-amber" />
+              <span>{p.limits.join(' · ')}</span>
+            </p>
             <ul class="mt-5 flex flex-wrap gap-1.5">
               {p.stack.map((t) => <li class="tag">{t}</li>)}
             </ul>
