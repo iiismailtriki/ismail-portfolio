@@ -35,7 +35,7 @@ now lives in `~/Desktop/career-application-os-v2/cv/canonical/`.
 
 | # | Conflict | Current site | Options |
 |---|---|---|---|
-| B1 | **ars vivendi.** AF E1/N14: "NOT FOR CV / NOT USED AS IT EXPERIENCE … unless Ismail explicitly asks later". Your 2026-11-12 request lists the role's S3/website/network duties as approved for the portfolio. | **Kept** (Experience, Skills "Used professionally"), approved bullets verbatim. The CV PDF does not include it, so site and CV now differ. | Keep and update AF to record the portfolio exception, or remove from the site. |
+| B1 | **ars vivendi.** AF E1/N14: "NOT FOR CV / NOT USED AS IT EXPERIENCE … unless Ismail explicitly asks later". Your 2026-11-12 request lists the role's S3/website/network duties as approved for the portfolio. | **Resolved 2026-11-12: removed from the site** on Ismail's instruction. Site and CV now agree. | — |
 | B2 | **Marburg exchange end date:** SoT says Jun 2026 (completed); AF F1b says Oct 2025 – **Oct 2026**. | Jun 2026 (unchanged) | Which is right? |
 | B3 | **Zeek:** listed on the site (SOC card, case study, skills). Not in CV v3.2 or AF, and **0 mentions in the SOC repo**. | Kept, unchanged | Confirm Zeek was deployed, or remove it. |
 | B4 | **Cortex:** on the site and in the SOC repo README; not on CV v3.2. | Kept | Probably fine; confirm. |
