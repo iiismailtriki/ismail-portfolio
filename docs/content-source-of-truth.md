@@ -15,6 +15,21 @@ A follow-up content pass on 2026-08-24 (German level, DevSecOps Tracker re-audit
 team-framing correction, project hierarchy) is logged in the dedicated sections below it added —
 see "German language level (2026-08-24)" onward.
 
+## ars vivendi excluded from the public portfolio (2026-11-12) — read this first
+
+**The Working Student — IT & Cloud Support role at ars vivendi Seniorenresidenz Marburg GmbH is
+intentionally excluded from the public portfolio**, on Ismail's explicit instruction. This matches
+`approved-facts.md` E1/N5/N14 and the canonical CV v3.2, which already omit it. It resolves
+conflict B1 in `docs/factual-review-2026-11.md`.
+
+- Removed from Experience and from Skills ("Used professionally").
+- Not mentioned anywhere else on the site: hero, About, metadata and structured data.
+- Do not re-add it under any title, and do not mention its duties (S3 migration, website
+  maintenance, network troubleshooting). `npm run check:claims` fails the build if "ars vivendi",
+  "Seniorenresidenz" or an S3-migration claim appears on any page.
+- The sections below that describe the role (written 2026-08-10 and earlier on 2026-11-12) are
+  **historical only**. Only Ismail can lift this exclusion.
+
 ## Recruiter optimization pass (2026-11-12) — read this first
 
 **Upstream sources moved.** The canonical facts now live in
@@ -34,8 +49,9 @@ Applied in this pass (details and open conflicts: `docs/factual-review-2026-11.m
 - **`public/cv.pdf`** is now the canonical v3.2 (no ars vivendi, SAA included, German B1).
   **`public/cv-de.pdf`** added (v3.2-de). The A2/B1 mismatch noted below is resolved.
 - **Argo CD** is no longer claimed as a skill; it is listed under "Learning now" (AF E3).
-- **ars vivendi kept on the portfolio** on Ismail's 2026-11-12 instruction, although AF E1/N14
-  excludes it from the CV and applications. The site and the CV now intentionally differ (see B1).
+- ~~**ars vivendi kept on the portfolio**~~ **Superseded the same day**: removed from the
+  portfolio on Ismail's instruction (see the section above). Previously: kept although AF E1/N14
+  excluded it from the CV and applications. The site and the CV now intentionally differ (see B1).
 - **DevSecOps Tracker** re-audited at `f41b9f3`: 15 stages, Helm/Trivy IaC gate, main-only
   publishing, read-only root filesystem in the Helm chart, Cosign key rotation (with main-branch
   signing validation still pending). No AI-assisted CI feature exists.
@@ -103,7 +119,7 @@ experience bullets were changed. Content changes:
 - Status: **Graduated** — ESPRIT, July 2026. Approved English wording is **"Graduated with
   Highest Honors"** (the French "Mention Très Bien" is retired from all current English-facing
   content per `approved-facts.md`, Run 04, 2026-07-22).
-- Current employment: **Working Student — IT & Cloud Support**, ars vivendi Seniorenresidenz
+- *(Historical, superseded 2026-11-12: not shown on the public portfolio)* Current employment: **Working Student — IT & Cloud Support**, ars vivendi Seniorenresidenz
   Marburg GmbH, Marburg, Germany, June 2026 – Present. See "ars vivendi" below.
 - `public/cv.pdf` is now generated from the canonical `master-cv/` source and includes the
   ars vivendi entry — no longer stale (see "CV replacement" below).
@@ -116,6 +132,8 @@ experience bullets were changed. Content changes:
 | Academic Exchange — Computer Science | Philipps-Universität Marburg | Marburg, Germany | Oct 2025 – Jun 2026 | Corrected end date (was "Dec 2026" in the site, an uncorrected artifact of the 2026-07-20 pass). `current-candidate-status.md` marks this **COMPLETED** as of 2026-07-30 — do not describe it as ongoing. |
 
 ## ars vivendi Seniorenresidenz Marburg GmbH — new current role
+
+> **Superseded 2026-11-12:** this role is excluded from the public portfolio. Historical record only.
 
 Added 2026-08-10. Title, dates, and all three responsibility bullets are used **verbatim**
 from `application-os/config/approved-facts.md` — not paraphrased or strengthened. ars vivendi

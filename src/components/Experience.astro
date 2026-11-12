@@ -1,21 +1,7 @@
 ---
 // Titles, dates and bullets are approved wording — see docs/content-source-of-truth.md before editing.
+// The ars vivendi working-student role is intentionally excluded from the public portfolio.
 const experiences = [
-  {
-    title: 'Working Student — IT & Cloud Support',
-    company: 'ars vivendi Seniorenresidenz Marburg GmbH',
-    location: 'Marburg, Germany',
-    period: 'Jun 2026 – Present',
-    type: 'Working Student',
-    description:
-      'Part-time IT and cloud support role at a senior-care provider in Marburg, alongside my own cloud and DevOps project work.',
-    highlights: [
-      'Support the migration of internal file storage and backup workflows from on-premises servers to AWS S3',
-      'Maintain and update the company website, supporting day-to-day digital operations',
-      'Assist with network and connectivity troubleshooting across the Marburg location',
-    ],
-    stack: ['AWS S3', 'IT Support', 'Website Maintenance', 'Network Troubleshooting'],
-  },
   {
     title: 'Cloud Engineering Intern — DevSecOps & Security Automation',
     company: 'Flexos Tunisie',
@@ -125,7 +111,7 @@ const education = [
             <span
               class:list={[
                 'absolute top-2 left-0 h-[15px] w-[15px] rounded-full border-2 border-bg-800 md:left-[176px]',
-                i === 0 ? 'bg-accent-green ring-4 ring-accent-green/15' : 'bg-bg-600',
+                exp.period.includes('Present') ? 'bg-accent-green ring-4 ring-accent-green/15' : 'bg-bg-600',
               ]}
               aria-hidden="true"
             />

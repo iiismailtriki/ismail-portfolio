@@ -5,8 +5,9 @@
 //
 // Mirrors the rules from the career workspace's profile/forbidden-claims.tsv that apply to this
 // portfolio, run against the visible text of every page in dist/. Exits non-zero on a match.
-// N5/N14 (ars vivendi, S3 migration) are intentionally not enforced here: the portfolio shows that
-// role on Ismail's explicit instruction (2026-11-12) — see docs/content-source-of-truth.md.
+// N5/N14: the ars vivendi working-student role (and its S3 migration duties) is excluded from the
+// public portfolio on Ismail's instruction (2026-11-12, second request) — see
+// docs/content-source-of-truth.md.
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
@@ -24,6 +25,8 @@ const RULES = [
   ['N13 outdated German exam', /\btelc\s*B2\b|\bB2 exam\b|preparing for B2/i],
   ['German A2', /\bA2\b/],
   ['N15 thesis grade as overall grade', /16[.,]88/, /thesis|abschlussarbeit|\bPFE\b/i],
+  ['N14 ars vivendi employment', /ars vivendi|\bvivendi\b|Seniorenresidenz/i],
+  ['N5 S3 migration', /\bS3\b[^.]{0,60}\bmigrat|\bmigrat[^.]{0,80}\bS3\b/i],
   ['Argo CD as implemented', /argo ?cd/i, /learning|planned|next|in progress|not implemented/i],
 ];
 
