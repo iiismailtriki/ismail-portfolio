@@ -15,6 +15,33 @@ A follow-up content pass on 2026-08-24 (German level, DevSecOps Tracker re-audit
 team-framing correction, project hierarchy) is logged in the dedicated sections below it added —
 see "German language level (2026-08-24)" onward.
 
+## Recruiter optimization pass (2026-11-12) — read this first
+
+**Upstream sources moved.** The canonical facts now live in
+`~/Desktop/career-application-os-v2/profile/approved-facts.md` (the "only source of truth" for
+candidate facts) and the approved CV in `~/Desktop/career-application-os-v2/cv/canonical/`
+(v3.2 EN + DE). The `career-workspace/master-cv/` and `application-os/` paths cited below no
+longer exist. Where this file and `approved-facts.md` disagree, `approved-facts.md` (newer,
+2026-11-08/09) wins, except where Ismail instructs otherwise for the portfolio.
+
+Applied in this pass (details and open conflicts: `docs/factual-review-2026-11.md`):
+- **AWS Certified Solutions Architect – Associate** added. Official Credly image, Credly
+  verification link, no dates or IDs. Certifications now come from `src/data/certifications.ts`.
+- **"Graduated with Highest Honors" retired** (AF N7). Use "Thesis grade: 16.88/20" only, always
+  labelled as the thesis grade (AF N15).
+- **German:** "B1 — telc B1 exam planned Dec 2026" (AF L4/L5). The "preparing for B2" wording is
+  retired (N13).
+- **`public/cv.pdf`** is now the canonical v3.2 (no ars vivendi, SAA included, German B1).
+  **`public/cv-de.pdf`** added (v3.2-de). The A2/B1 mismatch noted below is resolved.
+- **Argo CD** is no longer claimed as a skill; it is listed under "Learning now" (AF E3).
+- **ars vivendi kept on the portfolio** on Ismail's 2026-11-12 instruction, although AF E1/N14
+  excludes it from the CV and applications. The site and the CV now intentionally differ (see B1).
+- **DevSecOps Tracker** re-audited at `f41b9f3`: 15 stages, Helm/Trivy IaC gate, main-only
+  publishing, read-only root filesystem in the Helm chart, Cosign key rotation (with main-branch
+  signing validation still pending). No AI-assisted CI feature exists.
+- **`npm run check:claims`** (CI) fails the build if retired claims reappear: honours,
+  unscoped "<4 s", production SOC, outdated German/SAA wording, Argo CD as implemented.
+
 ## Modernization pass (2026-11-09) — read this first
 
 Branch `feature/portfolio-modernization-2026`. Design/code overhaul plus a fresh re-audit of the

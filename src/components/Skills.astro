@@ -1,60 +1,63 @@
 ---
 import { withBase } from '../utils/paths';
 
-// Skill lists match docs/content-source-of-truth.md ("Technologies confirmed by CV/repo evidence").
-// `usedIn` points at where on this site each group is evidenced.
-const skillGroups = [
+// Evidence-based skills. Every group says where it was used; nothing is rated.
+// Sources: approved CV v3.2, docs/content-source-of-truth.md, and the public repos.
+// Argo CD is listed only as "learning" — it is planned in the tracker repo, not implemented.
+
+const projectSkills = [
   {
-    category: 'CI/CD & Automation',
-    glyph: '>_',
-    skills: ['Jenkins', 'GitHub Actions', 'Bash / Shell scripting', 'Python (automation)'],
-    usedIn: [
-      { label: 'DevSecOps Tracker', href: '/#devsecops-deployment-tracker' },
-      { label: 'Flexos thesis', href: '/#experience' },
-    ],
+    area: 'Supply-chain security & CI/CD',
+    skills: ['Jenkins', 'Trivy', 'Syft (SBOM)', 'Cosign', 'Gitleaks', 'Bandit', 'pip-audit', 'Hadolint', 'GHCR'],
+    where: [{ label: 'DevSecOps Tracker', href: '/#devsecops-deployment-tracker' }],
   },
   {
-    category: 'Containers & Orchestration',
-    glyph: '⎈',
-    skills: ['Kubernetes (k3s)', 'Docker', 'Helm', 'ArgoCD'],
-    usedIn: [
+    area: 'Kubernetes & containers',
+    skills: ['Kubernetes (k3s)', 'Helm', 'Docker', 'NetworkPolicy', 'Pod security context'],
+    where: [
       { label: 'DevSecOps Tracker', href: '/#devsecops-deployment-tracker' },
       { label: 'SOC Platform', href: '/#soc-platform' },
+      { label: "Espr'Eats", href: '/#esprEats' },
     ],
   },
   {
-    category: 'Cloud & Infrastructure as Code',
-    glyph: '{ }',
-    skills: ['AWS', 'OpenStack', 'Proxmox VE', 'VMware ESXi', 'Terraform', 'Ansible'],
-    usedIn: [
+    area: 'Infrastructure as Code',
+    skills: ['Terraform', 'Ansible', 'AWX', 'OpenStack', 'Proxmox VE'],
+    where: [
       { label: 'SOC Platform', href: '/#soc-platform' },
       { label: "Espr'Eats", href: '/#esprEats' },
     ],
   },
   {
-    category: 'Security & Observability',
-    glyph: '◇',
-    skills: ['Wazuh', 'OpenSearch Security Analytics', 'Suricata', 'Zeek', 'TheHive', 'Cortex', 'Prometheus', 'Grafana', 'MITRE ATT&CK'],
-    usedIn: [
+    area: 'Detection & observability',
+    skills: ['Wazuh', 'Suricata', 'Zeek', 'OpenSearch', 'TheHive', 'Cortex', 'Shuffle SOAR', 'MITRE ATT&CK', 'Prometheus', 'Grafana'],
+    where: [
       { label: 'SOC Platform', href: '/#soc-platform' },
       { label: "Espr'Eats", href: '/#esprEats' },
     ],
   },
+];
+
+const professional = [
   {
-    category: 'Systems & Networking',
-    glyph: '⌁',
-    skills: ['Linux (Debian/Ubuntu/RHEL)', 'Netplan / iptables', 'DNS / DHCP', 'VLANs', 'OPNsense'],
-    usedIn: [{ label: 'SOC Platform', href: '/#soc-platform' }],
+    role: 'Flexos Tunisie — DevSecOps & security automation intern',
+    skills: ['k3s', 'Proxmox VE', 'Terraform', 'Ansible', 'AWX', 'GitHub Actions', 'Wazuh', 'Suricata', 'TheHive'],
   },
   {
-    category: 'Development',
-    glyph: '</>',
-    skills: ['Java', 'Spring Boot', 'JavaScript', 'Angular', 'REST APIs', 'OpenAI API'],
-    usedIn: [
-      { label: "Espr'Eats", href: '/#esprEats' },
-      { label: 'Vocallia', href: '/#vocallia' },
-    ],
+    role: 'Working student — IT & cloud support, Marburg',
+    skills: ['AWS S3 (migration support)', 'Website maintenance', 'Network troubleshooting'],
   },
+  {
+    role: 'Devoteam — cloud, data & DevOps intern',
+    skills: ['Infrastructure & operational-risk documentation', 'Business continuity'],
+  },
+];
+
+const foundations = ['AWS', 'Linux (Debian/Ubuntu/RHEL)', 'Bash', 'Python', 'Git', 'containerd', 'VMware ESXi', 'OPNsense', 'Networking (DNS, DHCP, VLANs)', 'Java / Spring Boot', 'Angular', 'REST APIs', 'SQL'];
+
+const learning = [
+  { name: 'Argo CD / GitOps', note: 'planned next step for the DevSecOps Tracker' },
+  { name: 'German', note: 'B1, telc B1 exam planned Dec 2026' },
 ];
 ---
 
@@ -63,28 +66,27 @@ const skillGroups = [
     <div class="reveal mb-12 max-w-2xl">
       <p class="section-label">Skills</p>
       <h2 id="skills-title" class="section-title">
-        Tools I've used<br />
-        <span class="text-accent-cyan italic">on real systems.</span>
+        What I can show,<br />
+        <span class="text-accent-cyan italic">and where I used it.</span>
       </h2>
-      <p class="section-intro">Grouped by discipline, with a pointer to where each group shows up in my work.</p>
+      <p class="section-intro">
+        Grouped by evidence rather than self-rated levels: tools in implemented projects, tools used at work, and
+        what I'm learning now.
+      </p>
     </div>
 
-    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <h3 class="reveal mb-4 font-mono text-xs tracking-[0.2em] text-text-dim uppercase">Used in implemented projects</h3>
+    <div class="grid gap-5 sm:grid-cols-2">
       {
-        skillGroups.map((group, i) => (
-          <article class="reveal card-base card-hover flex flex-col" style={`--reveal-delay: ${(i % 3) * 60}ms`}>
-            <div class="mb-4 flex items-center gap-3">
-              <span class="grid h-9 min-w-9 place-items-center rounded-lg border border-accent-cyan/25 bg-accent-cyan/10 px-1.5 font-mono text-xs text-accent-cyan" aria-hidden="true">
-                {group.glyph}
-              </span>
-              <h3 class="text-sm font-semibold text-text-primary">{group.category}</h3>
-            </div>
+        projectSkills.map((group, i) => (
+          <article class="reveal card-base card-hover flex flex-col" style={`--reveal-delay: ${(i % 2) * 60}ms`}>
+            <h4 class="mb-4 text-sm font-semibold text-text-primary">{group.area}</h4>
             <ul class="flex flex-wrap gap-1.5">
               {group.skills.map((skill) => <li class="tag">{skill}</li>)}
             </ul>
             <p class="mt-auto pt-5 font-mono text-[11px] text-text-dim">
-              Used in{' '}
-              {group.usedIn.map((u, j) => (
+              Evidence:{' '}
+              {group.where.map((u, j) => (
                 <>
                   {j > 0 && ' · '}
                   <a href={withBase(u.href)} class="text-text-muted underline-offset-4 hover:text-accent-cyan hover:underline">
@@ -96,6 +98,47 @@ const skillGroups = [
           </article>
         ))
       }
+    </div>
+
+    <div class="mt-10 grid gap-5 lg:grid-cols-[1.4fr_1fr]">
+      <div class="reveal card-base">
+        <h3 class="mb-4 font-mono text-xs tracking-[0.2em] text-text-dim uppercase">Used professionally</h3>
+        <dl class="space-y-4">
+          {
+            professional.map((p) => (
+              <div>
+                <dt class="text-sm text-text-primary">{p.role}</dt>
+                <dd class="mt-2 flex flex-wrap gap-1.5">
+                  {p.skills.map((s) => (
+                    <span class="tag">{s}</span>
+                  ))}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+
+      <div class="space-y-5">
+        <div class="reveal card-base">
+          <h3 class="mb-4 font-mono text-xs tracking-[0.2em] text-text-dim uppercase">Foundations</h3>
+          <ul class="flex flex-wrap gap-1.5">
+            {foundations.map((f) => <li class="tag">{f}</li>)}
+          </ul>
+        </div>
+        <div class="reveal card-base border-accent-amber/25">
+          <h3 class="mb-4 font-mono text-xs tracking-[0.2em] text-accent-amber uppercase">Learning now</h3>
+          <ul class="space-y-2">
+            {
+              learning.map((l) => (
+                <li class="text-sm text-text-muted">
+                  <span class="text-text-primary">{l.name}</span> — {l.note}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </section>

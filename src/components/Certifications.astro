@@ -1,23 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
-import awsBadge from '../assets/certifications/aws-cloud-practitioner.png';
-import nutanixBadge from '../assets/certifications/nutanix-ncp-mci6.png';
-
-const certifications = [
-  {
-    name: 'AWS Certified Cloud Practitioner',
-    issuer: 'Amazon Web Services',
-    href: 'https://www.credly.com/badges/58168a8e-4f53-4ed0-a898-b92fbb761c50/linked_in?t=t4qoma',
-    image: awsBadge,
-  },
-  {
-    name: 'Nutanix Certified Professional — Multicloud Infrastructure 6',
-    issuer: 'Nutanix',
-    href: 'https://www.credly.com/badges/efe60dc4-cab6-4cdc-a6d7-b256674a40b7/linked_in?t=t3x6lz',
-    image: nutanixBadge,
-  },
-];
+import { certifications } from '../data/certifications';
 ---
 
 <section id="certifications" class="section !pt-0" aria-labelledby="certifications-title">
@@ -29,19 +13,19 @@ const certifications = [
       </h2>
     </div>
 
-    <div class="grid gap-5 sm:grid-cols-2">
+    <div class="grid gap-5 md:grid-cols-3">
       {
         certifications.map((cert, i) => (
           <a
             href={cert.href}
             target="_blank"
             rel="noopener noreferrer"
-            class="reveal card-base card-hover group flex items-center gap-5"
+            class="reveal card-base card-hover group flex items-center gap-5 md:flex-col md:items-start"
             style={`--reveal-delay: ${i * 60}ms`}
           >
-            <Image src={cert.image} alt="" width={72} height={72} densities={[1, 2]} class="h-[72px] w-[72px] shrink-0 object-contain" />
+            <Image src={cert.image} alt="" width={80} height={80} densities={[1, 2]} class="h-20 w-20 shrink-0 object-contain" />
             <div class="min-w-0 flex-1">
-              <p class="font-mono text-[11px] tracking-widest text-text-dim uppercase">{cert.issuer}</p>
+              <p class="font-mono text-[11px] tracking-widest text-text-dim uppercase">{cert.issuer} · {cert.level}</p>
               <p class="mt-1 leading-snug font-semibold text-text-primary group-hover:text-accent-cyan">{cert.name}</p>
               <p class="mt-2 inline-flex items-center gap-1 font-mono text-xs text-accent-cyan">
                 Verify on Credly <Icon name="arrow-up-right" size={13} />

@@ -3,13 +3,16 @@ import { Picture } from 'astro:assets';
 import Icon from './Icon.astro';
 import PipelineStrip from './PipelineStrip.astro';
 import profile from '../assets/images/profile.png';
+import { Image } from 'astro:assets';
 import { site } from '../data/site';
+import { certifications, primaryCertification as saa } from '../data/certifications';
 import { withBase } from '../utils/paths';
 
+// Wording follows the approved CV (v3.2) and docs/content-source-of-truth.md.
 const facts = [
-  { label: 'Degree', value: 'Cloud Engineering, Highest Honors', sub: 'ESPRIT · 2026' },
-  { label: 'Certified', value: 'AWS Cloud Practitioner', sub: 'Nutanix NCP-MCI 6' },
-  { label: 'Now', value: 'Working Student', sub: 'IT & Cloud Support, Marburg' },
+  { label: 'Certified', value: 'AWS Solutions Architect – Associate', sub: certifications.slice(1).map((c) => c.short).join(' · ') },
+  { label: 'Experience', value: 'DevSecOps & security automation intern', sub: 'Flexos Tunisie · SOC platform thesis' },
+  { label: 'Education', value: 'Engineering degree, Computer Science', sub: 'ESPRIT 2026 · Cloud specialization' },
   { label: 'Languages', value: 'English C1 · German B1', sub: 'French C1 · Arabic native' },
 ];
 ---
@@ -43,21 +46,44 @@ const facts = [
               <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent-green opacity-60 [animation-iteration-count:3]"></span>
               <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent-green"></span>
             </span>
-            Open to junior roles in Germany
+            Open to junior roles · Germany
           </p>
         </div>
 
         <h1 id="hero-title" class="hero-in mt-6 font-display text-5xl leading-[1.02] text-text-primary sm:text-6xl lg:text-7xl" style="--d: 60ms">
           Ismail Triki
         </h1>
-        <p class="hero-in mt-4 font-display text-2xl leading-snug text-text-primary/90 sm:text-3xl" style="--d: 120ms">
-          Cloud engineering graduate building{' '}
-          <span class="text-accent-cyan italic">secure, automated</span> infrastructure.
+        <p class="hero-in mt-1 font-mono text-sm tracking-wide text-accent-cyan" style="--d: 90ms">
+          Cloud · DevOps · DevSecOps engineer
         </p>
-        <p class="hero-in mt-5 max-w-[58ch] leading-relaxed text-text-muted" style="--d: 180ms">
-          I build CI/CD pipelines with real security gates, run workloads on Kubernetes, and automate
-          infrastructure with Terraform and Ansible. Currently a working student in IT &amp; cloud support in
-          Marburg — looking for a junior <strong class="font-medium text-text-primary">Cloud, DevOps, Platform, or DevSecOps</strong> role.
+        <p class="hero-in mt-4 font-display text-2xl leading-snug text-text-primary/90 sm:text-3xl" style="--d: 120ms">
+          Building secure cloud infrastructure and delivery pipelines{' '}
+          <span class="text-accent-cyan italic">that can be verified.</span>
+        </p>
+
+        <a
+          href={saa.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hero-in group mt-5 inline-flex items-center gap-3 rounded-xl border border-bg-600 bg-bg-800/70 py-2 pr-4 pl-2 transition-colors hover:border-accent-cyan/40"
+          style="--d: 150ms"
+          data-track="SAA Credential Click"
+        >
+          <Image src={saa.image} alt="" width={40} height={40} densities={[1, 2]} class="h-10 w-10" loading="eager" />
+          <span class="text-sm leading-tight">
+            <span class="block font-medium text-text-primary">{saa.name}</span>
+            <span class="inline-flex items-center gap-1 font-mono text-[11px] text-text-muted group-hover:text-accent-cyan">
+              Verify on Credly <Icon name="arrow-up-right" size={12} />
+            </span>
+          </span>
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
+
+        <p class="hero-in mt-5 max-w-[60ch] leading-relaxed text-text-muted" style="--d: 180ms">
+          I automate infrastructure with Terraform and Ansible, run workloads on Kubernetes, and build CI/CD
+          pipelines where security checks actually block a release. Recent work: a signed, attested container
+          supply chain and a Kubernetes-based SOC platform. Looking for a junior{' '}
+          <strong class="font-medium text-text-primary">Cloud, DevOps, Platform or DevSecOps</strong> role.
         </p>
 
         <div class="hero-in mt-8 flex flex-wrap items-center gap-3" style="--d: 240ms">
@@ -67,7 +93,11 @@ const facts = [
           </a>
           <a href={site.cv} download class="btn-ghost" data-track="CV Download">
             <Icon name="download" size={15} />
-            Download CV
+            CV (EN)
+          </a>
+          <a href={site.cvDe} download class="btn-ghost" data-track="CV DE Download" lang="de">
+            <Icon name="download" size={15} />
+            Lebenslauf (DE)
           </a>
           <div class="flex items-center gap-1 sm:ml-1">
             <a href={site.github} target="_blank" rel="noopener noreferrer" class="grid h-11 w-11 place-items-center rounded-lg text-text-muted hover:bg-bg-700 hover:text-text-primary" aria-label="GitHub profile" data-track="GitHub Click">
@@ -106,7 +136,7 @@ const facts = [
     </div>
 
     <!-- At a glance -->
-    <dl class="hero-in mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-bg-600 bg-bg-600 md:grid-cols-4" style="--d: 300ms">
+    <dl class="hero-in mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-bg-600 bg-bg-600 md:grid-cols-4" style="--d: 300ms">
       {
         facts.map((fact) => (
           <div class="bg-bg-800 p-4 sm:p-5">

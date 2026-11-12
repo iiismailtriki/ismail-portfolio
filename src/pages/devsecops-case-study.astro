@@ -6,14 +6,14 @@ import architecture from '../assets/images/devsecops-pipeline-architecture.png';
 
 <CaseStudy
   title="DevSecOps Deployment Tracker"
-  subtitle="Signed, attested container pipeline for a Flask API, with hardened Kubernetes manifests and a Helm chart"
-  description="Case study: a software-supply-chain-security pipeline — 14-stage Jenkinsfile with Gitleaks, Trivy, Syft SBOM, Cosign signing and attestations, and hardened Kubernetes/Helm deployment config for a Flask API."
+  subtitle="Software supply-chain security for a containerized Flask service: security gates, SBOMs, signatures, attestations and a hardened Helm chart"
+  description="Case study: a software-supply-chain-security pipeline — a 15-stage Jenkinsfile with Gitleaks, Helm/Trivy IaC scanning, Trivy image gates, Syft SBOMs, Cosign signing and attestations, and a hardened Helm chart."
   eyebrow="Case study — Personal project"
   tags={['Jenkins', 'Gitleaks', 'Trivy', 'Syft / SBOM', 'Cosign', 'GHCR', 'Kubernetes', 'Helm', 'Docker', 'Flask']}
   meta={[
     { label: 'Type', value: 'Personal project' },
     { label: 'Role', value: 'Solo' },
-    { label: 'CI', value: 'Jenkins, 14 stages' },
+    { label: 'CI', value: 'Jenkins, 15 stages' },
     { label: 'Status', value: 'Active' },
   ]}
   repo="https://github.com/iiismailtriki/devsecops-deployment-tracker"
@@ -31,9 +31,10 @@ import architecture from '../assets/images/devsecops-pipeline-architecture.png';
         Log4Shell made a standard expectation rather than a nice-to-have.
       </p>
       <p>
-        The objective was to build that full chain — from a commit to a cryptographically signed, attested,
-        digest-pinned container running on Kubernetes — around a deliberately small Flask application, so
-        the pipeline itself is the thing being demonstrated, not the app it wraps.
+        The objective was to build that chain — from a commit to a cryptographically signed, attested,
+        digest-pinned image, plus hardened Kubernetes deployment config that references it — around a
+        deliberately small Flask application, so the pipeline itself is the thing being demonstrated, not the
+        app it wraps. The pipeline stops at the signed image; it does not deploy to a cluster.
       </p>
     </div>
   </section>
@@ -73,7 +74,11 @@ import architecture from '../assets/images/devsecops-pipeline-architecture.png';
   <!-- 3. CI/CD pipeline -->
   <section>
     <p class="section-label">CI/CD Pipeline</p>
-    <h2 class="font-display text-2xl text-text-primary mb-4">14 stages, one Jenkinsfile</h2>
+    <h2 class="font-display text-2xl text-text-primary mb-4">15 stages, one Jenkinsfile</h2>
+    <p class="mb-5 leading-relaxed text-text-muted">
+      Stages 1–10 run on every branch. Stages 11–15 (publish, sign, attest) run on <code class="code-inline">main</code>
+      only, so feature branches are fully scanned but never produce signed release artifacts.
+    </p>
     <div class="overflow-x-auto">
       <table class="w-full text-sm border-collapse">
         <thead>
@@ -92,13 +97,14 @@ import architecture from '../assets/images/devsecops-pipeline-architecture.png';
             ['5', 'Bandit', 'Static application security testing (SAST)'],
             ['6', 'pip-audit', 'Scans dependencies for known vulnerabilities'],
             ['7', 'Hadolint', 'Lints the Dockerfile'],
-            ['8', 'Docker build', 'Multi-stage image build via Buildx, with provenance'],
-            ['9', 'Trivy', 'Scans the built image; blocks the build on fixable HIGH/CRITICAL findings'],
-            ['10', 'Syft', 'Generates a CycloneDX SBOM from the built image'],
-            ['11', 'GHCR publish', 'Pushes the image to a private registry and captures its digest'],
-            ['12', 'Cosign sign', 'Signs the image by digest and verifies the signature'],
-            ['13', 'Cosign SBOM attest', 'Attaches the SBOM as an in-toto attestation and verifies it'],
-            ['14', 'Cosign provenance attest', 'Attaches the BuildKit SLSA provenance as an attestation and verifies it'],
+            ['8', 'Helm + Trivy IaC', 'Lints and renders the Helm chart, then scans the rendered manifests; HIGH/CRITICAL misconfigurations fail the build'],
+            ['9', 'Docker build', 'Multi-stage image build via Buildx, with provenance'],
+            ['10', 'Trivy image', 'Scans the built image; blocks the build on fixable HIGH/CRITICAL findings'],
+            ['11', 'Syft', 'Generates a CycloneDX SBOM from the built image (main only)'],
+            ['12', 'GHCR publish', 'Pushes the image to a private registry and captures its digest (main only)'],
+            ['13', 'Cosign sign', 'Signs the image by digest and verifies the signature (main only)'],
+            ['14', 'Cosign SBOM attest', 'Attaches the SBOM as an in-toto attestation and verifies it (main only)'],
+            ['15', 'Cosign provenance attest', 'Attaches the BuildKit SLSA provenance as an attestation and verifies it (main only)'],
           ].map(([n, stage, desc]) => (
             <tr class="border-b border-bg-800 hover:bg-bg-700/30 transition-colors">
               <td class="py-3 pr-8 font-mono text-xs text-accent-cyan">{n}</td>
@@ -202,7 +208,8 @@ import architecture from '../assets/images/devsecops-pipeline-architecture.png';
             ['Service', 'ClusterIP'],
             ['NetworkPolicy', 'Ingress on TCP 8000 only from pods labelled access: deployment-tracker'],
             ['Resources', 'CPU/memory requests and limits set'],
-            ['Packaging', 'Raw manifests (k8s/base) and a Helm chart with the same hardening'],
+            ['Root filesystem', 'readOnlyRootFilesystem: true, writable /tmp via emptyDir (Helm chart)'],
+            ['Packaging', 'Helm chart (scanned in CI) and raw manifests in k8s/base'],
           ].map(([control, config]) => (
             <tr class="border-b border-bg-800 hover:bg-bg-700/30 transition-colors">
               <td class="py-3 pr-8 text-text-primary font-medium">{control}</td>
@@ -213,8 +220,8 @@ import architecture from '../assets/images/devsecops-pipeline-architecture.png';
       </table>
     </div>
     <p class="font-mono text-xs text-text-dim">
-      Honest gap: readOnlyRootFilesystem is not currently set on the container — noted here rather than
-      implied as done.
+      Honest gap: the read-only root filesystem is set in the Helm chart, not yet in the older raw manifests
+      under k8s/base — the Helm chart is the maintained path.
     </p>
   </section>
 
@@ -263,6 +270,14 @@ import architecture from '../assets/images/devsecops-pipeline-architecture.png';
           detail: 'The image is referenced by SHA256 digest in every downstream config, never by a mutable tag — the Kubernetes Deployment is guaranteed to run the exact image that was scanned, signed, and attested.',
         },
         {
+          title: 'Release artifacts only from main',
+          detail: 'Publishing, signing and attestation are restricted to the main branch. Every branch still runs the full set of scans, but only reviewed, merged code can produce an image that carries a valid signature.',
+        },
+        {
+          title: 'Scan the deployment config, not only the image',
+          detail: 'The Helm chart is rendered and scanned with Trivy in CI. A Deployment that drops a security setting fails the build the same way a vulnerable image does.',
+        },
+        {
           title: 'Attestations, not just artifacts',
           detail: 'The SBOM and provenance are attached to the image as verifiable Cosign attestations, so they can be checked independently of the CI system later, not only trusted because "the pipeline said so."',
         },
@@ -290,6 +305,18 @@ import architecture from '../assets/images/devsecops-pipeline-architecture.png';
         {
           problem: 'GHCR push failures were not surfacing as pipeline failures',
           solution: 'Reworked the publish stage so a failed push explicitly fails the build, instead of the pipeline silently continuing with no image published.',
+        },
+        {
+          problem: 'The private Cosign signing key was lost during a laptop migration',
+          solution: 'Treated it as a key-management event: generated a new password-protected key pair, kept the legacy public key so older signatures stay verifiable, verified a test signature against the transparency log, and recovery-tested an encrypted backup. Documented in docs/signing/KEY_ROTATION.md.',
+        },
+        {
+          problem: 'Gitleaks flagged the key-rotation document as containing an API key',
+          solution: 'Confirmed they were public-key fingerprints, not secrets, and suppressed exactly those findings by fingerprint in .gitleaksignore instead of weakening the scan.',
+        },
+        {
+          problem: 'New HIGH vulnerabilities (zlib) appeared in the base image after a clean build',
+          solution: 'Pinned the patched package version so the Trivy gate passes again — the same remediation pattern as the earlier CVE fix (PR #1).',
         },
         {
           problem: 'Dockerfile line-continuation syntax broke the multi-stage build',
@@ -326,14 +353,16 @@ import architecture from '../assets/images/devsecops-pipeline-architecture.png';
           {[
             'Flask API + automated pytest suite',
             'Jenkins pipeline: Gitleaks, Ruff, Bandit, pip-audit, Hadolint',
+            'Kubernetes IaC gate: Helm lint + render + Trivy config scan (blocking on HIGH/CRITICAL)',
             'Docker build with a blocking Trivy scan',
             'Syft SBOM generation (CycloneDX)',
-            'Private GHCR publish by immutable digest',
+            'Private GHCR publish by immutable digest, restricted to main',
             'Cosign image signing + verification',
             'Cosign SBOM + SLSA provenance attestation + verification',
             'Kubernetes Deployment, Service, and NetworkPolicy manifests, committed',
-            'Helm chart (Deployment, Service, NetworkPolicy templates, values with digest and resource limits), merged via PR',
-            'CVE remediation flow: Trivy finding fixed by pinning the patched package (PR #1)',
+            'Helm chart (Deployment, Service, NetworkPolicy), digest-pinned, with read-only root filesystem and resource limits',
+            'CVE remediation flow: Trivy findings fixed by pinning patched packages (PR #1, zlib)',
+            'Signing-key rotation with legacy key retained and backup recovery-tested',
           ].map((item) => (
             <li class="flex items-start gap-3 text-sm">
               <span class="text-accent-green mt-1.5 shrink-0">✓</span>
@@ -347,7 +376,8 @@ import architecture from '../assets/images/devsecops-pipeline-architecture.png';
         <ul class="space-y-2">
           {[
             'NetworkPolicy is written but not yet validated against a live cluster',
-            'readOnlyRootFilesystem is not yet set on the container',
+            'Main-branch publishing, signing and attestation with the rotated key: validation pending (per the repo\'s key-rotation record)',
+            'Raw k8s/base manifests do not yet carry the read-only root filesystem setting (the Helm chart does)',
             'Deployment is not part of the Jenkins pipeline — it ends at a signed, attested image',
             'Scan/SBOM/attestation reports exist only as local Jenkins-build artifacts, not committed evidence in the repo',
             'CI currently runs on a self-hosted Jenkins agent only — no GitHub-hosted-runner-compatible path yet',
@@ -367,13 +397,14 @@ import architecture from '../assets/images/devsecops-pipeline-architecture.png';
   <!-- 12. Next steps -->
   <section>
     <p class="section-label">Next Steps</p>
-    <h2 class="font-display text-2xl text-text-primary mb-6">What's next</h2>
+    <h2 class="font-display text-2xl text-text-primary mb-6">What's next, and what I'd change for production</h2>
     <div class="grid sm:grid-cols-2 gap-4">
       {[
         'Wire Helm-based deployment into the pipeline (or a GitOps tool) so the signed, verified image is rolled out automatically',
         'Validate the NetworkPolicy against a running cluster (apply it, confirm allowed/denied traffic behaves as expected)',
         'Commit scan/SBOM/attestation evidence into the repository so it\'s reviewable without re-running the pipeline',
         'Add a portable CI path that doesn\'t depend on a self-hosted runner',
+        'Move signing to a managed service (e.g. AWS KMS) or keyless, workload-identity-based signing — the improvement named in the key-rotation record',
       ].map((point) => (
         <div class="flex items-start gap-3 card-base border border-bg-600">
           <span class="text-accent-cyan mt-0.5 shrink-0">▸</span>
